@@ -1,0 +1,1841 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobiComm - Business Recharge Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        /* Branding */
+        .mobi {
+            color: #444;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .comm {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 10px 15px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .nav-link:hover {
+            color: #d32f2f !important;
+        }
+
+        .dropdown-menu {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .dropdown-item {
+            color: #333;
+            font-weight: 500;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dropdown-item:hover {
+            background: #f8f9fa;
+        }
+
+        /* Hero Carousel */
+        .carousel-item {
+            background: linear-gradient(90deg, #c70039, #900c3f);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .carousel-item h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .carousel-indicators [data-bs-target] {
+            background-color: white;
+        }
+
+        /* QuickPay Section */
+        .quickpay-container {
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-recharge {
+            background: linear-gradient(90deg, #c70039, #900c3f);
+            color: white;
+            border-radius: 25px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-recharge:hover {
+            transform: scale(1.05);
+        }
+
+        /* Recommended Plans Section */
+        .recommended-section {
+            background: #ffffff;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .plan-scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding-bottom: 10px;
+            scroll-behavior: smooth;
+        }
+
+        .plan-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .plan-scroll-container::-webkit-scrollbar-thumb {
+            background: #900c3f;
+            border-radius: 5px;
+        }
+
+        .plan-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease-in-out;
+            min-width: 300px;
+            flex: 0 0 auto;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #900c3f;
+        }
+
+        /* Scroll Buttons */
+        .scroll-btn {
+            background: #900c3f;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1.2rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .scroll-btn:hover {
+            background: #750029;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: #900c3f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .container2 {
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .welcome-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #900c3f;
+        }
+
+        .profile-details {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .profile-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .profile-value {
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .btn-edit {
+            background: #900c3f;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 150px;
+            display: block;
+            margin: 30px auto 0;
+        }
+
+        .btn-edit:hover {
+            background: #750029;
+        }
+
+        .edit-section {
+            display: none;
+        }
+
+        /* Icons styling */
+        .profile-icon {
+            color: #900c3f;
+            margin-right: 10px;
+        }
+
+        /* Edit Profile Styling */
+        .edit-profile-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-profile-card input {
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .edit-profile-card label {
+            font-weight: 600;
+        }
+
+
+        /* Global Styles */
+
+        .container3 {
+            max-width: 980px;
+            margin: 50px auto;
+        }
+
+        /* Recharge Section */
+        .recharge-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .recharge-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .recharge-header h4 {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Plan Selection */
+        .plan-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .plan-card:hover,
+        .plan-card.selected {
+            border: 2px solid #900c3f;
+            transform: scale(1.05);
+            box-shadow: 0px 6px 15px rgba(199, 0, 57, 0.2);
+        }
+
+        .plan-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #900c3f;
+        }
+
+        /* Recharge Button */
+        .btn-recharge {
+            background: #900c3f;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+            font-weight: bold;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-recharge:hover {
+            background: #750029;
+        }
+
+        /* Loader & Payment Status */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #900c3f;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        .payment-status {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Styling for Buy New Connection Page */
+        .buy-new-connection-page {
+            background-color: #f4f6f9;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: #333;
+            max-width: 700px;
+            margin: 50px auto;
+        }
+
+        .buy-new-connection-page h3 {
+            font-weight: bold;
+            color: #900c3f;
+            margin-left: 170px;
+        }
+
+        .buy-new-connection-page .text-muted {
+            color: #777;
+        }
+
+        .buy-new-connection-page .form-control {
+            border-radius: 10px;
+            font-size: 15px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .buy-new-connection-page .input-label {
+            font-weight: 600;
+            color: #900c3f;
+            text-align: left;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .buy-new-connection-page .btn-submit {
+            background: linear-gradient(90deg, #c70039, #900c3f);
+            color: white;
+            border-radius: 30px;
+            transition: all 0.3s ease-in-out;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .buy-new-connection-page .btn-submit:hover {
+            transform: scale(1.05);
+            background: linear-gradient(90deg, #900c3f, #c70039);
+        }
+
+        .buy-new-connection-page .preview-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .buy-new-connection-page .preview-container img {
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            display: none;
+        }
+
+        .buy-new-connection-page .form-group {
+            margin-bottom: 20px;
+        }
+
+        .buy-new-connection-page .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Styling for View Request Button */
+        .btn-view {
+            background-color: #f8f9fa;
+            color: #900c3f;
+            border: 2px solid #900c3f;
+            border-radius: 25px;
+            font-weight: bold;
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-view:hover {
+            background-color: #900c3f;
+            color: white;
+        }
+
+        /* Center the request details container */
+        #requestDetails {
+            max-width: 500px;
+            margin: 20px auto;
+            /* Centers the section horizontally */
+            display: none;
+            text-align: center;
+            /* Centers the text content */
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Center the image inside the request details */
+        #requestDetails img {
+            max-width: 100px;
+            max-height: 100px;
+            border: 2px solid #ddd;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            /* Ensures image is also centered */
+        }
+
+        /* Status colors */
+        .status-pending {
+            color: #c70039;
+            font-weight: bold;
+        }
+
+        .status-approved {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-rejected {
+            color: red;
+            font-weight: bold;
+        }
+
+
+              
+ .footer {
+    background: #f8f9fa;
+    padding: 40px 0;
+    text-align: left;
+    border-top: 2px solid #e0e0e0;
+}
+
+.footer h5 {
+    color: #900c3f;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer p,
+.footer ul {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer ul li {
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    text-decoration: none;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-icon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    color: #750029;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span><span class="mobi">MOBI</span> <span class="comm">COMM</span></span>
+                <span class="tagline">Prepaid | Recharge</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="goHome()">Home</a></li>
+
+                    <!-- Prepaid Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Prepaid</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="showRechargeSection()"><i
+                                        class="fas fa-mobile-alt"></i> Mobile Recharge</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="showPrepaidPlans()"><i
+                                        class="fas fa-list-ul"></i> Prepaid Plans</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="goToBuyNewConnection()"><i
+                                        class="fas fa-sim-card"></i> Buy New Connection</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quickpay" onclick="scrollToSection(event, 'quickpay')">Usage
+                            Insights</a>
+                    </li>
+
+                    <!-- Role Dropdown with Profile, Payment, Recharge, Transactions, Help, and Logout -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="toggleProfile()"><i class="fas fa-user"></i>
+                                    Profile</a></li>
+
+                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-credit-card"></i> Payment & Recharge</a></li> -->
+                            <li><a class="dropdown-item" href="#" onclick="showRechargeSection()"><i
+                                        class="fas fa-wallet"></i> Recharge</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="showTransactions()"><i
+                                        class="fas fa-exchange-alt"></i> Transactions</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="showHelpSection()"><i
+                                        class="fas fa-question-circle"></i> Help</a></li>
+                            <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt"></i>
+                                    Logout</a></li>
+                        </ul>
+                    </li>
+
+    </nav>
+    <!-- Hero Section with Carousel -->
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <h1>Recharge Anytime, Anywhere</h1>
+                <p>Secure, Fast & Reliable Mobile Recharges</p>
+            </div>
+            <div class="carousel-item">
+                <h1>Get Exclusive Offers!</h1>
+                <p>Enjoy cashback & discounts on prepaid recharges</p>
+            </div>
+            <div class="carousel-item">
+                <h1>QuickPay for Instant Transactions</h1>
+                <p>One-click payments with high security</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- QuickPay Section with ID -->
+    <!-- <div id="quickpay" class="quickpay-container container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg p-4">
+                    <h3 class="text-center">QuickPay</h3>
+                    <p class="text-center">Enter your mobile number to recharge instantly.</p>
+                    <input type="text" class="form-control mb-3" placeholder="Enter Mobile Number">
+                    <button class="btn btn-recharge w-100">Recharge Now</button>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- MobiComm Customer Dashboard -->
+    <div id="quickpay" class="quickpay-container container mt-5">
+        <h3 class="text-center fw-bold text-dark">MobiComm Customer Dashboard</h3>
+        <p class="text-center text-muted">Track your data usage & recharge history</p>
+
+        <div class="row g-3">
+            <!-- Daily Data Usage -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-danger text-center fw-semibold">Daily Data Usage</h6>
+                    <canvas id="dailyDataUsageChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Data Trends -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-primary text-center fw-semibold">Data Trends</h6>
+                    <canvas id="dataTrendsChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Most Used Plans -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-success text-center fw-semibold">Most Used Plans</h6>
+                    <canvas id="mostUsedPlansChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Peak Usage Hours -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-warning text-center fw-semibold">Peak Usage Hours</h6>
+                    <canvas id="peakUsageChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recharge Frequency -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-secondary text-center fw-semibold">Recharge Frequency</h6>
+                    <canvas id="rechargeFrequencyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="col-6 col-md-4">
+                <div class="card p-3 shadow-sm border-0 rounded-4">
+                    <h6 class="text-info text-center fw-semibold">Payment Methods</h6>
+                    <canvas id="paymentMethodChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Improved Styling for Airtel/Tech Mahindra Look */
+        .card {
+            border-radius: 12px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            height: 90px !important;
+        }
+
+        h6 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+    </style>
+
+
+    <!-- Recommended Plans Section -->
+    <div class="recommended-section">
+        <div class="container">
+            <h2 class="text-center mb-4">Recommended for You</h2>
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="scroll-btn" onclick="scrollPlans(-300)"><i class="fas fa-chevron-left"></i></button>
+                <div class="plan-scroll-container" id="planScroll">
+                    <div class="plan-card">
+                        <h5>₹199 Plan</h5>
+                        <p>28 Days | 1GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹199</p>
+                        <button class="btn btn-recharge w-100"
+                            onclick="handleRecharge(199, '28 Days | 1GB/Day | Unlimited Calls')">Recharge Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h5>₹299 Plan</h5>
+                        <p>28 Days | 1.5GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹299</p>
+                        <button class="btn btn-recharge w-100"
+                            onclick="handleRecharge(299, '28 Days | 1.5GB/Day | Unlimited Calls')">Recharge Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h5>₹399 Plan</h5>
+                        <p>56 Days | 2GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹399</p>
+                        <button class="btn btn-recharge w-100">Recharge Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h5>₹499 Plan</h5>
+                        <p>84 Days | 1.5GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹499</p>
+                        <button class="btn btn-recharge w-100">Recharge Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h5>₹599 Plan</h5>
+                        <p>84 Days | 2GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹599</p>
+                        <button class="btn btn-recharge w-100">Recharge Now</button>
+                    </div>
+                    <div class="plan-card">
+                        <h5>₹799 Plan</h5>
+                        <p>365 Days | 2GB/Day | Unlimited Calls</p>
+                        <p class="plan-price">₹799</p>
+                        <button class="btn btn-recharge w-100">Recharge Now</button>
+                    </div>
+                </div>
+                <button class="scroll-btn" onclick="scrollPlans(300)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container2" id="profileSection" style="display: none;">
+        <!-- Profile Card -->
+        <div class="profile-card">
+            <!-- Header with Welcome Message and Profile Picture -->
+            <div class="profile-header">
+                <p class="welcome-text">Welcome, <span id="profileName">Boomika Mohan</span>!</p>
+                <img id="profilePic" src="https://via.placeholder.com/100" class="profile-image">
+            </div>
+
+            <!-- Profile Details -->
+            <div class="profile-details">
+                <p class="profile-label"><i class="fas fa-phone-alt profile-icon"></i> Mobile Number:</p>
+                <p class="profile-value" id="profilePhone">9025159692</p>
+
+                <p class="profile-label"><i class="fas fa-cogs profile-icon"></i> Service:</p>
+                <p class="profile-value" id="profileService">Prepaid</p>
+            </div>
+
+            <!-- Edit Profile Button -->
+            <button class="btn-edit" onclick="toggleEdit()">Edit Profile</button>
+        </div>
+
+        <!-- Edit Profile Section -->
+        <div class="edit-section mt-3" style="display: none;">
+            <div class="edit-profile-card">
+                <h4 class="text-center mb-3">Edit Profile</h4>
+
+                <!-- Profile Picture Upload -->
+                <div class="text-center mb-4">
+                    <img id="editProfilePic" src="https://via.placeholder.com/100" class="profile-image">
+                    <input type="file" id="uploadPic" class="form-control mt-2" accept="image/*">
+                </div>
+
+                <!-- Edit Fields -->
+                <label class="mt-3">Subscriber Name</label>
+                <input type="text" id="editName" class="form-control" placeholder="Enter full name">
+
+                <label class="mt-3">Service</label>
+                <input type="text" class="form-control" value="Prepaid" disabled>
+
+                <label class="mt-3">Mobile Number</label>
+                <input type="text" id="editPhone" class="form-control" placeholder="Enter phone number">
+
+                <!-- Save Button -->
+                <button class="btn-edit w-100 mt-3" onclick="saveProfile()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Prepaid Plans Section -->
+    <div id="prepaidPlansSection" class="container3" style="display: none;">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <h4>Select a Prepaid Plan</h4>
+                <i class="fas fa-list-ul fa-lg text-danger"></i>
+            </div>
+
+            <!-- Plan Tabs -->
+            <ul class="nav nav-tabs" id="planTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#popularPlans">Popular Plans</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#validityPlans">Validity Plans</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#dataPlans">Data Plans</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#topupPlans">Top-up Plans</a>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content mt-3">
+                <!-- Popular Plans -->
+                <div class="tab-pane fade show active" id="popularPlans">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="plan-card"
+                                onclick="selectPlan(399, '56 Days | 2GB/Day | Unlimited Calls', this)">
+                                <h5>₹399 Plan</h5>
+                                <p>56 Days | 2GB/Day | Unlimited Calls</p>
+                                <p class="plan-price">₹399</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="plan-card"
+                                onclick="selectPlan(699, '84 Days | 1.5GB/Day | Unlimited Calls', this)">
+                                <h5>₹699 Plan</h5>
+                                <p>84 Days | 1.5GB/Day | Unlimited Calls</p>
+                                <p class="plan-price">₹699</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validity Plans -->
+                <div class="tab-pane fade" id="validityPlans">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(155, '24 Days | Talktime ₹155', this)">
+                                <h5>₹155 Plan</h5>
+                                <p>24 Days | Talktime ₹155</p>
+                                <p class="plan-price">₹155</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(179, '28 Days | Unlimited Calls', this)">
+                                <h5>₹179 Plan</h5>
+                                <p>28 Days | Unlimited Calls</p>
+                                <p class="plan-price">₹179</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Plans -->
+                <div class="tab-pane fade" id="dataPlans">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(98, '28 Days | 2GB Total Data', this)">
+                                <h5>₹98 Plan</h5>
+                                <p>28 Days | 2GB Total Data</p>
+                                <p class="plan-price">₹98</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(149, '28 Days | 3GB Total Data', this)">
+                                <h5>₹149 Plan</h5>
+                                <p>28 Days | 3GB Total Data</p>
+                                <p class="plan-price">₹149</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top-up Plans -->
+                <div class="tab-pane fade" id="topupPlans">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(50, 'Talktime ₹39.37', this)">
+                                <h5>₹50 Plan</h5>
+                                <p>Talktime ₹39.37</p>
+                                <p class="plan-price">₹50</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="plan-card" onclick="selectPlan(100, 'Talktime ₹81.75', this)">
+                                <h5>₹100 Plan</h5>
+                                <p>Talktime ₹81.75</p>
+                                <p class="plan-price">₹100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proceed to Payment Button -->
+            <button class="btn-recharge mt-4" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+
+
+    <!-- Recharge Section -->
+    <div id="rechargeSection" class="container3" style="display: none;">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <h4>Recharge Your Mobile</h4>
+                <i class="fas fa-mobile-alt fa-lg text-danger"></i>
+            </div>
+
+            <!-- Mobile Number Input -->
+            <div class="mb-3">
+                <label class="form-label">Mobile Number</label>
+                <input type="text" id="mobileNumber" class="form-control" placeholder="Enter Mobile Number"
+                    value="9025159692">
+            </div>
+
+            <!-- Plan Selection -->
+            <h5 class="mt-4">Select a Plan</h5>
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <div class="plan-card" onclick="selectPlan(199, this)">
+                        <h5>₹199 Plan</h5>
+                        <p>28 Days | 1GB/Day |</p>
+                        <p>Unlimited Calls</p>
+                        <p class="plan-price">₹199</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="plan-card" onclick="selectPlan(599, this)">
+                        <h5>₹599 Plan</h5>
+                        <p>84 Days | 2GB/Day | </p>
+                        <p>Unlimited Calls</p>
+                        <p class="plan-price">₹599</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="plan-card" onclick="selectPlan(859, this)">
+                        <h5>₹859 Plan</h5>
+                        <p>365 Days | 2GB/Day |</p>
+                        <p>Unlimited Calls</p>
+                        <p class="plan-price">₹859</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Proceed to Payment Button -->
+            <button class="btn-recharge mt-4" onclick="proceedToPayment()">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <!-- Payment Page Section -->
+    <div id="paymentSection" class="container3" style="display: none;">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <h4>Payment Summary</h4>
+                <i class="fas fa-wallet fa-lg text-danger"></i>
+            </div>
+
+            <!-- Payment Details -->
+            <div class="payment-summary">
+                <p><strong>Mobile Number:</strong> <span id="paymentMobile"></span></p>
+                <p><strong>Selected Plan:</strong> ₹<span id="paymentAmount"></span></p>
+                <p><strong>Plan Benefits:</strong> <span id="paymentBenefits"></span></p>
+            </div>
+
+            <!-- Payment Methods -->
+            <h5>Select Payment Method</h5>
+            <div class="payment-options mt-3">
+                <button class="btn btn-outline-dark w-100 mb-2">Credit/Debit Card</button>
+                <button class="btn btn-outline-dark w-100 mb-2">UPI</button>
+                <button class="btn btn-outline-dark w-100 mb-2">Net Banking</button>
+            </div>
+
+            <!-- Pay Now Button -->
+            <button class="btn-recharge mt-4" onclick="confirmPayment()">Pay Now</button>
+
+            <!-- Loader and Payment Success Message -->
+            <div class="loader" id="loader"></div>
+            <p class="payment-status" id="paymentSuccess">Payment Successful! ✅</p>
+        </div>
+    </div>
+
+
+    <!-- Transactions Section -->
+    <div id="transactionSection" class="container3" style="display: none;">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <h4>Recent Transactions</h4>
+                <div class="d-flex justify-content-end align-items-center mb-3">
+                    <button class="btn btn-danger d-flex align-items-center" onclick="clearTransactionHistory()">
+                        <span>Clear History</span>
+                        <i class="fas fa-exchange-alt fa-lg text-light ms-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transactions List -->
+            <div id="transactionList">
+                <p>No recent transactions.</p>
+            </div>
+
+            <!-- Back to Home Button -->
+            <button class="btn-recharge mt-4" onclick="goHome()">Back to Home</button>
+        </div>
+    </div>
+
+
+    <!-- Help & Support Section -->
+    <div id="helpSection" class="container3" style="display: none;">
+        <div class="recharge-card">
+            <div class="recharge-header">
+                <h4>Help & Support</h4>
+                <i class="fas fa-question-circle fa-lg text-danger"></i>
+            </div>
+
+            <!-- FAQ Section -->
+            <h5>Frequently Asked Questions</h5>
+            <div class="accordion mt-3" id="faqAccordion">
+                <!-- FAQ 1 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How do I recharge my mobile number?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show">
+                        <div class="accordion-body">
+                            To recharge your mobile number, go to the <strong>Recharge</strong> section, select a plan,
+                            and proceed to payment. Once the payment is successful, your recharge will be completed
+                            instantly.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq2">
+                            What should I do if my recharge fails?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            If your recharge fails, please check the following:
+                            <ul>
+                                <li>Ensure your bank account/card has sufficient balance.</li>
+                                <li>Check your internet connection.</li>
+                                <li>Wait for a few minutes and check if the amount is deducted.</li>
+                                <li>If the amount is deducted but recharge is not done, it will be refunded within 24
+                                    hours.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq3">
+                            Can I cancel or modify my recharge after payment?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            No, once a recharge is successful, it cannot be canceled or modified. Please double-check
+                            your plan and mobile number before making the payment.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faq4">
+                            How do I check my previous recharge history?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            You can check your recharge history in the <strong>Transactions</strong> section, where all
+                            previous recharges are listed with details.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting Steps -->
+            <h5 class="mt-4">Troubleshooting</h5>
+            <p>If you're facing issues with recharge, try these steps:</p>
+            <ul>
+                <li>Restart your phone and check your balance.</li>
+                <li>Confirm your bank transaction history.</li>
+                <li>Ensure your mobile number is active and valid.</li>
+                <li>Contact your telecom provider if you still face issues.</li>
+            </ul>
+
+            <!-- Contact Support -->
+            <h5 class="mt-4">Contact Support</h5>
+            <p>For further assistance, contact us at:</p>
+            <ul>
+                <li><strong>Email:</strong> support@mobicomm.com</li>
+                <li><strong>Customer Care:</strong> 1800-123-4567</li>
+                <li><strong>Live Chat:</strong> Available 24/7 on our website</li>
+            </ul>
+
+            <!-- Back to Home Button -->
+            <button class="btn-recharge mt-4" onclick="goHome()">Back to Home</button>
+        </div>
+    </div>
+
+
+    <!-- Buy New Connection Page -->
+    <div id="buyNewConnectionPage" class="buy-new-connection-page" style="display: none;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mobi-comm-heading">
+                    <!-- <span><span class="mobi">MOBI</span> <span class="comm">COMM</span></span>
+            <span class="tagline">Prepaid | Recharge</span> -->
+                    Buy New Connection
+                </h3>
+                <button class="btn btn-view" onclick="viewRequest()">View Request</button>
+            </div>
+            <p class="text-muted">MobiComm will provide doorstep KYC banking.</p>
+
+            <form id="newConnectionForm">
+                <!-- Customer Name -->
+                <div class="mb-3">
+                    <label for="customerName" class="input-label">Full Name</label>
+                    <input type="text" class="form-control" id="customerName" placeholder="Enter Full Name" required>
+                </div>
+
+                <!-- Mobile Number Input -->
+                <div class="mb-3">
+                    <label for="mobileNumber" class="input-label">Mobile Number</label>
+                    <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number"
+                        required>
+                </div>
+
+                <!-- Aadhaar Upload -->
+                <div class="mb-3">
+                    <label for="aadhaarUpload" class="input-label">Upload Aadhaar Card</label>
+                    <input type="file" class="form-control" id="aadhaarUpload" accept="image/*,.pdf" required>
+                    <div class="preview-container">
+                        <img id="aadhaarPreview" alt="Aadhaar Preview">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-submit w-100">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="requestDetails" style="display: none;">
+        <h4>Request Details</h4>
+        <p><strong>Name:</strong> <span id="reqName"></span></p>
+        <p><strong>Mobile:</strong> <span id="reqMobile"></span></p>
+        <p><strong>Status:</strong> <span id="reqStatus" class="status-pending"></span></p>
+        <img id="reqAadhaar" alt="Aadhaar Preview" style="max-width: 120px;" />
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Company Information -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold">About MobiComm</h5>
+                    <p>MobiComm is a leading telecom recharge and solutions provider, offering seamless connectivity with exclusive offers, secure transactions, and 24/7 customer support.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-2">
+                    <h5 class="fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" onclick="goHome()">Home</a></li>
+                        <li><a href="#" onclick="showPrepaidPlans()">Prepaid Plans</a></li>
+                        <li><a href="#" onclick="goToBuyNewConnection()">Buy New Connection</a></li>
+                        <li><a href="#" onclick="showHelpSection()">Help & Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-md-3">
+                    <h5 class="fw-bold">Contact Us</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> MobiComm HQ, Bangalore, India</p>
+                    <p><i class="fas fa-phone"></i> +91 90251 59692</p>
+                    <p><i class="fas fa-envelope"></i> support@mobicomm.com</p>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="col-md-3">
+                    <h5 class="fw-bold">Follow Us</h5>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <!-- Copyright Section -->
+            <div class="text-center mt-3">
+                <p>© 2025 MobiComm. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+
+        function scrollToSection(event, sectionId) {
+            event.preventDefault();
+            document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+        }
+
+        function scrollPlans(scrollValue) {
+            const planScroll = document.getElementById("planScroll");
+            planScroll.scrollLeft += scrollValue;
+        }
+
+        function toggleProfile() {
+            let profileSection = document.getElementById("profileSection");
+            let quickPay = document.getElementById("quickpay");
+            let recommendedSection = document.querySelector(".recommended-section");
+            let carousel = document.getElementById("heroCarousel");
+
+            if (profileSection.style.display === "none" || profileSection.style.display === "") {
+                profileSection.style.display = "block";
+                quickPay.style.display = "none";
+                recommendedSection.style.display = "none";
+                carousel.style.display = "none";
+            } else {
+                profileSection.style.display = "none";
+                quickPay.style.display = "block";
+                recommendedSection.style.display = "block";
+                carousel.style.display = "block";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadProfile);
+
+        // Toggle Edit Profile Section
+        function toggleEdit() {
+            document.querySelector(".profile-card").style.display = "none";
+            document.querySelector(".edit-section").style.display = "block";
+
+            // Load existing values into edit fields
+            document.getElementById("editName").value = document.getElementById("profileName").textContent;
+            document.getElementById("editPhone").value = document.getElementById("profilePhone").textContent;
+        }
+
+        // Save Profile Data
+        function saveProfile() {
+            let name = document.getElementById("editName").value;
+            let phone = document.getElementById("editPhone").value;
+
+            if (name && phone) {
+                // Update Profile Card
+                document.getElementById("profileName").textContent = name;
+                document.getElementById("profilePhone").textContent = phone;
+
+                // Save to Local Storage
+                localStorage.setItem("profileName", name);
+                localStorage.setItem("profilePhone", phone);
+                localStorage.setItem("profileService", "Prepaid");
+
+                // Show profile card & hide edit section
+                document.querySelector(".profile-card").style.display = "block";
+                document.querySelector(".edit-section").style.display = "none";
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+
+        // Profile Picture Upload
+        document.getElementById("uploadPic").addEventListener("change", function (event) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("editProfilePic").src = e.target.result;
+                document.getElementById("profilePic").src = e.target.result;
+                localStorage.setItem("profilePic", e.target.result);
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+
+        // Load Profile from Local Storage
+        function loadProfile() {
+            if (localStorage.getItem("profileName")) {
+                document.getElementById("profileName").textContent = localStorage.getItem("profileName");
+            }
+
+            document.getElementById("profileService").textContent = "Prepaid"; // Always set to Prepaid
+
+            if (localStorage.getItem("profilePhone")) {
+                document.getElementById("profilePhone").textContent = localStorage.getItem("profilePhone");
+            }
+
+            if (localStorage.getItem("profilePic")) {
+                document.getElementById("profilePic").src = localStorage.getItem("profilePic");
+                document.getElementById("editProfilePic").src = localStorage.getItem("profilePic");
+            }
+        }
+
+        let selectedPlan = null;
+        let selectedPlanBenefits = "";
+
+        function showRechargeSection() {
+            document.getElementById("heroCarousel").style.display = "none";
+            document.getElementById("quickpay").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("rechargeSection").style.display = "block";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "none"; // Hide transactions page
+            document.getElementById("profileSection").style.display = "none";
+            document.getElementById("helpSection").style.display = "none";
+        }
+
+        function selectPlan(amount, element) {
+            selectedPlan = amount;
+
+            // Define benefits based on selected plan
+            if (amount === 199) {
+                selectedPlanBenefits = "28 Days | 1GB/Day | Unlimited Calls";
+            } else if (amount === 599) {
+                selectedPlanBenefits = "84 Days | 2GB/Day | Unlimited Calls";
+            } else if (amount === 859) {
+                selectedPlanBenefits = "365 Days | 2GB/Day | Unlimited Calls";
+            }
+
+            // Remove "selected" class from all cards
+            let planCards = document.querySelectorAll(".plan-card");
+            planCards.forEach(card => card.classList.remove("selected"));
+
+            // Add "selected" class to the clicked card
+            element.classList.add("selected");
+
+            alert("Selected Plan: ₹" + amount);
+        }
+
+        function proceedToPayment() {
+            if (!selectedPlan) {
+                alert("Please select a plan before proceeding.");
+                return;
+            }
+
+            // Show the payment summary
+            document.getElementById("paymentMobile").innerText = document.getElementById("mobileNumber").value;
+            document.getElementById("paymentAmount").innerText = selectedPlan;
+            document.getElementById("paymentBenefits").innerText = selectedPlanBenefits;
+
+            // Hide recharge section & Show payment section
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "block";
+        }
+
+        function confirmPayment() {
+            document.getElementById("loader").style.display = "block";
+            document.getElementById("paymentSuccess").style.display = "none";
+
+            setTimeout(function () {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("paymentSuccess").style.display = "block";
+                alert("Recharge Successful: ₹" + selectedPlan + " for mobile: " + document.getElementById("mobileNumber").value);
+
+                // Save Transaction
+                saveTransaction();
+
+                // After success, go back to home
+            }, 2000);
+        }
+
+        function saveTransaction() {
+            let mobileNumber = document.getElementById("mobileNumber").value;
+            let transaction = {
+                mobile: mobileNumber,
+                amount: selectedPlan,
+                benefits: selectedPlanBenefits,
+                date: new Date().toLocaleString()
+            };
+
+            // Get existing transactions
+            let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+            // Add new transaction
+            transactions.unshift(transaction); // Add to the top of the list
+
+            // Save back to local storage
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+        }
+
+        function showTransactions() {
+            document.getElementById("heroCarousel").style.display = "none";
+            document.getElementById("quickpay").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "block";
+
+            let transactionList = document.getElementById("transactionList");
+            let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+
+            if (transactions.length === 0) {
+                transactionList.innerHTML = "<p>No recent transactions.</p>";
+                return;
+            }
+
+            transactionList.innerHTML = transactions
+                .map(t => `
+                <div class="transaction-item">
+                    <p><strong>Mobile:</strong> ${t.mobile}</p>
+                    <p><strong>Amount:</strong> ₹${t.amount}</p>
+                    <p><strong>Benefits:</strong> ${t.benefits}</p>
+                    <p><strong>Date:</strong> ${t.date}</p>
+                    <hr>
+                </div>
+            `).join("");
+        }
+
+
+
+        function showHelpSection() {
+            document.getElementById("heroCarousel").style.display = "none";
+            document.getElementById("quickpay").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "none";
+            document.getElementById("helpSection").style.display = "block";
+            document.getElementById("profileSection").style.display = "none";
+        }
+
+        function goHome() {
+            document.getElementById("profileSection").style.display = "none";
+            document.getElementById("quickpay").style.display = "block";
+            document.querySelector(".recommended-section").style.display = "block";
+            document.getElementById("heroCarousel").style.display = "block";
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "none";
+            document.getElementById("helpSection").style.display = "none"; // Hide Help Section
+            document.getElementById("buyNewConnectionPage").style.display = "none"
+        }
+
+        // Show Prepaid Plans Section
+        function showPrepaidPlans() {
+            document.getElementById("heroCarousel").style.display = "none";
+            document.getElementById("quickpay").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("prepaidPlansSection").style.display = "block";
+
+
+        }
+
+        // Select Plan Function
+        function selectPlan(amount, benefits, element) {
+            selectedPlan = amount;
+            selectedPlanBenefits = benefits;
+
+            // Remove "selected" class from all cards
+            let planCards = document.querySelectorAll(".plan-card");
+            planCards.forEach(card => card.classList.remove("selected"));
+
+            // Add "selected" class to the clicked card
+            element.classList.add("selected");
+
+            alert("Selected Plan: ₹" + amount);
+        }
+
+        // Proceed to Payment Page
+        function proceedToPayment() {
+            if (!selectedPlan) {
+                alert("Please select a plan before proceeding.");
+                return;
+            }
+
+            // Show payment details
+            document.getElementById("paymentMobile").innerText = document.getElementById("mobileNumber").value;
+            document.getElementById("paymentAmount").innerText = selectedPlan;
+            document.getElementById("paymentBenefits").innerText = selectedPlanBenefits;
+
+            // Hide plans section & Show payment section
+            document.getElementById("prepaidPlansSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "block";
+        }
+
+
+        function goHome() {
+            // Hide all sections
+            document.getElementById("profileSection").style.display = "none";
+            document.getElementById("buyNewConnectionPage").style.display = "none"; // Hide Buy New Connection page
+            document.getElementById("requestDetails").style.display = "none"; // Hide Request Details
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "none";
+            document.getElementById("helpSection").style.display = "none";
+            document.getElementById("prepaidPlansSection").style.display = "none";
+
+            // Show only the main sections
+            document.getElementById("heroCarousel").style.display = "block";
+            document.getElementById("quickpay").style.display = "block";
+            document.querySelector(".recommended-section").style.display = "block";
+        }
+
+
+    </script>
+
+
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Chart Configurations for Clean UI
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { display: false } }
+        };
+
+        // Daily Data Usage Chart
+        new Chart(document.getElementById('dailyDataUsageChart'), {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [1.5, 2, 2.2, 1.8, 3, 2.5, 2.8],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                    fill: true
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Data Trends Chart
+        new Chart(document.getElementById('dataTrendsChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [{ data: [10, 12, 15, 18], backgroundColor: '#0d6efd' }]
+            },
+            options: chartOptions
+        });
+
+        // Most Used Plans Chart
+        new Chart(document.getElementById('mostUsedPlansChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['₹199', '₹299', '₹399'],
+                datasets: [{ data: [40, 35, 25], backgroundColor: ['#dc3545', '#0d6efd', '#198754'] }]
+            },
+            options: chartOptions
+        });
+
+        // Peak Usage Hours Chart
+        new Chart(document.getElementById('peakUsageChart'), {
+            type: 'bar',
+            data: {
+                labels: ['6AM', '9AM', '12PM', '3PM', '6PM', '9PM'],
+                datasets: [{ data: [0.5, 1.2, 1.8, 2.1, 3.5, 4], backgroundColor: '#ffc107' }]
+            },
+            options: chartOptions
+        });
+
+        // Recharge Frequency Chart
+        new Chart(document.getElementById('rechargeFrequencyChart'), {
+            type: 'bar',
+            data: {
+                labels: ['1-2 Times/Month', '3-5 Times/Month', '6+ Times/Month'],
+                datasets: [{ data: [50, 35, 15], backgroundColor: '#6c757d' }]
+            },
+            options: chartOptions
+        });
+
+        // Payment Methods Chart
+        new Chart(document.getElementById('paymentMethodChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Credit/Debit', 'UPI', 'Net Banking', 'Wallet'],
+                datasets: [{ data: [45, 30, 15, 10], backgroundColor: ['#dc3545', '#0d6efd', '#198754', '#ffc107'] }]
+            },
+            options: chartOptions
+        });
+
+
+
+        // Function to show the "Buy New Connection" page and hide other sections
+        function goToBuyNewConnection() {
+            
+            
+
+            // Show the Buy New Connection page
+            document.getElementById("buyNewConnectionPage").style.display = "block";
+            document.getElementById("prepaidPlansSection").style.display = "none";
+
+            document.getElementById("heroCarousel").style.display = "none";
+            document.getElementById("quickpay").style.display = "none";
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("rechargeSection").style.display = "none";
+            document.getElementById("paymentSection").style.display = "none";
+            document.getElementById("transactionSection").style.display = "none"; // Hide transactions page
+            document.getElementById("profileSection").style.display = "none";
+            document.getElementById("helpSection").style.display = "none";
+        }
+
+
+
+
+        document.getElementById("newConnectionForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            let customerName = document.getElementById("customerName").value;
+            let mobile = document.getElementById("mobileNumber").value;
+            let aadhaarFile = document.getElementById("aadhaarUpload").files[0];
+
+            if (!/^\d{10}$/.test(mobile)) {
+                alert("Please enter a valid 10-digit mobile number!");
+                return;
+            }
+
+            if (!aadhaarFile) {
+                alert("Please upload your Aadhaar card!");
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function (event) {
+                let aadhaarData = event.target.result;
+
+                let newRequest = { mobile, customerName, aadhaarData, status: "Pending" };
+
+                let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+                kycRequests.push(newRequest);
+                localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
+
+                alert("Your request has been submitted successfully! MobiComm will contact you for KYC.");
+            };
+            reader.readAsDataURL(aadhaarFile);
+
+            this.reset();
+        });
+
+        function viewRequest() {
+            let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+
+            if (kycRequests.length === 0) {
+                alert("No KYC request found!");
+                return;
+            }
+
+            let latestRequest = kycRequests[kycRequests.length - 1];
+
+            // Toggle the visibility of the request details
+            let requestDetailsSection = document.getElementById("requestDetails");
+            if (requestDetailsSection.style.display === "block") {
+                requestDetailsSection.style.display = "none";
+            } else {
+                // Show request details
+                document.getElementById("reqName").innerText = latestRequest.customerName;
+                document.getElementById("reqMobile").innerText = latestRequest.mobile;
+                document.getElementById("reqStatus").innerText = latestRequest.status;
+                document.getElementById("reqStatus").className = "status-" + latestRequest.status.toLowerCase();
+                document.getElementById("reqAadhaar").src = latestRequest.aadhaarData;
+                document.getElementById("reqAadhaar").style.display = "block";
+                requestDetailsSection.style.display = "block";
+            }
+
+            if (latestRequest.status === "Approved") {
+                alert("Please login to MobiComm for further updates.");
+            }
+        }
+
+
+        function handleRecharge(amount, benefits) {
+            selectedPlan = amount;
+            selectedPlanBenefits = benefits;
+
+            // Show payment summary
+            document.getElementById("paymentMobile").innerText = document.getElementById("mobileNumber").value;
+            document.getElementById("paymentAmount").innerText = selectedPlan;
+            document.getElementById("paymentBenefits").innerText = selectedPlanBenefits;
+
+            // Hide previous payment success message
+            document.getElementById("paymentSuccess").style.display = "none";
+
+            // Hide recommended section and show payment page
+            document.querySelector(".recommended-section").style.display = "none";
+            document.getElementById("paymentSection").style.display = "block";
+        }
+
+
+        function confirmPayment() {
+            document.getElementById("loader").style.display = "block";
+            document.getElementById("paymentSuccess").style.display = "none"; // Hide success message initially
+
+            setTimeout(function () {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("paymentSuccess").style.display = "block";
+
+                alert("Recharge Successful: ₹" + selectedPlan + " for mobile: " + document.getElementById("mobileNumber").value);
+
+                // Save Transaction
+                saveTransaction();
+
+                // Wait 2 seconds before hiding the success message and redirecting
+                setTimeout(function () {
+                    document.getElementById("paymentSuccess").style.display = "none"; // Hide success message
+                    goHome(); // Redirect to home
+                }, 2000);
+            }, 2000);
+        }
+
+
+        // Save the transaction to local storage
+        function saveTransaction() {
+            let mobileNumber = document.getElementById("mobileNumber").value;
+            let transaction = {
+                mobile: mobileNumber,
+                amount: selectedPlan,
+                benefits: selectedPlanBenefits,
+                date: new Date().toLocaleString()
+            };
+
+            let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
+            transactions.unshift(transaction); // Add new transaction to top
+            localStorage.setItem("transactions", JSON.stringify(transactions));
+        }
+
+        function clearTransactionHistory() {
+            let confirmDelete = confirm("Are you sure you want to clear all transaction history?");
+            if (confirmDelete) {
+                localStorage.removeItem("transactions"); // Remove transaction data
+                document.getElementById("transactionList").innerHTML = "<p>No recent transactions.</p>"; // Update UI
+                alert("Transaction history cleared!");
+            }
+        }
+
+    </script>
+</body>
+
+</html>

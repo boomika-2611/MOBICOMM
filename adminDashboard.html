@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobiComm - Business Recharge Solutions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Global Styles */
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+        }
+
+        /* Branding */
+        .mobi {
+            color: #444;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .comm {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 30px;
+        }
+
+        .tagline {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            letter-spacing: 1px;
+            display: block;
+            margin-top: 2px;
+        }
+
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 600;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            color: #d32f2f !important;
+        }
+
+        /* Card Styles */
+        .card {
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            font-weight: bold;
+            text-align: center;
+            background: #900c3f;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .btn-action {
+            margin: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 2px solid #e0e0e0;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: #900c3f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Admin KYC Section */
+        .admin-kyc {
+            max-width: 1100px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .admin-kyc h2 {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Clear Data Button */
+        .admin-kyc .clear-btn {
+            float: right;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            font-weight: bold;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            margin-bottom: 15px;
+        }
+
+        .admin-kyc .clear-btn:hover {
+            background-color: #b22222;
+        }
+
+        /* Table Styling */
+        .admin-kyc .table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .admin-kyc .table th {
+            background: #333;
+            color: white;
+        }
+
+        /* Status Badges */
+        .admin-kyc .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .admin-kyc .approved {
+            background-color: #d4edda;
+            color: green;
+        }
+
+        .admin-kyc .rejected {
+            background-color: #f8d7da;
+            color: red;
+        }
+
+
+        /* Profile Card */
+
+        .profile-card {
+            margin-top: 50px;
+            background: white;
+            margin-left: 250px;
+            max-width: 700px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .welcome-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #900c3f;
+        }
+
+        .profile-details {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .profile-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .profile-value {
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .btn-edit {
+            background: #900c3f;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 150px;
+            display: block;
+            margin: 30px auto 0;
+        }
+
+        .btn-edit:hover {
+            background: #750029;
+        }
+
+        .edit-section {
+            display: none;
+        }
+
+        /* Icons styling */
+        .profile-icon {
+            color: #900c3f;
+            margin-right: 10px;
+        }
+
+        /* Edit Profile Styling */
+        .edit-profile-card {
+
+            margin-left: 250px;
+            max-width: 700px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-profile-card input {
+            border-radius: 8px;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .edit-profile-card label {
+            font-weight: 600;
+        }
+
+        /* Hide Sections Initially */
+        #adminProfile {
+            display: none;
+        }
+
+        
+ .footer {
+    background: #f8f9fa;
+    padding: 40px 0;
+    text-align: left;
+    border-top: 2px solid #e0e0e0;
+}
+
+.footer h5 {
+    color: #900c3f;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer p,
+.footer ul {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer ul li {
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    text-decoration: none;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-icon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    color: #750029;
+}
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="loadHome()">
+                <span class="fw-bold text-dark">MOBI</span><span class="fw-bold text-danger"> COMM</span>
+                <span class="tagline">Prepaid | Recharge</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" onclick="loadHome()">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="loadPrepaidPlans()">Prepaid Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="loadUserManagement()">User Management</a></li>
+
+
+                    <!-- Role Dropdown with Admin & Subscribers -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
+                            data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i> Account
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                            <li><a class="dropdown-item" href="#" onclick="loadAdminProfile()"><i
+                                        class="fas fa-user"></i>Profile</a>
+                            </li>
+                            <li><a class="dropdown-item" onclick="loadPrepaidPlans()" href="#"><i
+                                        class="fas fa-user-friends"></i>view Plans</a></li>
+                            <li><a class="dropdown-item" onclick="loadUserManagement()" href="#"><i
+                                        class="fas fa-wallet"></i> User Management</a></li>
+                            <li><a class="dropdown-item" onclick="loadKYC()" href="#"><i class="fas fa-wallet"></i> KYC
+                                    Banking</a></li>
+                            <li><a class="dropdown-item" href="index.html"><i
+                                        class="fas fa-question-circle"></i>Logout</a></li>
+
+                        </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div id="content">
+        <!-- Home Page Content -->
+        <div id="home">
+            <!-- Dashboard Overview -->
+            <div class="container mt-5">
+                <h2 class="text-center mb-4">Admin Dashboard</h2>
+                <div class="row">
+                    <!-- Total Users -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-users card-icon"></i>
+                            <h5 class="mt-3">Total Users</h5>
+                            <h2>1,230</h2>
+                        </div>
+                    </div>
+                    <!-- Active Users -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-user-check card-icon"></i>
+                            <h5 class="mt-3">Active Users</h5>
+                            <h2>900</h2>
+                        </div>
+                    </div>
+                    <!-- Most Used Plan -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-chart-line card-icon"></i>
+                            <h5 class="mt-3">Most Used Plan</h5>
+                            <h2>₹299 Plan</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Most Used Popular Plan, Data Plan & Top-Up Plan -->
+                <div class="row mt-4">
+                    <!-- Most Used Popular Plan -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-star card-icon"></i>
+                            <h5 class="mt-3">Most Used Validity Plan</h5>
+                            <h2>₹599 Plan</h2>
+                            <p>84 Days | 2GB/Day | Unlimited Calls</p>
+                        </div>
+                    </div>
+                    <!-- Most Used Data Plan -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-wifi card-icon"></i>
+                            <h5 class="mt-3">Most Used Data Plan</h5>
+                            <h2>₹399 Plan</h2>
+                            <p>56 Days | 3GB/Day | High-Speed Data</p>
+                        </div>
+                    </div>
+                    <!-- Most Used Top-Up Plan -->
+                    <div class="col-md-4">
+                        <div class="card text-center p-4">
+                            <i class="fas fa-money-bill-wave card-icon"></i>
+                            <h5 class="mt-3">Most Used Top-Up Plan</h5>
+                            <h2>₹99 Top-Up</h2>
+                            <p>Talktime: ₹81.75 | No Expiry</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prepaid Plans Content -->
+       
+        <div id="prepaidPlans" class="container mt-5">
+            <h2 class="text-center mb-4">Manage Prepaid Plans</h2>
+            <div class="row">
+                <!-- Popular Plans -->
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header">Popular Plans</div>
+                        <div class="card-body">
+                            <ul class="list-group" id="popularPlans">
+                                <li class="list-group-item">₹299 - 28 Days | 1.5GB/Day
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this)">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                                <li class="list-group-item">₹599 - 84 Days | 2GB/Day
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this)">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+
+                            </ul>
+                            <button class="btn btn-success mt-3 w-100" onclick="openAddModal('popularPlans')">Add New
+                                Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validity Plans -->
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header">Validity Plans</div>
+                        <div class="card-body">
+                            <ul class="list-group" id="validityPlans">
+                                <li class="list-group-item">₹999 - 365 Days | Unlimited Calls
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this)">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                                <li class="list-group-item">₹899 - 345 Days | Unlimited Calls
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this)">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                            </ul>
+                            <button class="btn btn-success mt-3 w-100" onclick="openAddModal('validityPlans')">Add New
+                                Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Plans -->
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header">Data Plans</div>
+                        <div class="card-body">
+                            <ul class="list-group" id="dataPlans">
+                                <li class="list-group-item">₹399 - 56 Days | 3GB/Day
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this, 'dataPlans')">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                                <li class="list-group-item">₹99 - 15 Days | 2GB Data
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this, 'dataPlans')">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                            </ul>
+                            <button class="btn btn-success mt-3 w-100" onclick="openAddModal('dataPlans')">Add New
+                                Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top-Up Plans -->
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-header">Top-Up Plans</div>
+                        <div class="card-body">
+                            <ul class="list-group" id="topUpPlans">
+                                <li class="list-group-item">₹50 Top-Up | Talktime: ₹39.37
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this, 'topUpPlans')">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                                <li class="list-group-item">₹100 Top-Up | Talktime: ₹81.75
+                                    <button class="btn btn-sm btn-warning btn-action"
+                                        onclick="openEditModal(this, 'topUpPlans')">Edit</button>
+                                    <button class="btn btn-sm btn-danger btn-action"
+                                        onclick="openDeleteModal(this)">Delete</button>
+                                </li>
+                            </ul>
+                            <button class="btn btn-success mt-3 w-100" onclick="openAddModal('topUpPlans')">Add New
+                                Plan</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+        <!-- Add/Edit Modal -->
+        <div class="modal fade" id="planModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="planModalTitle">Add/Edit Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label for="planAmount" class="form-label">Amount (₹)</label>
+                            <input type="number" id="planAmount" class="form-control" placeholder="Enter amount">
+                        </div>
+                        <div class="mb-2">
+                            <label for="planValidity" class="form-label">Validity (Days)</label>
+                            <input type="number" id="planValidity" class="form-control" placeholder="Enter validity">
+                        </div>
+                        <div class="mb-2">
+                            <label for="planData" class="form-label">Data (GB/Day)</label>
+                            <input type="text" id="planData" class="form-control"
+                                placeholder="Enter data limit (e.g., 2GB/Day, Unlimited Calls , Talktime)">
+                        </div>
+                        <div class="mt-3">
+                            <strong>Preview:</strong> <span id="planPreview">-</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="savePlanButton">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Plan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this plan?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- //Usermanagement -->
+
+        <div id="userManagement" class="container mt-5" style="display: none;">
+            <h2 class="text-center mb-4">User Management</h2>
+
+            <!-- Search Filters -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <input type="text" id="searchName" class="form-control" placeholder="Search by Customer Name"
+                        onkeyup="filterUsers()">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary w-100" onclick="filterUsers()">Search</button>
+                </div>
+            </div>
+
+            <!-- User List -->
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Mobile Number</th>
+                                <th>Customer Name</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Days Remaining</th>
+                                <th>Notification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTable">
+                            <tr>
+                                <td>9876543210</td>
+                                <td>Boomika Mohan</td>
+                                <td>2025-02-01</td>
+                                <td>2025-04-01</td>
+                                <td class="daysRemaining"></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm me-2" onclick="addNotification(this)">Add
+                                        Notify</button>
+                                    <button class="btn btn-success btn-sm" onclick="generatePDF(this)">Generate
+                                        PDF</button>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7894561230</td>
+                                <td>Hari Priya</td>
+                                <td>2025-01-15</td>
+                                <td>2025-02-15</td>
+                                <td class="daysRemaining"></td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm me-2" onclick="addNotification(this)">Add
+                                        Notify</button>
+                                    <button class="btn btn-success btn-sm" onclick="generatePDF(this)">Generate
+                                        PDF</button>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin KYC Verification Section -->
+        <div class="container">
+            <div id="kycDetails" class="admin-kyc" style="display: none;">
+                <h2>KYC Verification</h2>
+
+                <!-- Clear Data Button -->
+                <button class="clear-btn" onclick="clearKYCData()">Clear Data</button>
+
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>Mobile Number</th>
+                            <th>Customer Name</th>
+                            <th>Aadhar Document</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kycTable">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Admin Profile Section -->
+
+        <!-- Admin Profile Section -->
+        <div id="adminProfile" class="container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <p class="welcome-text">Welcome, <span id="adminName">Admin</span>!</p>
+                    <img id="adminProfilePic" src="https://via.placeholder.com/100" class="profile-image">
+                </div>
+
+                <div class="profile-details">
+                    <p class="profile-label"><i class="fas fa-user profile-icon"></i> Name:</p>
+                    <p class="profile-value" id="displayAdminName">Admin</p>
+
+                    <p class="profile-label"><i class="fas fa-lock profile-icon"></i> Password:</p>
+                    <p class="profile-value">********</p>
+                </div>
+
+                <button class="btn-edit" onclick="toggleEdit()">Edit Profile</button>
+            </div>
+
+            <div class="edit-section mt-3">
+                <div class="edit-profile-card">
+                    <h4 class="text-center mb-3">Edit Profile</h4>
+
+                    <div class="text-center mb-4">
+                        <img id="editAdminProfilePic" src="https://via.placeholder.com/100" class="profile-image">
+                        <input type="file" id="uploadAdminPic" class="form-control mt-2" accept="image/*">
+                    </div>
+
+                    <label class="mt-3">Admin Name</label>
+                    <input type="text" id="editAdminName" class="form-control" placeholder="Enter Admin Name">
+
+                    <label class="mt-3">New Password</label>
+                    <input type="password" id="editAdminPassword" class="form-control" placeholder="Enter New Password">
+
+                    <button class="btn-edit w-100 mt-3" onclick="saveAdminProfile()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <!-- Company Information -->
+                    <div class="col-md-4">
+                        <h5 class="fw-bold">About MobiComm</h5>
+                        <p>MobiComm is a leading telecom recharge and solutions provider, offering seamless connectivity with exclusive offers, secure transactions, and 24/7 customer support.</p>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div class="col-md-2">
+                        <h5 class="fw-bold">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" onclick="loadHome()">Home</a></li>
+                            <li><a href="#" onclick="loadPrepaidPlans()">Prepaid Plans</a></li>
+                            <li><a href="#" onclick="loadUserManagement()">User Management</a></li>
+                            
+                        </ul>
+                    </div>
+    
+                    <!-- Contact Information -->
+                    <div class="col-md-3">
+                        <h5 class="fw-bold">Contact Us</h5>
+                        <p><i class="fas fa-map-marker-alt"></i> MobiComm HQ, Bangalore, India</p>
+                        <p><i class="fas fa-phone"></i> +91 90251 59692</p>
+                        <p><i class="fas fa-envelope"></i> support@mobicomm.com</p>
+                    </div>
+    
+                    <!-- Social Media Links -->
+                    <div class="col-md-3">
+                        <h5 class="fw-bold">Follow Us</h5>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+    
+                <!-- Copyright Section -->
+                <div class="text-center mt-3">
+                    <p>© 2025 MobiComm. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            function loadPrepaidPlans() {
+                document.getElementById("home").style.display = "none";
+                document.getElementById("prepaidPlans").style.display = "block";
+                document.getElementById("userManagement").style.display = "none"; // Hide User Management
+                document.getElementById("kycDetails").style.display = "none";
+            }
+
+            function loadHome() {
+                document.getElementById("home").style.display = "block"; // Show Home
+                document.getElementById("prepaidPlans").style.display = "none"; // Hide Prepaid Plans
+                document.getElementById("userManagement").style.display = "none"; // Hide User Management
+                document.getElementById("kycDetails").style.display = "none"; // ✅ Hide KYC Details "loadKYC()"
+                document.getElementById("admin-kyc").style.display = "none";
+            }
+
+
+
+            let currentPlanType = "";
+            let currentEditElement = null;
+            let currentDeleteElement = null;
+
+            function openAddModal(planType) {
+                currentPlanType = planType;
+                document.getElementById("planModalTitle").textContent = "Add New Plan";
+                document.getElementById("planAmount").value = "";
+                document.getElementById("planValidity").value = "";
+                document.getElementById("planData").value = "";
+                document.getElementById("planPreview").textContent = "-";
+                document.getElementById("savePlanButton").onclick = addPlan;
+                new bootstrap.Modal(document.getElementById("planModal")).show();
+            }
+
+            function openEditModal(button) {
+                currentEditElement = button.closest("li");
+                document.getElementById("planModalTitle").textContent = "Edit Plan";
+
+                let planText = currentEditElement.firstChild.textContent.trim();
+                let [amountPart, detailsPart] = planText.split(" - ");
+                let amount = amountPart.replace("₹", "");
+                let [validity, data] = detailsPart.split(" | ");
+                validity = validity.replace(" Days", "");
+
+                document.getElementById("planAmount").value = amount;
+                document.getElementById("planValidity").value = validity;
+                document.getElementById("planData").value = data;
+                document.getElementById("planPreview").textContent = planText;
+                document.getElementById("savePlanButton").onclick = editPlan;
+                new bootstrap.Modal(document.getElementById("planModal")).show();
+            }
+
+            function openDeleteModal(button) {
+                currentDeleteElement = button.closest("li");
+                new bootstrap.Modal(document.getElementById("deleteModal")).show();
+            }
+
+            function deletePlan() {
+                if (currentDeleteElement) {
+                    currentDeleteElement.remove();
+                    bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+                }
+            }
+
+            function updatePreview() {
+                let amount = document.getElementById("planAmount").value.trim();
+                let validity = document.getElementById("planValidity").value.trim();
+                let data = document.getElementById("planData").value.trim();
+                document.getElementById("planPreview").textContent = `₹${amount} - ${validity} Days | ${data}`;
+            }
+
+            function addPlan() {
+                let previewText = document.getElementById("planPreview").textContent;
+                if (previewText === "-") return alert("Please enter valid plan details.");
+                let ul = document.getElementById(currentPlanType);
+                let li = document.createElement("li");
+                li.className = "list-group-item";
+                li.innerHTML = `${previewText} 
+            <button class="btn btn-sm btn-warning btn-action" onclick="openEditModal(this)">Edit</button> 
+            <button class="btn btn-sm btn-danger btn-action" onclick="openDeleteModal(this)">Delete</button>`;
+                ul.appendChild(li);
+                bootstrap.Modal.getInstance(document.getElementById("planModal")).hide();
+            }
+
+            function editPlan() {
+                currentEditElement.firstChild.textContent = document.getElementById("planPreview").textContent;
+                bootstrap.Modal.getInstance(document.getElementById("planModal")).hide();
+            }
+
+            document.getElementById("confirmDeleteButton").addEventListener("click", deletePlan);
+            document.querySelectorAll("#planAmount, #planValidity, #planData").forEach(input => {
+                input.addEventListener("input", updatePreview);
+            });
+
+
+
+
+
+            function loadUserManagement() {
+                document.getElementById("home").style.display = "none";
+                document.getElementById("prepaidPlans").style.display = "none";
+                document.getElementById("userManagement").style.display = "block";
+                document.getElementById("kycDetails").style.display = "none";
+                calculateDaysRemaining();
+            }
+
+
+            function calculateDaysRemaining() {
+                let rows = document.querySelectorAll("#userTable tr");
+                rows.forEach(row => {
+                    let startDate = new Date(row.cells[2].innerText);
+                    let endDate = new Date(row.cells[3].innerText);
+                    let today = new Date();
+                    let daysLeft = Math.ceil((endDate - today) / (1000 * 60 * 60 * 24));
+
+                    row.cells[4].innerText = daysLeft > 0 ? `${daysLeft} days` : "Expired";
+                });
+            }
+
+            function filterUsers() {
+                let searchName = document.getElementById("searchName").value.toLowerCase();
+                let startDate = document.getElementById("startDate").value;
+                let endDate = document.getElementById("endDate").value;
+                let rows = document.getElementById("userTable").getElementsByTagName("tr");
+
+                for (let row of rows) {
+                    let name = row.cells[1].innerText.toLowerCase();
+                    let start = row.cells[2].innerText;
+                    let end = row.cells[3].innerText;
+
+                    let matchName = searchName === "" || name.includes(searchName);
+                    let matchStartDate = startDate === "" || start >= startDate;
+                    let matchEndDate = endDate === "" || end <= endDate;
+
+                    row.style.display = (matchName && matchStartDate && matchEndDate) ? "" : "none";
+                }
+            }
+
+            function addNotification(button) {
+                let row = button.parentElement.parentElement;
+                let customerName = row.cells[1].innerText;
+                let daysRemaining = row.cells[4].innerText;
+                alert(`Notification added for ${customerName}! Your plan expires in ${daysRemaining}.`);
+            }
+
+            function generatePDF(button) {
+                const { jsPDF } = window.jspdf; // Ensure jsPDF is correctly referenced
+                let doc = new jsPDF();
+
+                // Get the row of the clicked button
+                let row = button.closest("tr");  // Use `closest` for better compatibility
+                if (!row) {
+                    alert("Error: Could not find user row.");
+                    return;
+                }
+
+                let mobileNumber = row.cells[0].innerText;
+                let customerName = row.cells[1].innerText;
+                let startDate = row.cells[2].innerText;
+                let endDate = row.cells[3].innerText;
+                let daysRemaining = row.cells[4].innerText;
+
+                // Set PDF title
+                doc.text("User Details Report", 14, 10);
+
+                // Add user details to the PDF
+                doc.text(`Customer Name: ${customerName}`, 14, 20);
+                doc.text(`Mobile Number: ${mobileNumber}`, 14, 30);
+                doc.text(`Start Date: ${startDate}`, 14, 40);
+                doc.text(`End Date: ${endDate}`, 14, 50);
+                doc.text(`Days Remaining: ${daysRemaining}`, 14, 60);
+
+                // Save PDF with user’s name or mobile number
+                let fileName = customerName.replace(/\s+/g, "_") + "_Details.pdf"; // Remove spaces in filename
+                doc.save(fileName);
+            }
+
+            window.onload = function () {
+                document.getElementById("home").style.display = "block";
+                document.getElementById("prepaidPlans").style.display = "none";
+                document.getElementById("userManagement").style.display = "none";
+                calculateDaysRemaining();
+            };
+
+
+            function loadKYCRequests() {
+                let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+                let kycTable = document.getElementById("kycTable");
+                kycTable.innerHTML = "";
+
+                kycRequests.forEach((request, index) => {
+                    let row = `<tr>
+                    <td>${request.mobile}</td>
+                    <td>${request.customerName}</td>
+                    <td><a href="${request.aadhaarData}" target="_blank" class="btn btn-sm btn-primary">View PDF</a></td>
+                    <td><span class="status ${request.status.toLowerCase()}">${request.status}</span></td>
+                    <td>
+                        <button class="btn btn-success btn-sm me-2" onclick="approveKYC(${index})">Approve</button>
+                        <button class="btn btn-danger btn-sm" onclick="rejectKYC(${index})">Reject</button>
+                    </td>
+                </tr>`;
+                    kycTable.innerHTML += row;
+                });
+            }
+
+            function approveKYC(index) {
+                let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+                kycRequests[index].status = "Approved";
+                localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
+                loadKYCRequests();
+            }
+
+            function rejectKYC(index) {
+                let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+                kycRequests[index].status = "Rejected";
+                localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
+                loadKYCRequests();
+            }
+
+            // Function to clear local storage and refresh table
+            function clearKYCData() {
+                if (confirm("Are you sure you want to clear all KYC data?")) {
+                    localStorage.removeItem("kycRequests");
+                    loadKYCRequests(); // Refresh table
+                    alert("All KYC data has been cleared!");
+                }
+            }
+
+
+
+            window.onload = function () {
+                document.getElementById("home").style.display = "block";  // Show Home
+                document.getElementById("prepaidPlans").style.display = "none";  // Hide Prepaid Plans
+                document.getElementById("userManagement").style.display = "none";  // Hide User Management
+                document.getElementById("kycDetails").style.display = "none";  // ✅ Hide KYC at the start
+                calculateDaysRemaining();
+            };
+
+            function loadKYC() {
+                document.getElementById("home").style.display = "none";  // Hide Home
+                document.getElementById("prepaidPlans").style.display = "none";  // Hide Prepaid Plans
+                document.getElementById("userManagement").style.display = "none";  // Hide User Management
+                document.getElementById("kycDetails").style.display = "block";  // ✅ Show KYC
+                loadKYCRequests();  // Load KYC data
+            }
+
+
+            // Function to show only the Admin Profile and hide all other sections
+            function loadHome() {
+                // Hide all other sections
+                document.getElementById("home").style.display = "block";
+                document.getElementById("prepaidPlans").style.display = "none";
+                document.getElementById("userManagement").style.display = "none";
+                document.getElementById("kycDetails").style.display = "none";
+
+                // Show the Admin Profile section
+                document.getElementById("adminProfile").style.display = "none";
+            }
+
+            // Function to load the Admin Profile section
+            function loadAdminProfile() {
+                // Hide all other sections
+                document.getElementById("home").style.display = "none";
+                document.getElementById("prepaidPlans").style.display = "none";
+                document.getElementById("userManagement").style.display = "none";
+                document.getElementById("kycDetails").style.display = "none";
+
+                // Show the Admin Profile section
+                document.getElementById("adminProfile").style.display = "block";
+                document.querySelector(".profile-card").style.display = "block";  // Show the profile card
+                document.querySelector(".edit-section").style.display = "none";  // Hide the edit section
+            }
+
+            // Function to toggle between profile view and edit view
+            function toggleEdit() {
+                document.querySelector(".profile-card").style.display = "none";  // Hide profile card
+                document.querySelector(".edit-section").style.display = "block";  // Show edit section
+
+                // Populate the edit form with the current profile data
+                document.getElementById("editAdminName").value = document.getElementById("adminName").textContent;
+            }
+
+            // Function to save the admin profile after editing
+            function saveAdminProfile() {
+                let name = document.getElementById("editAdminName").value;
+                let password = document.getElementById("editAdminPassword").value;
+
+                if (name && password) {
+                    // Update the profile with the new data
+                    document.getElementById("adminName").textContent = name;
+                    document.getElementById("displayAdminName").textContent = name;
+
+                    // Save the data to localStorage
+                    localStorage.setItem("adminName", name);
+                    localStorage.setItem("adminPassword", password);
+
+                    alert("Profile Updated Successfully!");
+
+                    // Switch back to the profile card view
+                    document.querySelector(".profile-card").style.display = "block";
+                    document.querySelector(".edit-section").style.display = "none";
+                } else {
+                    alert("Please fill in all fields.");
+                }
+            }
+
+            // Handle the profile picture upload
+            document.getElementById("uploadAdminPic").addEventListener("change", function (event) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("editAdminProfilePic").src = e.target.result;
+                    document.getElementById("adminProfilePic").src = e.target.result;
+                    localStorage.setItem("adminProfilePic", e.target.result); // Save the image to localStorage
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            });
+
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+
+</html>
