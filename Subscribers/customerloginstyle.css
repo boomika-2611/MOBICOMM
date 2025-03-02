@@ -1,0 +1,78 @@
+body {
+    background: linear-gradient(135deg, #c70039, #900c3f);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+}
+
+.login-container {
+    max-width: 450px;
+    margin: 100px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.login-container h3 {
+    font-weight: bold;
+    color: #900c3f;
+}
+
+.btn-login {
+    background: linear-gradient(90deg, #c70039, #900c3f);
+    color: white;
+    border-radius: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #900c3f, #c70039);
+}
+
+.otp-input-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    gap: 10px;
+    display: none;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    border: 2px solid #900c3f;
+    border-radius: 8px;
+}
+
+#resendOTP {
+    cursor: pointer;
+    color: #c70039;
+    font-size: 14px;
+    display: none;
+    margin-top: 15px;
+}
+
+#enterOtpText {
+    display: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #900c3f;
+    margin-top: 15px;
+}
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+}
+
+.toast {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}

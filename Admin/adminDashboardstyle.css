@@ -1,0 +1,508 @@
+/* Global Styles */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Branding */
+.mobi {
+    color: #444;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.comm {
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.tagline {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 2px;
+}
+
+
+/* Navbar */
+/* Navbar */
+.navbar {
+    background: white;
+    padding: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.nav-link {
+    color: #333 !important;
+    font-weight: 600;
+    padding: 10px 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #d32f2f !important;
+}
+
+/* Highlight Active Page in Navbar */
+.navbar-nav .nav-item .nav-link.active {
+    color: #d32f2f !important;
+    font-weight: bold;
+    border-bottom: 2px solid #d32f2f;
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Remove default highlight on page load */
+.navbar-nav .nav-item .nav-link {
+    border-bottom: none;
+    font-weight: bold;
+    color: inherit;
+    font-weight: 600;
+}
+
+/* Ensure no highlight on refresh */
+.navbar-nav .nav-item .nav-link.clicked {
+    color: #d32f2f !important;
+    font-weight: bold;
+    border-bottom: 2px solid #d32f2f;
+}
+
+/* Sections */
+section {
+    transform: translateY(0);
+}
+
+section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+.dropdown-menu {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.dropdown-item {
+    color: #333;
+    font-weight: 500;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+/* Card Styles */
+.card {
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    font-weight: bold;
+    text-align: center;
+    background: #900c3f;
+    color: white;
+    border-radius: 10px 10px 0 0;
+    padding: 12px;
+    font-size: 1.1rem;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+.plan-info {
+    flex-grow: 1;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    min-width: 60px;
+}
+
+.modal-header {
+    background: #900c3f;
+    color: white;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.btn-close {
+    background-color: white;
+}
+
+/* Footer */
+.footer {
+    background: #f8f9fa;
+    padding: 30px;
+    text-align: center;
+    border-top: 2px solid #e0e0e0;
+    margin-top: 50px;
+}
+
+.footer a {
+    color: #900c3f;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Admin KYC Section */
+.admin-kyc {
+    max-width: 1100px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.admin-kyc h2 {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Clear Data Button */
+.admin-kyc .clear-btn {
+    float: right;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 15px;
+}
+
+.admin-kyc .clear-btn:hover {
+    background-color: #b22222;
+}
+
+/* Table Styling */
+.admin-kyc .table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.admin-kyc .table th {
+    background: #333;
+    color: white;
+}
+
+/* Status Badges */
+.admin-kyc .status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.admin-kyc .approved {
+    background-color: #d4edda;
+    color: green;
+}
+
+.admin-kyc .rejected {
+    background-color: #f8d7da;
+    color: red;
+}
+
+
+/* Profile Card */
+
+.profile-card {
+    margin-top: 50px;
+    background: white;
+    margin-left: 250px;
+    max-width: 700px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-card:hover {
+    transform: translateY(-10px);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.welcome-text {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #900c3f;
+}
+
+.profile-details {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.profile-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+}
+
+.profile-value {
+    font-size: 18px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.btn-edit {
+    background: #900c3f;
+    color: white;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 150px;
+    display: block;
+    margin: 30px auto 0;
+}
+
+.btn-edit:hover {
+    background: #750029;
+}
+
+.edit-section {
+    display: none;
+}
+
+/* Icons styling */
+.profile-icon {
+    color: #900c3f;
+    margin-right: 10px;
+}
+
+/* Edit Profile Styling */
+.edit-profile-card {
+
+    margin-left: 250px;
+    max-width: 700px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-card input {
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.edit-profile-card label {
+    font-weight: 600;
+}
+
+/* Hide Sections Initially */
+#adminProfile {
+    display: none;
+}
+
+
+.footer {
+    background: #f8f9fa;
+    padding: 40px 0;
+    text-align: left;
+    border-top: 2px solid #e0e0e0;
+}
+
+.footer h5 {
+    color: #900c3f;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer p,
+.footer ul {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer ul li {
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    text-decoration: none;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-icon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    color: #750029;
+}
+
+/* Back to Top Button Styling */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    /* Change color as needed */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+#backToTop:hover {
+    background-color: #777;
+}
+
+.show {
+    display: block !important;
+}
+
+
+.dashboard-container {
+    padding: 20px;
+}
+
+.card {
+    border-radius: 12px;
+    text-align: center;
+    background: #ffffff;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    height: 250px;
+    width: 100%;
+}
+
+.title {
+    font-weight: bold;
+    color: #333;
+}
+
+
+@media (max-width: 768px) {
+    /* Adjust container margins and padding */
+    /* .container {
+        padding: 15px;
+    } */
+
+    /* User Management Table */
+    /* .table {
+        font-size: 14px;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+        text-align: center;
+    }
+
+   
+    .btn {
+        padding: 10px;
+        font-size: 14px;
+    } */
+
+    /* Admin Profile Card */
+    .profile-card,
+    .edit-profile-card {
+        margin-left: 0;
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-image {
+        width: 80px;
+        height: 80px;
+        margin-top: 10px;
+    }
+
+    /* Profile Buttons */
+    .btn-edit {
+        width: 100%;
+    }
+
+}

@@ -4,387 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MobiComm - Business Recharge Solutions</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        body {
-            background-color: #f4f6f9;
-            font-family: 'Poppins', sans-serif;
-            color: #333;
-        }
+    <title>MobiComm</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-        /* Branding */
-        .mobi {
-            color: #444;
-            font-weight: bold;
-            font-size: 30px;
-        }
-
-        .comm {
-            color: #d32f2f;
-            font-weight: bold;
-            font-size: 30px;
-        }
-
-        .tagline {
-            font-size: 14px;
-            font-weight: 500;
-            color: #555;
-            letter-spacing: 1px;
-            display: block;
-            margin-top: 2px;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: white;
-            padding: 15px;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .nav-link {
-            color: #333 !important;
-            font-weight: 600;
-            padding: 10px 15px;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .nav-link:hover {
-            color: #d32f2f !important;
-        }
-
-        .dropdown-menu {
-            background: white;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-
-        .dropdown-item {
-            color: #333;
-            font-weight: 500;
-            padding: 10px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .dropdown-item:hover {
-            background: #f8f9fa;
-        }
-
-        /* Hero Carousel */
-        .carousel-item {
-            background: linear-gradient(90deg, #c70039, #900c3f);
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-            border-radius: 0 0 50px 50px;
-        }
-
-        .carousel-item h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-        }
-
-        .carousel-indicators [data-bs-target] {
-            background-color: white;
-        }
-
-        /* QuickPay Section */
-        .quickpay-container {
-            max-width: 900px;
-            margin: 30px auto;
-        }
-
-        .card {
-            border-radius: 12px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-recharge {
-            background: linear-gradient(90deg, #c70039, #900c3f);
-            color: white;
-            border-radius: 25px;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .btn-recharge:hover {
-            transform: scale(1.05);
-        }
-
-        /* Recommended Plans Section */
-        .recommended-section {
-            background: #ffffff;
-            padding: 50px 0;
-            text-align: center;
-        }
-
-        .plan-scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 10px;
-            scroll-behavior: smooth;
-        }
-
-        .plan-scroll-container::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .plan-scroll-container::-webkit-scrollbar-thumb {
-            background: #900c3f;
-            border-radius: 5px;
-        }
-
-        .plan-card {
-            background: #f8f9fa;
-            border-radius: 12px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding: 20px;
-            border: 1px solid #ddd;
-            transition: all 0.3s ease-in-out;
-            min-width: 300px;
-            flex: 0 0 auto;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .plan-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #900c3f;
-        }
-
-        /* Scroll Buttons */
-        .scroll-btn {
-            background: #900c3f;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 1.2rem;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-        }
-
-        .scroll-btn:hover {
-            background: #750029;
-        }
-
-        /* Footer */
-        .footer {
-            background: #f8f9fa;
-            padding: 30px;
-            text-align: center;
-            border-top: 2px solid #e0e0e0;
-            margin-top: 50px;
-        }
-
-        .footer a {
-            color: #900c3f;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-
-        /* Styling for Buy New Connection Page */
-        .buy-new-connection-page {
-            background-color: #f4f6f9;
-            padding: 35px;
-            border-radius: 12px;
-            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            color: #333;
-            max-width: 700px;
-            margin: 50px auto;
-        }
-
-        .buy-new-connection-page h3 {
-            font-weight: bold;
-            color: #900c3f;
-            margin-left: 170px;
-        }
-
-        .buy-new-connection-page .text-muted {
-            color: #777;
-        }
-
-        .buy-new-connection-page .form-control {
-            border-radius: 10px;
-            font-size: 15px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-
-        .buy-new-connection-page .input-label {
-            font-weight: 600;
-            color: #900c3f;
-            text-align: left;
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        .buy-new-connection-page .btn-submit {
-            background: linear-gradient(90deg, #c70039, #900c3f);
-            color: white;
-            border-radius: 30px;
-            transition: all 0.3s ease-in-out;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 12px;
-            margin-top: 10px;
-            width: 100%;
-        }
-
-        .buy-new-connection-page .btn-submit:hover {
-            transform: scale(1.05);
-            background: linear-gradient(90deg, #900c3f, #c70039);
-        }
-
-        .buy-new-connection-page .preview-container {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .buy-new-connection-page .preview-container img {
-            max-width: 120px;
-            max-height: 120px;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-            display: none;
-        }
-
-        .buy-new-connection-page .form-group {
-            margin-bottom: 20px;
-        }
-
-        .buy-new-connection-page .form-group label {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Styling for View Request Button */
-        .btn-view {
-            background-color: #f8f9fa;
-            color: #900c3f;
-            border: 2px solid #900c3f;
-            border-radius: 25px;
-            font-weight: bold;
-            padding: 8px 16px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .btn-view:hover {
-            background-color: #900c3f;
-            color: white;
-        }
-
-        /* Center the request details container */
-        #requestDetails {
-            max-width: 500px;
-            margin: 20px auto;
-            /* Centers the section horizontally */
-            display: none;
-            text-align: center;
-            /* Centers the text content */
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Center the image inside the request details */
-        #requestDetails img {
-            max-width: 100px;
-            max-height: 100px;
-            border: 2px solid #ddd;
-            margin-top: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            /* Ensures image is also centered */
-        }
-
-        /* Status colors */
-        .status-pending {
-            color: #c70039;
-            font-weight: bold;
-        }
-
-        .status-approved {
-            color: green;
-            font-weight: bold;
-        }
-
-        .status-rejected {
-            color: red;
-            font-weight: bold;
-        }
-
-
-        .footer {
-    background: #f8f9fa;
-    padding: 40px 0;
-    text-align: left;
-    border-top: 2px solid #e0e0e0;
-}
-
-.footer h5 {
-    color: #900c3f;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-
-.footer p,
-.footer ul {
-    font-size: 14px;
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
-
-.footer ul {
-    list-style: none;
-}
-
-.footer ul li {
-    margin-bottom: 8px;
-}
-
-.footer ul li a {
-    text-decoration: none;
-    color: #900c3f;
-    transition: 0.3s;
-}
-
-.footer ul li a:hover {
-    text-decoration: underline;
-}
-
-.social-icon {
-    font-size: 20px;
-    margin-right: 15px;
-    color: #900c3f;
-    transition: 0.3s;
-}
-
-.social-icon:hover {
-    color: #750029;
-}
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -431,9 +58,11 @@
                             <i class="fas fa-user-circle"></i> Account
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <li><a class="dropdown-item" href="adminlogin.html"><i class="fas fa-user"></i> Admin</a>
+                            <li><a class="dropdown-item" href="admin/adminlogin.html"><i class="fas fa-user"></i>
+                                    Admin</a>
                             </li>
-                            <li><a class="dropdown-item" href="customerlogin.html"><i class="fas fa-user-friends"></i>
+                            <li><a class="dropdown-item" href="subscribers/customerlogin.html"><i
+                                        class="fas fa-user-friends"></i>
                                     Subscribers</a>
                             </li>
                             <li><a class="dropdown-item" href="#"
@@ -468,55 +97,47 @@
         </div>
     </div>
 
-    <!-- QuickPay Section with ID
-    <div id="quickpay" class="quickpay-container container mt-4">
+    <div id="quickpay" class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow-lg p-4">
                     <h3 class="text-center">QuickPay</h3>
                     <p class="text-center">Enter your mobile number to recharge instantly.</p>
-                    <input type="text" class="form-control mb-3" placeholder="Enter Mobile Number">
-                    <button class="btn btn-recharge w-100">Recharge Now</button>
+                    <input type="text" id="customerMobile" class="form-control mb-3" placeholder="Enter Mobile Number">
+                    <!-- Validation Message -->
+                    <p id="errorMessage" class="error-message"></p>
+                    <button class="btn btn-recharge w-100" onclick="handleRecharge()">Recharge Now</button>
+
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
-    <!-- QuickPay Section -->
-<div id="quickpay" class="quickpay-container container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg p-4">
-                <h3 class="text-center">QuickPay</h3>
-                <p class="text-center">Enter your mobile number to recharge instantly.</p>
-                <input type="text" id="quickPayMobileNumber" class="form-control mb-3" placeholder="Enter Mobile Number">
-                <button class="btn btn-recharge w-100" onclick="askAmount()">Recharge Now</button>
+    <div id="plans" class="container mt-5" style="display: none;">
+        <h3 class="text-center"><button class="btn btn-secondary" onclick="goBackToQuickPay()">Back</button> Select Your
+            Plan</h3>
+        <div class="row" id="planContainer"></div>
+    </div>
+
+    <div id="payment" class="container mt-5" style="display: none;">
+        <h3 class="text-center">
+            <button class="btn btn-secondary" onclick="goBackToPlans()">Back</button> Select Your Payment
+        </h3>
+        <div class="payment-box">
+            <p><strong>Selected Plan:</strong> <span id="selectedPlan">None</span></p>
+            <p><strong>Benefits:</strong> <span id="selectedBenefits">None</span></p>
+            <select id="paymentMethod" class="form-control mb-4">
+                <option value="UPI">UPI</option>
+                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                <option value="Wallet">Wallet</option>
+            </select>
+            <div class="d-flex gap-2">
+                <button class="btn btn-success w-50" onclick="processPayment()">Pay Now</button>
+                <button id="downloadInvoice" class="btn btn-primary w-50" style="display: none;"
+                    onclick="downloadInvoice()">Download Invoice</button>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Hidden Transaction History Section -->
-<div id="transactionSection" class="container mt-4 d-none">
-    <h3 class="text-center mb-3">Transaction Details</h3>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg p-4 text-center">
-                <h5 class="text-success">Payment Successful ✅</h5>
-                <p><strong>Transaction ID:</strong> <span id="txnId"></span></p>
-                <p><strong>Mobile Number:</strong> <span id="txnMobile"></span></p>
-                <p><strong>Amount:</strong> <span id="txnAmount"></span></p>
-                <p><strong>Date:</strong> <span id="txnDate"></span></p>
-                <span class="badge bg-success p-2">Success</span>
-            </div>
-            <button class="btn btn-primary w-100 mt-3" onclick="downloadTransactionPDF()">Download as PDF</button>
-        </div>
-    </div>
-</div>
-
-<!-- Include jsPDF Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
 
     <!-- Recommended Plans Section -->
     <div id="recommended-section" class="recommended-section">
@@ -594,7 +215,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mobi-comm-heading">
                     <!-- <span><span class="mobi">MOBI</span> <span class="comm">COMM</span></span>
-                <span class="tagline">Prepaid | Recharge</span> -->
+            <span class="tagline">Prepaid | Recharge</span> -->
                     Buy New Connection
                 </h3>
                 <button class="btn btn-view" onclick="viewRequest()">View Request</button>
@@ -606,6 +227,7 @@
                 <div class="mb-3">
                     <label for="customerName" class="input-label">Full Name</label>
                     <input type="text" class="form-control" id="customerName" placeholder="Enter Full Name" required>
+                    <small id="nameError" class="text-danger"></small>
                 </div>
 
                 <!-- Mobile Number Input -->
@@ -613,12 +235,16 @@
                     <label for="mobileNumber" class="input-label">Mobile Number</label>
                     <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number"
                         required>
+                    <small id="mobileError" class="text-danger"></small>
+
                 </div>
 
                 <!-- Aadhaar Upload -->
                 <div class="mb-3">
                     <label for="aadhaarUpload" class="input-label">Upload Aadhaar Card</label>
                     <input type="file" class="form-control" id="aadhaarUpload" accept="image/*,.pdf" required>
+                    <small id="aadhaarError" class="text-danger"></small>
+
                     <div class="preview-container">
                         <img id="aadhaarPreview" alt="Aadhaar Preview">
                     </div>
@@ -726,299 +352,71 @@
             </ul>
         </div>
     </div>
-    <!-- !-- Footer --> 
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    <!-- Company Information -->
-                    <div class="col-md-4">
-                        <h5 class="fw-bold">About MobiComm</h5>
-                        <p>MobiComm is a leading telecom recharge and solutions provider, offering seamless connectivity with exclusive offers, secure transactions, and 24/7 customer support.</p>
-                    </div>
-    
-                    <!-- Quick Links -->
-                    <div class="col-md-2">
-                        <h5 class="fw-bold">Quick Links</h5>
-                        <ul class="list-unstyled">
-                            <li><a href="#" onclick="goHome()">Home</a></li>
-                            <li><a href="#" onclick="scrollToSection(event, 'recommended-section')">Prepaid Plans</a></li>
-                            <li><a href="#" onclick="scrollToSection(event, 'quickpay')">QuickPay</a></li>
-                            <li><a href="#" onclick="goToBuyNewConnection()">Buy New Connection</a></li>
-                            <li><a href="#" onclick="showHelpSection()">Help & Support</a></li>
-                        </ul>
-                    </div>
-    
-                    <!-- Contact Information -->
-                    <div class="col-md-3">
-                        <h5 class="fw-bold">Contact Us</h5>
-                        <p><i class="fas fa-map-marker-alt"></i> MobiComm HQ, Bangalore, India</p>
-                        <p><i class="fas fa-phone"></i> +91 90251 59692</p>
-                        <p><i class="fas fa-envelope"></i> support@mobicomm.com</p>
-                    </div>
-    
-                    <!-- Social Media Links -->
-                    <div class="col-md-3">
-                        <h5 class="fw-bold">Follow Us</h5>
-                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-                    </div>
+
+
+    <!-- Back to Top Arrow -->
+    <button id="backToTop" onclick="scrollToTop()">
+        ↑
+    </button>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <!-- Company Information -->
+                <div class="col-md-4">
+                    <h5 class="fw-bold">About MobiComm</h5>
+                    <p>MobiComm is a leading telecom recharge and solutions provider, offering seamless connectivity
+                        with exclusive offers, secure transactions, and 24/7 customer support.</p>
                 </div>
-    
-                <!-- Copyright Section -->
-                <div class="text-center mt-3">
-                    <p>© 2025 MobiComm. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+
+                <!-- Quick Links -->
+                <div class="col-md-2">
+                    <h5 class="fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" onclick="goHome()">Home</a></li>
+                        <li><a href="#" onclick="scrollToSection(event, 'recommended-section')">Prepaid Plans</a></li>
+                        <li><a href="#" onclick="scrollToSection(event, 'quickpay')">QuickPay</a></li>
+                        <li><a href="#" onclick="goToBuyNewConnection()">Buy New Connection</a></li>
+                        <li><a href="#" onclick="showHelpSection()">Help & Support</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="col-md-3">
+                    <h5 class="fw-bold">Contact Us</h5>
+                    <p><i class="fas fa-map-marker-alt"></i> MobiComm HQ, Bangalore, India</p>
+                    <p><i class="fas fa-phone"></i> +91 90251 59692</p>
+                    <p><i class="fas fa-envelope"></i> support@mobicomm.com</p>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="col-md-3">
+                    <h5 class="fw-bold">Follow Us</h5>
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
-        </footer>
 
-    <script>
+            <!-- Copyright Section -->
+            <div class="text-center mt-3">
+                <p>© 2025 MobiComm. All Rights Reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of
+                        Service</a></p>
+            </div>
+        </div>
+    </footer>
 
-        function scrollToSection(event, sectionId) {
-            event.preventDefault();
-            document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
-        }
 
-        function scrollPlans(scrollValue) {
-            const planScroll = document.getElementById("planScroll");
-            planScroll.scrollLeft += scrollValue;
-        }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
-        function showHelpSection() {
-            // Hide other sections
-            document.getElementById("heroCarousel").style.display = "none";
-            document.getElementById("quickpay").style.display = "none";
-            document.querySelector(".recommended-section").style.display = "none";
-
-            // Show the Help Section
-            document.getElementById("helpSection").style.display = "block";
-        }
+    <script src="script.js"></script>
 
 
 
-        // Function to show the recharge modal
-        function showRechargeModal() {
-            var myModal = new bootstrap.Modal(document.getElementById('rechargeModal'), {
-                keyboard: false
-            });
-            myModal.show();
-        }
-
-        // Function to handle QuickPay button click (You can redirect to QuickPay section or display it)
-        function useQuickPay() {
-            // For now, just show an alert
-            alert("Redirecting to QuickPay for instant recharge.");
-            // You can replace the alert with actual QuickPay functionality.
-        }
-
-        // Scroll functionality for the recommended plans section
-        function scrollPlans(scrollValue) {
-            const planScroll = document.getElementById("planScroll");
-            planScroll.scrollLeft += scrollValue;
-        }
-
-        // QuickPay - Ask for Amount
-function askAmount() {
-    let mobileNumber = document.getElementById("quickPayMobileNumber").value.trim(); // Unique ID for QuickPay
-
-    if (mobileNumber === "" || mobileNumber.length < 10) {
-        alert("Please enter a valid 10-digit mobile number.");
-        return;
-    }
-
-    let amount = prompt("Enter the recharge amount:");
-    if (!amount || isNaN(amount) || amount <= 0) {
-        alert("Invalid amount entered!");
-        return;
-    }
-
-    processQuickPay(mobileNumber, amount);
-}
-
-// Process QuickPay Payment
-function processQuickPay(mobileNumber, amount) {
-    let transaction = {
-        id: "TXN" + Math.floor(Math.random() * 1000000),
-        mobile: mobileNumber,
-        amount: "₹" + amount,
-        date: new Date().toLocaleString(),
-        status: "Success"
-    };
-
-    // Store QuickPay transaction separately
-    localStorage.setItem("quickPayTransaction", JSON.stringify(transaction));
-
-    alert(`Recharge of ₹${amount} successful for ${mobileNumber}! Transaction ID: ${transaction.id}`);
-
-    showTransaction();
-}
-
-function showTransaction() {
-    let transaction = JSON.parse(localStorage.getItem("quickPayTransaction"));
-
-    if (!transaction) return;
-
-    let transactionSection = document.getElementById("transactionSection");
-
-    // Ensure the transaction section is visible
-    transactionSection.classList.remove("d-none");
-    transactionSection.style.display = "block"; 
-
-    document.getElementById("txnId").innerText = transaction.id;
-    document.getElementById("txnMobile").innerText = transaction.mobile;
-    document.getElementById("txnAmount").innerText = transaction.amount;
-    document.getElementById("txnDate").innerText = transaction.date;
-}
-
-
-// Download Transaction as PDF
-function downloadTransactionPDF() {
-    let transaction = JSON.parse(localStorage.getItem("quickPayTransaction"));
-
-    if (!transaction) {
-        alert("No transaction available to download.");
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text("Transaction Invoice", 20, 20);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(12);
-    doc.text(`Transaction ID: ${transaction.id}`, 20, 40);
-    doc.text(`Mobile Number: ${transaction.mobile}`, 20, 50);
-    doc.text(`Amount: ${transaction.amount}`, 20, 60);
-    doc.text(`Date: ${transaction.date}`, 20, 70);
-    doc.text(`Status: ${transaction.status}`, 20, 80);
-
-    doc.save("Transaction_Receipt.pdf");
-}
-
-// Ensure QuickPay & KYC Don't Conflict
-window.onload = function () {
-    document.getElementById("transactionSection").classList.add("d-none");
-};
-
-function goHome() {
-    // Hide transaction section completely
-    let transactionSection = document.getElementById("transactionSection");
-    transactionSection.classList.add("d-none"); // Add Bootstrap's d-none class
-    transactionSection.style.display = "none";  // Ensure it's not displayed
-
-    // Hide Buy New Connection & Help sections
-    document.getElementById("buyNewConnectionPage").style.display = "none";
-    document.getElementById("helpSection").style.display = "none";
-
-    // Show main sections
-    document.getElementById("heroCarousel").style.display = "block";
-    document.getElementById("quickpay").style.display = "block";
-    document.querySelector(".recommended-section").style.display = "block";
-
-    // Clear QuickPay input (without affecting Buy New Connection)
-    document.getElementById("quickPayMobileNumber").value = '';
-}
-
-
-
-
-        // Function to show the "Buy New Connection" page and hide other sections
-        function goToBuyNewConnection() {
-            // Hide other sections
-            document.getElementById("heroCarousel").style.display = "none";
-            document.getElementById("quickpay").style.display = "none";
-            document.querySelector(".recommended-section").style.display = "none";
-
-            // Show the Buy New Connection page
-            document.getElementById("buyNewConnectionPage").style.display = "block";
-        }
-
-        // // Function to show the home page (original content)
-        // function goHome() {
-        //     // Hide the "Buy New Connection" page
-        //     document.getElementById("buyNewConnectionPage").style.display = "none";
-        //     document.getElementById("helpSection").style.display = "none";
-
-
-        //     // Show all original sections again
-        //     document.getElementById("heroCarousel").style.display = "block";
-        //     document.getElementById("quickpay").style.display = "block";
-        //     document.querySelector(".recommended-section").style.display = "block";
-        // }
-
-
-        
-        document.getElementById("newConnectionForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            let customerName = document.getElementById("customerName").value;
-            let mobile = document.getElementById("mobileNumber").value;
-            let aadhaarFile = document.getElementById("aadhaarUpload").files[0];
-
-            if (!/^\d{10}$/.test(mobile)) {
-                alert("Please enter a valid 10-digit mobile number!");
-                return;
-            }
-
-            if (!aadhaarFile) {
-                alert("Please upload your Aadhaar card!");
-                return;
-            }
-
-            let reader = new FileReader();
-            reader.onload = function (event) {
-                let aadhaarData = event.target.result;
-
-                let newRequest = { mobile, customerName, aadhaarData, status: "Pending" };
-
-                let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-                kycRequests.push(newRequest);
-                localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
-
-                alert("Your request has been submitted successfully! MobiComm will contact you for KYC.");
-            };
-            reader.readAsDataURL(aadhaarFile);
-
-            this.reset();
-        });
-
-        function viewRequest() {
-            let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-
-            if (kycRequests.length === 0) {
-                alert("No KYC request found!");
-                return;
-            }
-
-            let latestRequest = kycRequests[kycRequests.length - 1];
-
-            // Toggle the visibility of the request details
-            let requestDetailsSection = document.getElementById("requestDetails");
-            if (requestDetailsSection.style.display === "block") {
-                requestDetailsSection.style.display = "none";
-            } else {
-                // Show request details
-                document.getElementById("reqName").innerText = latestRequest.customerName;
-                document.getElementById("reqMobile").innerText = latestRequest.mobile;
-                document.getElementById("reqStatus").innerText = latestRequest.status;
-                document.getElementById("reqStatus").className = "status-" + latestRequest.status.toLowerCase();
-                document.getElementById("reqAadhaar").src = latestRequest.aadhaarData;
-                document.getElementById("reqAadhaar").style.display = "block";
-                requestDetailsSection.style.display = "block";
-            }
-
-            if (latestRequest.status === "Approved") {
-                alert("Please login to MobiComm for further updates.");
-            }
-        }
-
-
-    </script>
 </body>
 
 </html>

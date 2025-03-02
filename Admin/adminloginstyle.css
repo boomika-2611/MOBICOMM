@@ -1,0 +1,36 @@
+body {
+    background-color: #f4f6f9;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login {
+    background: linear-gradient(90deg, #c70039, #900c3f);
+    color: white;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-login:hover {
+    transform: scale(1.05);
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+/* Toast container */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+}

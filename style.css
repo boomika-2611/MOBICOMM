@@ -1,0 +1,567 @@
+/* Global Styles */
+body {
+    background-color: #f4f6f9;
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+}
+
+/* Branding */
+.mobi {
+    color: #444;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.comm {
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.tagline {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    letter-spacing: 1px;
+    display: block;
+    margin-top: 2px;
+}
+
+/* Navbar */
+.navbar {
+    background: white;
+    padding: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.nav-link {
+    color: #333 !important;
+    font-weight: 600;
+    padding: 10px 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+    color: #d32f2f !important;
+}
+
+/* Highlight Active Page in Navbar */
+.navbar-nav .nav-item .nav-link.active {
+    color: #d32f2f !important;
+    font-weight: bold;
+    border-bottom: 2px solid #d32f2f;
+    opacity: 1;
+    font-weight: 600;
+}
+
+/* Remove default highlight on page load */
+.navbar-nav .nav-item .nav-link {
+    border-bottom: none;
+    font-weight: bold;
+    color: inherit;
+    font-weight: 600;
+}
+
+/* Ensure no highlight on refresh */
+.navbar-nav .nav-item .nav-link.clicked {
+    color: #d32f2f !important;
+    font-weight: bold;
+    border-bottom: 2px solid #d32f2f;
+}
+
+/* Sections */
+section {
+    transform: translateY(0);
+}
+
+section.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+.dropdown-menu {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.dropdown-item {
+    color: #333;
+    font-weight: 500;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dropdown-item:hover {
+    background: #f8f9fa;
+}
+
+/* Hero Carousel */
+.carousel-item {
+    background: linear-gradient(90deg, #c70039, #900c3f);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 0 0 50px 50px;
+}
+
+.carousel-item h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: white;
+}
+
+/* QuickPay Section */
+.quickpay-container {
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-recharge {
+    background: linear-gradient(90deg, #c70039, #900c3f);
+    color: white;
+    border-radius: 25px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-recharge:hover {
+    transform: scale(1.05);
+}
+
+/* Recommended Plans Section */
+.recommended-section {
+    background: #ffffff;
+    padding: 50px 0;
+    text-align: center;
+
+}
+
+.plan-scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+}
+
+.plan-scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.plan-scroll-container::-webkit-scrollbar-thumb {
+    background: #900c3f;
+    border-radius: 5px;
+}
+
+.plan-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease-in-out;
+    min-width: 300px;
+    flex: 0 0 auto;
+}
+
+.plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.plan-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #900c3f;
+}
+
+/* Scroll Buttons */
+.scroll-btn {
+    background: #900c3f;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.scroll-btn:hover {
+    background: #750029;
+}
+
+/* Footer */
+.footer {
+    background: #f8f9fa;
+    padding: 30px;
+    text-align: center;
+    border-top: 2px solid #e0e0e0;
+    margin-top: 50px;
+}
+
+.footer a {
+    color: #900c3f;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+
+/* Styling for Buy New Connection Page */
+.buy-new-connection-page {
+    background-color: #f4f6f9;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+    max-width: 700px;
+    margin: 50px auto;
+}
+
+.buy-new-connection-page h3 {
+    font-weight: bold;
+    color: #900c3f;
+    margin-left: 170px;
+}
+
+.buy-new-connection-page .text-muted {
+    color: #777;
+}
+
+.buy-new-connection-page .form-control {
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 12px;
+    margin-bottom: 15px;
+}
+
+.buy-new-connection-page .input-label {
+    font-weight: 600;
+    color: #900c3f;
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.buy-new-connection-page .btn-submit {
+    background: linear-gradient(90deg, #c70039, #900c3f);
+    color: white;
+    border-radius: 30px;
+    transition: all 0.3s ease-in-out;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.buy-new-connection-page .btn-submit:hover {
+    transform: scale(1.05);
+    background: linear-gradient(90deg, #900c3f, #c70039);
+}
+
+.buy-new-connection-page .preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.buy-new-connection-page .preview-container img {
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    display: none;
+}
+
+.buy-new-connection-page .form-group {
+    margin-bottom: 20px;
+}
+
+.buy-new-connection-page .form-group label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Styling for View Request Button */
+.btn-view {
+    background-color: #f8f9fa;
+    color: #900c3f;
+    border: 2px solid #900c3f;
+    border-radius: 25px;
+    font-weight: bold;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-view:hover {
+    background-color: #900c3f;
+    color: white;
+}
+
+/* Center the request details container */
+#requestDetails {
+    max-width: 500px;
+    margin: 20px auto;
+    /* Centers the section horizontally */
+    display: none;
+    text-align: center;
+    /* Centers the text content */
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Center the image inside the request details */
+#requestDetails img {
+    max-width: 100px;
+    max-height: 100px;
+    border: 2px solid #ddd;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    /* Ensures image is also centered */
+}
+
+/* Status colors */
+.status-pending {
+    color: #c70039;
+    font-weight: bold;
+}
+
+.status-approved {
+    color: green;
+    font-weight: bold;
+}
+
+.status-rejected {
+    color: red;
+    font-weight: bold;
+}
+
+
+.footer {
+    background: #f8f9fa;
+    padding: 40px 0;
+    text-align: left;
+    border-top: 2px solid #e0e0e0;
+}
+
+.footer h5 {
+    color: #900c3f;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer p,
+.footer ul {
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer ul li {
+    margin-bottom: 8px;
+}
+
+.footer ul li a {
+    text-decoration: none;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.footer ul li a:hover {
+    text-decoration: underline;
+}
+
+.social-icon {
+    font-size: 20px;
+    margin-right: 15px;
+    color: #900c3f;
+    transition: 0.3s;
+}
+
+.social-icon:hover {
+    color: #750029;
+}
+
+.card {
+    background-color: white;
+    color: black;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #e60000;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #cc0000;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+}
+
+.payment-box {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+
+}
+
+/* Error Message Styling */
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    display: none;
+    /* Initially hidden */
+}
+
+/* Back to Top Button Styling */
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #444;
+    /* Change color as needed */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover Effect */
+#backToTop:hover {
+    background-color: #777;
+}
+
+/* Show button when scrolled */
+.show {
+    display: block !important;
+}
+
+
+/* For screens up to 768px (Tablets & Mobile devices) */
+@media (max-width: 768px) {
+    .buy-new-connection-page {
+        padding: 20px;
+        max-width: 90%;
+        margin: 30px auto;
+    }
+
+    .buy-new-connection-page h3 {
+        font-size: 22px;
+        margin-left: 0;
+        /* Remove left margin for smaller screens */
+        text-align: center;
+    }
+
+    .buy-new-connection-page .form-control {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .buy-new-connection-page .btn-submit {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .btn-view {
+        font-size: 14px;
+        padding: 6px 12px;
+    }
+
+    #requestDetails {
+        max-width: 90%;
+        padding: 10px;
+    }
+
+    #requestDetails img {
+        max-width: 80px;
+        max-height: 80px;
+    }
+}
+
+/* For screens up to 480px (Small mobile devices) */
+@media (max-width: 480px) {
+    .buy-new-connection-page {
+        padding: 15px;
+    }
+
+    .buy-new-connection-page h3 {
+        font-size: 20px;
+    }
+
+    .buy-new-connection-page .form-control {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .buy-new-connection-page .btn-submit {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .btn-view {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
+
+    #requestDetails {
+        padding: 8px;
+    }
+
+    #requestDetails img {
+        max-width: 70px;
+        max-height: 70px;
+    }
+}
