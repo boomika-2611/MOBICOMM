@@ -1,78 +1,132 @@
-
-let allowedNumbers = ["9025159692", "9344863775", "9543530931"];
+const backendUrl = "http://localhost:8083/auth/user"; 
 let generatedOTP = "";
 
-document.getElementById("mobileNumber").addEventListener("input", function () {
-    let mobileInput = document.getElementById("mobileNumber");
-    let mobileNumber = mobileInput.value.trim();
-
-    if (/^\d{10}$/.test(mobileNumber)) {
-        mobileInput.classList.remove("is-invalid");
+// Ensure +91 is always present in the input field
+document.getElementById("mobileNumber").addEventListener("focus", function () {
+    if (!this.value.startsWith("+91")) {
+        this.value = "+91";
     }
 });
 
-document.getElementById("getOtpBtn").addEventListener("click", function () {
+// Prevent user from deleting +91
+document.getElementById("mobileNumber").addEventListener("input", function () {
+    if (!this.value.startsWith("+91")) {
+        this.value = "+91";
+    }
+
+    // Allow only 10 digits after +91
+    let numericPart = this.value.slice(3).replace(/\D/g, ""); // Remove non-numeric chars
+    if (numericPart.length > 10) {
+        numericPart = numericPart.slice(0, 10); // Limit to 10 digits
+    }
+    this.value = "+91" + numericPart;
+
+    if (numericPart.length === 10) {
+        this.classList.remove("is-invalid");
+    }
+});
+
+// Handle OTP request from backend
+document.getElementById("getOtpBtn").addEventListener("click", async function () {
     let mobileInput = document.getElementById("mobileNumber");
     let mobileNumber = mobileInput.value.trim();
 
-    if (!/^\d{10}$/.test(mobileNumber)) {
+    if (mobileNumber.length !== 13) { 
         mobileInput.classList.add("is-invalid");
         return;
     } else {
         mobileInput.classList.remove("is-invalid");
     }
 
-    if (!allowedNumbers.includes(mobileNumber)) {
-        showToast("This mobile number is not registered. Please purchase a new connection to access the platform.");
-        return;
+    try {
+        let response = await fetch(`${backendUrl}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phoneNumber: mobileNumber })
+        });
+
+        let otpData = await response.json();
+        if (!response.ok) {
+            throw new Error(otpData.error || "Failed to get OTP");
+        }
+
+        generatedOTP = otpData.otp; 
+        alert("Your OTP is: " + generatedOTP); 
+
+        document.getElementById("getOtpBtn").style.display = "none";
+        document.getElementById("enterOtpText").style.display = "block";
+        document.getElementById("otpContainer").style.display = "flex";
+        document.getElementById("verifyOtpBtn").style.display = "block";
+        document.getElementById("resendOTP").style.display = "block";
+    } catch (error) {
+        showToast(error.message);
     }
-
-    generateOTP();
-    document.getElementById("getOtpBtn").style.display = "none";
-    document.getElementById("enterOtpText").style.display = "block";
-    document.getElementById("otpContainer").style.display = "flex";
-    document.getElementById("verifyOtpBtn").style.display = "block";
-    document.getElementById("resendOTP").style.display = "block";
 });
 
-function generateOTP() {
-    generatedOTP = Math.floor(1000 + Math.random() * 9000).toString();
-    alert("Your OTP is: " + generatedOTP);
-}
-
+// Handle Resend OTP
 document.getElementById("resendOTP").addEventListener("click", function () {
-    generateOTP();
+    document.getElementById("getOtpBtn").click();
 });
+
 
 const otpInputs = document.querySelectorAll(".otp-input");
+
 otpInputs.forEach((input, index) => {
-    input.addEventListener("input", function () {
-        if (this.value.length === 1 && index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus();
+    input.addEventListener("input", function (event) {
+        let value = event.target.value;
+
+        if (value.length === 1 && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus(); 
         }
     });
 
     input.addEventListener("keydown", function (event) {
         if (event.key === "Backspace" && this.value === "" && index > 0) {
-            otpInputs[index - 1].focus();
+            otpInputs[index - 1].focus(); 
+        }
+    });
+
+    input.addEventListener("paste", function (event) {
+        event.preventDefault();
+        let pasteData = (event.clipboardData || window.clipboardData).getData("text");
+
+        if (/^\d{4}$/.test(pasteData)) { 
+            otpInputs.forEach((inp, i) => {
+                inp.value = pasteData[i] || "";
+            });
+            otpInputs[3].focus(); 
         }
     });
 });
 
-document.getElementById("loginForm").addEventListener("submit", function (event) {
+// Handle OTP verification with backend
+document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault();
-    let enteredOTP = otpInputs[0].value + otpInputs[1].value + otpInputs[2].value + otpInputs[3].value;
+    let mobileNumber = document.getElementById("mobileNumber").value.trim();
+    let enteredOTP = Array.from(document.querySelectorAll(".otp-input")).map(i => i.value).join("");
 
-    if (enteredOTP === generatedOTP) {
-        showToast("Login Successful! Redirecting to Subscribers Dashboard...");
+    try {
+        let response = await fetch(`${backendUrl}/validate-otp`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ phoneNumber: mobileNumber, otp: enteredOTP })
+        });
+
+        let result = await response.json();
+        if (!response.ok) {
+            throw new Error(result.error || "Invalid OTP");
+        }
+
+        showToast("Login Successful! Redirecting...");
         setTimeout(() => {
             window.location.href = "customerDashboard.html";
         }, 2000);
-    } else {
-        showToast("Invalid OTP! Please try again.");
+    } catch (error) {
+        showToast(error.message);
     }
 });
 
+// Show toast messages
 function showToast(message) {
     let toastBody = document.querySelector("#toastMessage .toast-body");
     toastBody.textContent = message;

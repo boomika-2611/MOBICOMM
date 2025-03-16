@@ -21,7 +21,8 @@
         <form id="loginForm">
             <div class="mb-3">
                 <label for="mobileNumber" class="form-label">Enter Mobile Number</label>
-                <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number" required>
+                <input type="text" class="form-control" id="mobileNumber" value="+91" required>
+
                 <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
             </div>
             <button type="button" class="btn btn-login w-100" id="getOtpBtn">Get OTP</button>
@@ -50,9 +51,8 @@
             </div>
         </div>
     </div>
-
+  
     <script src="customerloginscript.js"></script>
-
 </body>
 
 </html>

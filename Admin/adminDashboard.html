@@ -117,233 +117,105 @@
             </div>
         </div>
     </div>
-
-
-
     <!-- Prepaid Plans Content -->
     <div id="prepaidPlans" class="container mt-5" style="display: none;">
         <h2 class="text-center mb-4">Manage Prepaid Plans</h2>
-        <div class="row">
-            <!-- Popular Plans -->
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">Popular Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="popularPlans">
-                            <li class="list-group-item">₹299 - 28 Days | 1.5GB/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹599 - 84 Days | 2GB/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('popularPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Validity Plans -->
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">Validity Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="validityPlans">
-                            <li class="list-group-item">₹999 - 365 Days | Unlimited Calls
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹899 - 345 Days | Unlimited Calls
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('validityPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Data Plans -->
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">Data Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="dataPlans">
-                            <li class="list-group-item">₹399 - 56 Days | 3GB/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this, 'dataPlans')">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹99 - 15 Days | 2GB Data
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this, 'dataPlans')">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('dataPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Top-Up Plans -->
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">Top-Up Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="topupPlans">
-                            <li class="list-group-item">₹50 - 28 Days | Talktime: ₹39.37
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹100 - 30 Days | Talktime: ₹81.75
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('topupPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-            <!-- ISD Plans -->
-
-
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">ISD Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="isdPlans">
-                            <li class="list-group-item">₹50 - 28 Days | Talktime: ₹39.37
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹100 - 30 Days | Talktime: ₹81.75
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('isdPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- COMBO  Plans -->
-
-            <div class="col-md-6 mt-4">
-                <div class="card">
-                    <div class="card-header">Combo/Unlimited Plans</div>
-                    <div class="card-body">
-                        <ul class="list-group" id="comboPlans">
-                            <li class="list-group-item">₹399 - 28 Days | Unlimited Calls + 2GB/Day + 100 SMS/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹799 - 84 Days | Unlimited Calls + 1.5GB/Day + 100 SMS/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                            <li class="list-group-item">₹999 - 365 Days | Unlimited Calls + 2GB/Day + 100 SMS/Day
-                                <button class="btn btn-sm btn-warning btn-action"
-                                    onclick="openEditModal(this)">Edit</button>
-                                <button class="btn btn-sm btn-danger btn-action"
-                                    onclick="openDeleteModal(this)">Delete</button>
-                            </li>
-                        </ul>
-                        <button class="btn btn-success mt-3 w-100" onclick="openAddModal('comboPlans')">Add New
-                            Plan</button>
-                    </div>
-                </div>
-            </div>
-
-
+        <div class="d-flex justify-content-end mb-4">
+            <button class="clear-btn" data-bs-toggle="modal" data-bs-target="#addPlanModal">Add New Plan</button>
         </div>
+        <div class="row" id="plansContainer"></div>
     </div>
 
-
-
-    <!-- Add/Edit Modal -->
-    <div class="modal fade" id="planModal" tabindex="-1" aria-hidden="true">
+    <!-- Add Plan Modal (unchanged) -->
+    <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="planModalTitle">Add/Edit Plan</h5>
+                    <h5 class="modal-title" id="addPlanModalLabel">Add New Plan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-2">
-                        <label for="planAmount" class="form-label">Amount (₹)</label>
-                        <input type="number" id="planAmount" class="form-control" placeholder="Enter amount">
-                    </div>
-                    <div class="mb-2">
-                        <label for="planValidity" class="form-label">Validity (Days)</label>
-                        <input type="number" id="planValidity" class="form-control" placeholder="Enter validity">
-                    </div>
-                    <div class="mb-2">
-                        <label for="planData" class="form-label">Data (GB/Day)</label>
-                        <input type="text" id="planData" class="form-control"
-                            placeholder="Enter data limit (e.g., 2GB/Day, Unlimited Calls , Talktime)">
-                    </div>
-                    <div class="mt-3">
-                        <strong>Preview:</strong> <span id="planPreview">-</span>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="savePlanButton">Save</button>
+                    <form id="addPlanForm">
+                        <div class="mb-3">
+                            <label for="planName" class="form-label">Plan Name</label>
+                            <input type="text" class="form-control" id="planName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="planPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="planPrice" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="validityDays" class="form-label">Validity (Days)</label>
+                            <input type="number" class="form-control" id="validityDays" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dataPerDay" class="form-label">Data Per Day</label>
+                            <input type="text" class="form-control" id="dataPerDay" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label">Category</label>
+                            <select class="form-control" id="category" required>
+                                <option value="POPULAR_PLANS">Popular Plans</option>
+                                <option value="VALIDITY_PLANS">Validity Plans</option>
+                                <option value="DATA_PLANS">Data Plans</option>
+                                <option value="TOP_UP_PLANS">Top-Up Plans</option>
+                                <option value="ISD_PLANS">ISD Plans</option>
+                                <option value="COMBO_UNLIMITED_PLANS">Combo/Unlimited Plans</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Plan</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <!-- Edit Plan Modal (unchanged) -->
+    <div class="modal fade" id="editPlanModal" tabindex="-1" aria-labelledby="editPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Delete Plan</h5>
+                    <h5 class="modal-title" id="editPlanModalLabel">Edit Plan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this plan?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Delete</button>
+                    <form id="editPlanForm">
+                        <input type="hidden" id="editPlanId">
+                        <div class="mb-3">
+                            <label for="editPlanName" class="form-label">Plan Name</label>
+                            <input type="text" class="form-control" id="editPlanName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPlanPrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="editPlanPrice" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editValidityDays" class="form-label">Validity (Days)</label>
+                            <input type="number" class="form-control" id="editValidityDays" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDataPerDay" class="form-label">Data Per Day</label>
+                            <input type="text" class="form-control" id="editDataPerDay" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCategory" class="form-label">Category</label>
+                            <select class="form-control" id="editCategory" required>
+                                <option value="POPULAR_PLANS">Popular Plans</option>
+                                <option value="VALIDITY_PLANS">Validity Plans</option>
+                                <option value="DATA_PLANS">Data Plans</option>
+                                <option value="TOP_UP_PLANS">Top-Up Plans</option>
+                                <option value="ISD_PLANS">ISD Plans</option>
+                                <option value="COMBO_UNLIMITED_PLANS">Combo/Unlimited Plans</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- //Usermanagement -->
-
+    <!-- Modified User Management Section -->
     <div id="userManagement" class="container mt-5" style="display: none;">
         <h2 class="text-center mb-4">User Management</h2>
         <div class="row mb-3">
@@ -358,7 +230,8 @@
                 <input type="date" id="endDate" class="form-control" onchange="filterUsers()">
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary w-100" onclick="filterUsers()">Search</button>
+                <button class="btn btn-primary w-100" onclick="filterUsers()">MobiComm-Users</button>
+                <button class="btn btn-warning w-100 mt-2" onclick="loadExpiringUsers()">Expiring Users</button>
             </div>
         </div>
         <div class="card">
@@ -368,10 +241,10 @@
                         <tr>
                             <th>Mobile Number</th>
                             <th>Customer Name</th>
+                            <th>Email</th> <!-- Added from new code -->
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Days Remaining</th>
-                            <th>Notification</th>
                         </tr>
                     </thead>
                     <tbody id="userTable"></tbody>
@@ -383,7 +256,31 @@
         </div>
     </div>
 
-    <!-- ✅ Bootstrap Modal for Notifications -->
+    <!-- Expiring Users Section (New Addition) -->
+    <div id="expiringUsersSection" class="container mt-5" style="display: none;">
+        <h2 class="text-center mb-4">Expiring Users (Next 3 Days)</h2>
+        <p class="text-center">Click "Notify" to send an email reminder to the user.</p>
+        <div class="card">
+            <div class="card-body table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>End Date</th>
+                            <th>Days Remaining</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expiringUsersTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap Modal for Notifications (Unchanged)  -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -393,7 +290,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modalMessage">
-                    <!-- Message will be updated here dynamically -->
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -404,14 +301,12 @@
 
 
     <!-- Admin KYC Verification Section -->
+    <!-- Admin KYC Verification Section -->
     <div class="container">
         <div id="kycDetails" class="admin-kyc" style="display: none;">
             <h2>KYC Verification</h2>
-
-            <!-- Clear Data Button -->
             <div class="card-body table-responsive">
-                <button class="clear-btn" onclick="clearKYCData()">Clear Data</button>
-
+                <button class="clear-btn" onclick="clearKYCData()">Clear All Data</button>
                 <table class="table table-bordered text-center">
                     <thead>
                         <tr>
@@ -422,61 +317,67 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="kycTable">
-                    </tbody>
+                    <tbody id="kycTable"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Admin Profile Section -->
+    <!-- Notification Modal -->
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Profile Section (Unchanged) -->
     <div id="adminProfile" class="container" style="display: none;">
         <div class="profile-card">
             <div class="profile-header">
                 <p class="welcome-text">Welcome, <span id="adminName">Admin</span>!</p>
                 <img id="adminProfilePic" src="https://via.placeholder.com/100" class="profile-image">
             </div>
-
             <div class="profile-details">
                 <p class="profile-label"><i class="fas fa-user profile-icon"></i> Name:</p>
                 <p class="profile-value" id="displayAdminName">Admin</p>
-
                 <p class="profile-label"><i class="fas fa-envelope profile-icon"></i> Email:</p>
                 <p class="profile-value" id="displayAdminEmail">admin@mobicomm.in</p>
-
                 <p class="profile-label"><i class="fas fa-phone profile-icon"></i> Mobile:</p>
                 <p class="profile-value" id="displayAdminMobile">+1234567890</p>
             </div>
-
             <button class="btn-edit" onclick="toggleEdit()">Edit Profile</button>
         </div>
-
-        <div class="edit-section mt-3">
+        <div class="edit-section mt-3" style="display: none;">
             <div class="edit-profile-card">
                 <h4 class="text-center mb-3">Edit Profile</h4>
-
                 <div class="text-center mb-4">
                     <img id="editAdminProfilePic" src="https://via.placeholder.com/100" class="profile-image">
                     <input type="file" id="uploadAdminPic" class="form-control mt-2" accept="image/*">
                 </div>
-
                 <label class="mt-3">Admin Name</label>
                 <input type="text" id="editAdminName" class="form-control" placeholder="Enter Admin Name">
-
                 <label class="mt-3">Email</label>
                 <input type="email" id="editAdminEmail" class="form-control" placeholder="Enter Email">
-
                 <label class="mt-3">Alternate Mobile</label>
                 <input type="tel" id="editAdminMobile" class="form-control" placeholder="Enter Alternate Mobile">
-
                 <label class="mt-3">New Password</label>
                 <input type="password" id="editAdminPassword" class="form-control" placeholder="Enter New Password">
-
                 <button class="btn-edit w-100 mt-3" onclick="saveAdminProfile()">Save Changes</button>
             </div>
         </div>
     </div>
-
     <!-- Back to Top Arrow -->
     <button id="backToTop" onclick="scrollToTop()">
         ↑

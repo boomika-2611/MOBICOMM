@@ -1,5 +1,4 @@
 
-
 function loadPrepaidPlans() {
     document.getElementById("home").style.display = "none";
     document.getElementById("prepaidPlans").style.display = "block";
@@ -16,6 +15,7 @@ function loadHome() {
     document.getElementById("kycDetails").style.display = "none";
     document.getElementById("admin-kyc").style.display = "none";
     document.getElementById("adminProfile").style.display = "none";
+    document.getElementById("expiringUsersSection").style.display = "none";
 
 }
 
@@ -25,165 +25,331 @@ function loadUserManagement() {
     document.getElementById("prepaidPlans").style.display = "none";
     document.getElementById("userManagement").style.display = "block";
     document.getElementById("kycDetails").style.display = "none";
+    document.getElementById("admin-kyc").style.display = "none";
     document.getElementById("adminProfile").style.display = "none";
-    calculateDaysRemaining();
+    document.getElementById("expiringUsersSection").style.display = "none";
+    fetchUsers(0);
+
+}
+function loadExpiringUsers() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("prepaidPlans").style.display = "none";
+    document.getElementById("userManagement").style.display = "none";
+    document.getElementById("kycDetails").style.display = "none";
+    document.getElementById("adminProfile").style.display = "none";
+    document.getElementById("expiringUsersSection").style.display = "block";
+    fetchExpiringUsers();
+
+
 }
 
+const USER_API_URL = 'http://localhost:8083/admin/users';
 
 
 
-const customerNames = ["Alice Johnson", "Bob Smith", "Charlie Brown", "David White", "Emma Wilson", "Frank Thomas", "Grace Hall", "Henry Adams", "Ivy Carter", "Jack Miller", "Karen Davis", "Leo Rodriguez", "Mia Lopez", "Noah Gonzalez", "Olivia Hernandez", "Peter King", "Quinn Scott", "Rachel Moore", "Samuel Young", "Tina Baker", "Umar Perez", "Victoria Reed", "William Turner", "Xander Morris", "Yasmine Evans", "Zachary Foster", "Amanda Green", "Brandon Carter", "Chloe Nelson", "Daniel Wright"];
 
-const users = customerNames.map((name, index) => ({
-    mobile: `98765432${(index + 1).toString().padStart(2, '0')}`,
-    name,
-    startDate: `2025-01-${((index % 30) + 1).toString().padStart(2, '0')}`,
-    endDate: `2025-03-${((index % 30) + 1).toString().padStart(2, '0')}`,
-}));
+// function loadExpiringUsers() {
+//     showSection('expiringUsersSection');
+//     fetchExpiringUsers();
+// }
 
-let filteredUsers = [...users]; // Store the current filtered users
-let currentPage = 1;
-const rowsPerPage = 10;
-
-function filterUsers() {
-    const searchName = document.getElementById("searchName").value.toLowerCase();
-    const startDateFilter = document.getElementById("startDate").value;
-    const endDateFilter = document.getElementById("endDate").value;
-
-    filteredUsers = users.filter(user => {
-        const matchesName = user.name.toLowerCase().includes(searchName);
-        const matchesStartDate = startDateFilter ? user.startDate >= startDateFilter : true;
-        const matchesEndDate = endDateFilter ? user.endDate <= endDateFilter : true;
-        return matchesName && matchesStartDate && matchesEndDate;
+function showSection(sectionId) {
+    document.querySelectorAll('#content > div').forEach(section => {
+        section.style.display = 'none';
     });
+    document.getElementById(sectionId).style.display = 'block';
 
-    currentPage = 1;
-    displayUsers(currentPage);
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    const activeLink = document.querySelector(`.nav-link[onclick="load${sectionId.charAt(0).toUpperCase() + sectionId.slice(1)}()"]`);
+    if (activeLink) activeLink.classList.add('active');
 }
 
-function displayUsers(page) {
-    document.getElementById("userTable").innerHTML = "";
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedUsers = filteredUsers.slice(start, end);
 
-    paginatedUsers.forEach(user => {
-        let daysLeft = Math.ceil((new Date(user.endDate) - new Date()) / (1000 * 60 * 60 * 24));
-        document.getElementById("userTable").innerHTML += `
+async function fetchUsers(page = 0, size = 5) {
+    try {
+        const response = await fetch(`${USER_API_URL}?page=${page}&size=${size}`);
+        const data = await response.json();
+        renderUsers(data.content);
+        renderPagination(data.totalPages, page);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+}
+
+function renderUsers(users) {
+    const tableBody = document.getElementById('userTable');
+    tableBody.innerHTML = '';
+    users.forEach(user => {
+        const row = `
             <tr>
-                <td>${user.mobile}</td>
-                <td>${user.name}</td>
+                <td>${user.mobileNumber}</td>
+                <td>${user.customerName}</td>
+                <td>${user.email || 'N/A'}</td>
                 <td>${user.startDate}</td>
                 <td>${user.endDate}</td>
-                <td>${daysLeft > 0 ? `${daysLeft} days` : "Expired"}</td>
-                <td>
-                    <button class="btn btn-warning btn-sm me-2" onclick="alert('Notification added for ${user.name}!')">Add Notify</button>
-                    <button class="btn btn-success btn-sm" onclick="generatePDF(this)">Generate PDF</button>
-                </td>
+                <td>${user.daysRemaining}</td>
             </tr>`;
+        tableBody.innerHTML += row;
     });
-
-    displayPagination();
 }
 
-function displayPagination() {
-    document.getElementById("pagination").innerHTML = "";
-    const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
-
-    for (let i = 1; i <= totalPages; i++) {
-        document.getElementById("pagination").innerHTML += `
-            <li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+function renderPagination(totalPages, currentPage) {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    if (totalPages > 1) {
+        pagination.innerHTML += `
+            <li class="page-item ${currentPage === 0 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="fetchUsers(${currentPage - 1})">Previous</a>
+            </li>`;
+        for (let i = 0; i < totalPages; i++) {
+            pagination.innerHTML += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <a class="page-link" href="#" onclick="fetchUsers(${i})">${i + 1}</a>
+                </li>`;
+        }
+        pagination.innerHTML += `
+            <li class="page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" href="#" onclick="fetchUsers(${currentPage + 1})">Next</a>
             </li>`;
     }
 }
 
-function changePage(page) {
-    currentPage = page;
-    displayUsers(page);
+async function filterUsers() {
+    const name = document.getElementById('searchName').value.trim();
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
+
+    try {
+        let url = USER_API_URL;
+        if (name.length > 2) {
+            url = `${USER_API_URL}/search?name=${encodeURIComponent(name)}`;
+        } else if (startDate && endDate) {
+            url = `${USER_API_URL}/search-by-date?startDate=${startDate}&endDate=${endDate}`;
+        } else if (name.length === 0) {
+            fetchUsers();
+            return;
+        }
+        const response = await fetch(url);
+        const users = await response.json();
+        renderUsers(Array.isArray(users) ? users : users.content);
+        document.getElementById('pagination').innerHTML = '';
+    } catch (error) {
+        console.error('Error filtering users:', error);
+    }
 }
 
-function generatePDF(button) {
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
-    let row = button.closest("tr");
-    if (!row) {
-        alert("Error: Could not find user row.");
+async function loadExpiringUsers() {
+    showSection('expiringUsersSection');
+    try {
+        const response = await fetch(`${USER_API_URL}/expiring-users`); // New endpoint without email sending
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const users = await response.json();
+        const tbody = document.getElementById('expiringUsersTableBody');
+        tbody.innerHTML = '';
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7">No users expiring in the next 3 days.</td></tr>';
+        } else {
+            users.forEach(user => {
+                const row = `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.customerName}</td>
+                        <td>${user.mobileNumber}</td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td>${user.endDate}</td>
+                        <td>${user.daysRemaining}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="notifyUser(${user.id})">Notify</button>
+
+                        </td>
+                    </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+    } catch (error) {
+        console.error('Error fetching expiring users:', error);
+        const tbody = document.getElementById('expiringUsersTableBody');
+        tbody.innerHTML = `<tr><td colspan="7">Error loading expiring users: ${error.message}</td></tr>`;
+    }
+}
+
+async function notifyUser(userId) {
+    let button = document.querySelector(`[onclick="notifyUser(${userId})"]`);
+
+    try {
+        const response = await fetch(`${USER_API_URL}/notify-user/${userId}`, {
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.text();
+
+        // Update button text, disable it & apply styles
+        button.innerText = "✅ Notified";
+        button.disabled = true;
+        button.classList.add("btn-notified");
+
+        // Show modal with response message
+        showModal(result);
+
+    } catch (error) {
+        console.error("Error notifying user:", error);
+        showModal("⚠ Failed to send email: " + error.message);
+    }
+}
+
+function showModal(message) {
+    const modalMessage = document.getElementById('modalMessage');
+    modalMessage.textContent = message;
+    const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+    modal.show();
+}
+
+
+
+const KYC_API_URL = 'http://localhost:8083/admin/kyc';
+
+async function loadKYCRequests() {
+    try {
+        const response = await fetch(`${KYC_API_URL}`, { // Changed from /pending to fetch all
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const kycRequests = await response.json();
+        renderKYCRequests(kycRequests);
+    } catch (error) {
+        console.error('Error fetching KYC requests:', error);
+        document.getElementById('kycTable').innerHTML = `<tr><td colspan="5">Error loading KYC requests: ${error.message}</td></tr>`;
+    }
+}
+
+
+function renderKYCRequests(kycRequests) {
+    const kycTable = document.getElementById('kycTable');
+    kycTable.innerHTML = '';
+
+    if (kycRequests.length === 0) {
+        kycTable.innerHTML = '<tr><td colspan="5">No KYC requests found.</td></tr>';
         return;
     }
 
-    let mobileNumber = row.cells[0].innerText;
-    let customerName = row.cells[1].innerText;
-    let startDate = row.cells[2].innerText;
-    let endDate = row.cells[3].innerText;
-    let daysRemaining = row.cells[4].innerText;
-
-    doc.text("User Details Report", 14, 10);
-    doc.text(`Customer Name: ${customerName}`, 14, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 14, 30);
-    doc.text(`Start Date: ${startDate}`, 14, 40);
-    doc.text(`End Date: ${endDate}`, 14, 50);
-    doc.text(`Days Remaining: ${daysRemaining}`, 14, 60);
-
-    let fileName = customerName.replace(/\s+/g, "_") + "_Details.pdf";
-    doc.save(fileName);
-}
-
-displayUsers(1);
-
-window.onload = function () {
-    document.getElementById("home").style.display = "block";
-    document.getElementById("prepaidPlans").style.display = "none";
-    document.getElementById("userManagement").style.display = "none";
-    calculateDaysRemaining();
-};
-
-
-
-
-function loadKYCRequests() {
-    let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-    let kycTable = document.getElementById("kycTable");
-    kycTable.innerHTML = "";
-
-    kycRequests.forEach((request, index) => {
-        let row = `<tr>
-            <td>${request.mobile}</td>
-            <td>${request.customerName}</td>
-            <td><a href="${request.aadhaarData}" target="_blank" class="btn btn-sm btn-primary">View PDF</a></td>
-            <td><span class="status ${request.status.toLowerCase()}">${request.status}</span></td>
-            <td>
-                <button class="btn btn-success btn-sm me-2" onclick="approveKYC(${index})">Approve</button>
-                <button class="btn btn-danger btn-sm" onclick="rejectKYC(${index})">Reject</button>
-            </td>
-        </tr>`;
+    kycRequests.forEach(request => {
+        const isPending = request.status.toLowerCase() === 'pending';
+        const row = `
+            <tr>
+                <td>${request.mobileNumber}</td>
+                <td>${request.customerName}</td>
+                <td><a href="${request.aadharDocument}" target="_blank" class="btn btn-sm btn-primary">View PDF</a></td>
+                <td><span class="status ${request.status.toLowerCase()}">${request.status}</span></td>
+                <td>
+                    <button class="btn btn-success btn-sm me-2" onclick="approveKYC(${request.id})" ${!isPending ? 'disabled' : ''}>Approve</button>
+                    <button class="btn btn-danger btn-sm" onclick="rejectKYC(${request.id})" ${!isPending ? 'disabled' : ''}>Reject</button>
+                </td>
+            </tr>`;
         kycTable.innerHTML += row;
     });
 }
 
-function approveKYC(index) {
-    let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-    kycRequests[index].status = "Approved";
-    localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
-    loadKYCRequests();
-}
 
-function rejectKYC(index) {
-    let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-    kycRequests[index].status = "Rejected";
-    localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
-    loadKYCRequests();
-}
-
-// Function to clear local storage and refresh table
-function clearKYCData() {
-    if (confirm("Are you sure you want to clear all KYC data?")) {
-        localStorage.removeItem("kycRequests");
+async function approveKYC(id) {
+    try {
+        const response = await fetch(`${KYC_API_URL}/approve/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const result = await response.json();
+        showModal(result.message || 'KYC request approved successfully!');
         loadKYCRequests(); // Refresh table
-        alert("All KYC data has been cleared!");
+    } catch (error) {
+        console.error('Error approving KYC:', error);
+        showModal('Failed to approve KYC: ' + error.message);
     }
 }
 
+
+async function rejectKYC(id) {
+    try {
+        const response = await fetch(`${KYC_API_URL}/reject/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const result = await response.json();
+        showModal(result.message || 'KYC request rejected successfully!');
+        loadKYCRequests(); // Refresh table
+    } catch (error) {
+        console.error('Error rejecting KYC:', error);
+        showModal('Failed to reject KYC: ' + error.message);
+    }
+}
+
+
+async function clearKYCData() {
+    if (!confirm('Are you sure you want to clear all KYC data?')) return;
+
+    try {
+        const response = await fetch(`${KYC_API_URL}`, { // Fetch all requests
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const kycRequests = await response.json();
+
+        // Delete each request
+        for (const request of kycRequests) {
+            const deleteResponse = await fetch(`${KYC_API_URL}/clear/${request.id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors'
+            });
+            if (!deleteResponse.ok) throw new Error(`HTTP error! Status: ${deleteResponse.status}`);
+        }
+
+        showModal('All KYC data has been cleared!');
+        loadKYCRequests();
+    } catch (error) {
+        console.error('Error clearing KYC data:', error);
+        showModal('Failed to clear KYC data: ' + error.message);
+    }
+}
+
+// Show Modal for Messages
+function showModal(message) {
+    document.getElementById('modalMessage').textContent = message;
+    const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+    modal.show();
+}
+
+// function loadKYC() {
+//     showSection('kycDetails');
+//     loadKYCRequests();
+// }
+
+
+// function showSection(sectionId) {
+//     document.querySelectorAll('#content > div').forEach(section => {
+//         section.style.display = 'none';
+//     });
+//     document.getElementById(sectionId).style.display = 'block';
+// }
+
+// Initial Load
+document.addEventListener('DOMContentLoaded', function () {
+
+    loadKYC();
+});
 
 
 window.onload = function () {
@@ -191,7 +357,9 @@ window.onload = function () {
     document.getElementById("prepaidPlans").style.display = "none";
     document.getElementById("userManagement").style.display = "none";
     document.getElementById("kycDetails").style.display = "none";
-    calculateDaysRemaining();
+    document.getElementById("adminProfile").style.display = "none";
+    document.getElementById("expiringUsersSection").style.display = "none";
+
 };
 
 
@@ -201,17 +369,17 @@ function loadKYC() {
     document.getElementById("userManagement").style.display = "none";
     document.getElementById("kycDetails").style.display = "block";
     document.getElementById("adminProfile").style.display = "none";
-    loadKYCRequests();  // Load KYC data
+    document.getElementById("expiringUsersSection").style.display = "none";
+    loadKYCRequests();
 }
 
-
-// Function to show only the Admin Profile and hide all other sections
 function loadHome() {
     // Hide all other sections
     document.getElementById("home").style.display = "block";
     document.getElementById("prepaidPlans").style.display = "none";
     document.getElementById("userManagement").style.display = "none";
     document.getElementById("kycDetails").style.display = "none";
+    document.getElementById("expiringUsersSection").style.display = "none";
 
     // Show the Admin Profile section
     document.getElementById("adminProfile").style.display = "none";
@@ -221,396 +389,320 @@ function loadHome() {
 
 // Function to load Admin Profile data from localStorage
 
+const ADMIN_API_URL = 'http://localhost:8083/admin/profile';
+const ADMIN_ID = 1; // Hardcoded for simplicity; in production, get from auth context
 
+// Load Admin Profile Section
 function loadAdminProfile() {
     console.log("🔍 Attempting to load admin profile...");
+    document.getElementById("adminProfile").style.display = "block";
+    document.querySelector(".profile-card").style.display = "block";
+    document.querySelector(".edit-section").style.display = "none";
+    document.getElementById("home").style.display = "none";
+    document.getElementById("prepaidPlans").style.display = "none";
+    document.getElementById("userManagement").style.display = "none";
+    document.getElementById("kycDetails").style.display = "none";
+    document.getElementById("expiringUsersSection").style.display = "none";
+    fetchAdminProfile();
+}
 
-    let profileSection = document.getElementById("adminProfile");
-
-    if (profileSection) {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("prepaidPlans").style.display = "none";
-        document.getElementById("userManagement").style.display = "none";
-        document.getElementById("kycDetails").style.display = "none";
-
-        profileSection.style.display = "block";
-        document.querySelector(".profile-card").style.display = "block";
-        document.querySelector(".edit-section").style.display = "none";
-
-        loadSavedAdminProfile();
-        console.log("✅ Admin Profile Loaded");
-    } else {
-        console.error("❌ Admin Profile Section Not Found!");
+// Fetch Admin Profile from Backend
+async function fetchAdminProfile() {
+    try {
+        const response = await fetch(`${ADMIN_API_URL}/${ADMIN_ID}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const admin = await response.json();
+        displayAdminProfile(admin);
+    } catch (error) {
+        console.error('Error fetching admin profile:', error);
+        showModal('Failed to load admin profile: ' + error.message);
     }
 }
 
-function loadSavedAdminProfile() {
-    let savedName = localStorage.getItem("adminName");
-    let savedEmail = localStorage.getItem("adminEmail");
-    let savedMobile = localStorage.getItem("adminMobile");
-    let savedProfilePic = localStorage.getItem("adminProfilePic");
-
-    if (savedName) {
-        document.getElementById("adminName").textContent = savedName;
-        document.getElementById("displayAdminName").textContent = savedName;
-    }
-    if (savedEmail) {
-        document.getElementById("displayAdminEmail").textContent = savedEmail;
-    }
-    if (savedMobile) {
-        document.getElementById("displayAdminMobile").textContent = savedMobile;
-    }
+// Display Admin Profile Data
+function displayAdminProfile(admin) {
+    document.getElementById('adminName').textContent = admin.name || 'Admin';
+    document.getElementById('displayAdminName').textContent = admin.name || 'Admin';
+    document.getElementById('displayAdminEmail').textContent = admin.email || 'admin@mobicomm.in';
+    document.getElementById('displayAdminMobile').textContent = admin.phoneNumber || '+1234567890';
+    // Profile picture not stored in DB; use localStorage or extend backend if needed
+    const savedProfilePic = localStorage.getItem('adminProfilePic');
     if (savedProfilePic) {
-        document.getElementById("adminProfilePic").src = savedProfilePic;
-        document.getElementById("editAdminProfilePic").src = savedProfilePic;
+        document.getElementById('adminProfilePic').src = savedProfilePic;
+        document.getElementById('editAdminProfilePic').src = savedProfilePic;
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadSavedAdminProfile();
-});
-
+// Toggle Edit Mode
 function toggleEdit() {
-    document.querySelector(".profile-card").style.display = "none";
-    document.querySelector(".edit-section").style.display = "block";
+    document.querySelector('.profile-card').style.display = 'none';
+    document.querySelector('.edit-section').style.display = 'block';
 
-    document.getElementById("editAdminName").value = document.getElementById("adminName").textContent;
-    document.getElementById("editAdminEmail").value = document.getElementById("displayAdminEmail").textContent;
-    document.getElementById("editAdminMobile").value = document.getElementById("displayAdminMobile").textContent;
+    document.getElementById('editAdminName').value = document.getElementById('adminName').textContent;
+    document.getElementById('editAdminEmail').value = document.getElementById('displayAdminEmail').textContent;
+    document.getElementById('editAdminMobile').value = document.getElementById('displayAdminMobile').textContent;
+    document.getElementById('editAdminPassword').value = ''; // Clear password field
 }
 
-function saveAdminProfile() {
-    let name = document.getElementById("editAdminName").value;
-    let email = document.getElementById("editAdminEmail").value;
-    let mobile = document.getElementById("editAdminMobile").value;
-    let password = document.getElementById("editAdminPassword").value;
+// Save Admin Profile to Backend
+async function saveAdminProfile() {
+    const name = document.getElementById('editAdminName').value;
+    const email = document.getElementById('editAdminEmail').value;
+    const mobile = document.getElementById('editAdminMobile').value;
+    const password = document.getElementById('editAdminPassword').value;
 
-    if (name && email && mobile) {
-        document.getElementById("adminName").textContent = name;
-        document.getElementById("displayAdminName").textContent = name;
-        document.getElementById("displayAdminEmail").textContent = email;
-        document.getElementById("displayAdminMobile").textContent = mobile;
+    if (!name || !email || !mobile) {
+        showModal('Please fill in all required fields.');
+        return;
+    }
 
-        localStorage.setItem("adminName", name);
-        localStorage.setItem("adminEmail", email);
-        localStorage.setItem("adminMobile", mobile);
-        if (password) {
-            localStorage.setItem("adminPassword", password);
-        }
+    const updatedAdmin = {
+        name: name,
+        email: email,
+        phoneNumber: mobile,
+        password: password || undefined // Only send password if provided
+    };
 
-        alert("Profile Updated Successfully!");
-
-        document.querySelector(".profile-card").style.display = "block";
-        document.querySelector(".edit-section").style.display = "none";
-    } else {
-        alert("Please fill in all fields.");
+    try {
+        const response = await fetch(`${ADMIN_API_URL}/${ADMIN_ID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedAdmin),
+            mode: 'cors'
+        });
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const admin = await response.json();
+        displayAdminProfile(admin);
+        showModal('Profile updated successfully!');
+        document.querySelector('.profile-card').style.display = 'block';
+        document.querySelector('.edit-section').style.display = 'none';
+    } catch (error) {
+        console.error('Error saving admin profile:', error);
+        showModal('Failed to update profile: ' + error.message);
     }
 }
 
-document.getElementById("uploadAdminPic").addEventListener("change", function (event) {
-    let reader = new FileReader();
+// Handle Profile Picture Upload (Still using localStorage)
+document.getElementById('uploadAdminPic').addEventListener('change', function (event) {
+    const reader = new FileReader();
     reader.onload = function (e) {
-        document.getElementById("editAdminProfilePic").src = e.target.result;
-        document.getElementById("adminProfilePic").src = e.target.result;
-        localStorage.setItem("adminProfilePic", e.target.result);
+        const imageData = e.target.result;
+        document.getElementById('editAdminProfilePic').src = imageData;
+        document.getElementById('adminProfilePic').src = imageData;
+        localStorage.setItem('adminProfilePic', imageData);
     };
     reader.readAsDataURL(event.target.files[0]);
 });
 
-
-
-
-
-
-var currentPlanType = "";
-var currentEditElement = null;
-var currentDeleteElement = null;
-
-// Save Plans to Local Storage
-function savePlansToLocalStorage() {
-    let allPlans = {
-        popularPlans: document.getElementById("popularPlans")?.innerHTML || "",
-        validityPlans: document.getElementById("validityPlans")?.innerHTML || "",
-        dataPlans: document.getElementById("dataPlans")?.innerHTML || "",
-        topupPlans: document.getElementById("topupPlans")?.innerHTML || "",
-        isdPlans: document.getElementById("isdPlans")?.innerHTML || "",
-        comboPlans: document.getElementById("comboPlans")?.innerHTML || ""
-    };
-    localStorage.setItem("prepaidPlans", JSON.stringify(allPlans));
-    console.log("✅ Plans Saved to Local Storage", allPlans);
-    window.dispatchEvent(new Event("storage"));
+// Show Modal for Messages
+function showModal(message) {
+    document.getElementById('modalMessage').textContent = message;
+    const modal = new bootstrap.Modal(document.getElementById('notificationModal'));
+    modal.show();
 }
 
-
-// Load Plans from Local Storage on Page Load
-function loadPlansFromLocalStorage() {
-    let savedPlans = JSON.parse(localStorage.getItem("prepaidPlans"));
-    if (savedPlans) {
-        document.getElementById("popularPlans").innerHTML = savedPlans.popularPlans;
-        document.getElementById("validityPlans").innerHTML = savedPlans.validityPlans;
-        document.getElementById("dataPlans").innerHTML = savedPlans.dataPlans;
-        document.getElementById("topupPlans").innerHTML = savedPlans.topupPlans;
-        document.getElementById("isdPlans").innerHTML = savedPlans.isdPlans;
-        document.getElementById("comboPlans").innerHTML = savedPlans.comboPlans;
-    }
-
-    console.log("✅ Plans Loaded from Local Storage:", savedPlans);
-
-    //  Reattach Event Listeners After Loading
-    setTimeout(attachEventListeners, 500);
-}
-
-// Attach Event Listeners to Edit/Delete Buttons (after loading from storage)
-function attachEventListeners() {
-    document.querySelectorAll(".btn-warning").forEach(button => {
-        button.onclick = function () { openEditModal(this); };
+// Show Section (Assuming this exists in your code)
+function showSection(sectionId) {
+    document.querySelectorAll('#content > div').forEach(section => {
+        section.style.display = 'none';
     });
-
-    document.querySelectorAll(".btn-danger").forEach(button => {
-        button.onclick = function () {
-            openDeleteConfirmation(this);
-        };
-    });
-
-    console.log("✅ Event Listeners Attached to Plans");
+    document.getElementById(sectionId).style.display = 'block';
 }
 
-//  Open Add Plan Modal
-function openAddModal(planType) {
-    currentPlanType = planType;
-    document.getElementById("planAmount").value = "";
-    document.getElementById("planValidity").value = "";
-    document.getElementById("planData").value = "";
-    document.getElementById("savePlanButton").onclick = addPlan;
-    new bootstrap.Modal(document.getElementById("planModal")).show();
-}
-
-//  Add a New Plan
-function addPlan() {
-    let amount = document.getElementById("planAmount").value.trim();
-    let validity = document.getElementById("planValidity").value.trim();
-    let data = document.getElementById("planData").value.trim();
-    if (!amount || !validity || !data) return alert("Please enter valid details.");
-
-    let ul = document.getElementById(currentPlanType);
-    let li = document.createElement("li");
-    li.className = "list-group-item";
-    li.innerHTML = `₹${amount} - ${validity} Days | ${data} 
-                <button class="btn btn-warning btn-sm" onclick="openEditModal(this)">Edit</button> 
-                <button class="btn btn-danger btn-sm" onclick="openDeleteConfirmation(this)">Delete</button>`;
-    ul.appendChild(li);
-
-    savePlansToLocalStorage();
-    bootstrap.Modal.getInstance(document.getElementById("planModal")).hide();
-}
-
-//  Open Edit Modal
-// Modified addPlan function with proper structure
-function addPlan() {
-    let amount = document.getElementById("planAmount").value.trim();
-    let validity = document.getElementById("planValidity").value.trim();
-    let data = document.getElementById("planData").value.trim();
-    if (!amount || !validity || !data) return alert("Please enter valid details.");
-
-    let ul = document.getElementById(currentPlanType);
-    let li = document.createElement("li");
-    li.className = "list-group-item";
-
-    // Create plan info span
-    let planInfo = document.createElement("span");
-    planInfo.className = "plan-info";
-    planInfo.textContent = `₹${amount} - ${validity} Days | ${data}`;
-
-    // Create button container
-    let btnGroup = document.createElement("div");
-    btnGroup.className = "btn-action-group";
-
-    // Create edit button
-    let editBtn = document.createElement("button");
-    editBtn.className = "btn btn-warning btn-sm btn-action";
-    editBtn.textContent = "Edit";
-    editBtn.onclick = function () { openEditModal(this); };
-
-    // Create delete button
-    let deleteBtn = document.createElement("button");
-    deleteBtn.className = "btn btn-danger btn-sm btn-action";
-    deleteBtn.textContent = "Delete";
-    deleteBtn.onclick = function () { openDeleteConfirmation(this); };
-
-    // Append buttons to button group
-    btnGroup.appendChild(editBtn);
-    btnGroup.appendChild(deleteBtn);
-
-    // Append plan info and button group to list item
-    li.appendChild(planInfo);
-    li.appendChild(btnGroup);
-
-    // Add the new item to the list
-    ul.appendChild(li);
-
-    savePlansToLocalStorage();
-    bootstrap.Modal.getInstance(document.getElementById("planModal")).hide();
-}
-
-// Modified openEditModal function to work with the new structure
-function openEditModal(button) {
-    // Find the parent li element
-    let parentLi = button.closest('.list-group-item');
-    currentEditElement = parentLi;
-
-    // Get the plan info text
-    let planText = parentLi.querySelector('.plan-info').textContent.trim();
-
-    let [amountPart, detailsPart] = planText.split(" - ");
-    let amount = amountPart.replace("₹", "");
-    let [validity, data] = detailsPart.split(" | ");
-    validity = validity.replace(" Days", "");
-
-    document.getElementById("planAmount").value = amount;
-    document.getElementById("planValidity").value = validity;
-    document.getElementById("planData").value = data;
-    document.getElementById("savePlanButton").onclick = editPlan;
-    new bootstrap.Modal(document.getElementById("planModal")).show();
-}
-
-// Modified editPlan function to work with the new structure
-function editPlan() {
-    if (!currentEditElement) return;
-
-    let planInfo = currentEditElement.querySelector('.plan-info');
-    if (planInfo) {
-        planInfo.textContent = `₹${document.getElementById("planAmount").value} - ${document.getElementById("planValidity").value} Days | ${document.getElementById("planData").value}`;
-    }
-
-    savePlansToLocalStorage();
-    bootstrap.Modal.getInstance(document.getElementById("planModal")).hide();
-}
-
-function deletePlan() {
-    if (!currentDeleteElement) return;
-
-    // Remove the element from the DOM
-    currentDeleteElement.remove();
-
-    // Save the updated plans to local storage
-    savePlansToLocalStorage();
-
-    // Reset the current delete element
-    currentDeleteElement = null;
-}
-
-
-
-// Modified openDeleteConfirmation function to work with the new structure
-function openDeleteConfirmation(button) {
-    // Find the parent li element
-    let parentLi = button.closest('.list-group-item');
-    currentDeleteElement = parentLi;
-
-    // Get the plan info text
-    let planText = parentLi.querySelector('.plan-info').textContent.trim();
-
-    let confirmDelete = confirm(`Are you sure you want to delete this plan?\n\n${planText}`);
-    if (confirmDelete) {
-        deletePlan();
-    }
-}
-
-// Function to update existing list items to new format
-function updateExistingItems() {
-    document.querySelectorAll('.list-group-item').forEach(item => {
-        // Skip if already formatted
-        if (item.querySelector('.plan-info')) return;
-
-        // Get all the text content (excluding button text)
-        const buttons = item.querySelectorAll('button');
-        let planText = item.textContent.trim();
-
-        buttons.forEach(btn => {
-            planText = planText.replace(btn.textContent.trim(), '');
-        });
-        planText = planText.trim();
-
-        // Clear the existing content
-        item.innerHTML = '';
-
-        // Create plan info span
-        let planInfo = document.createElement('span');
-        planInfo.className = 'plan-info';
-        planInfo.textContent = planText;
-
-        // Create button container
-        let btnGroup = document.createElement('div');
-        btnGroup.className = 'btn-action-group';
-
-        // Add existing buttons to the group
-        buttons.forEach(btn => {
-            // Clone the button to preserve its attributes and event handlers
-            let newBtn = btn.cloneNode(true);
-            newBtn.className = btn.className + ' btn-action';
-            btnGroup.appendChild(newBtn);
-        });
-
-        // Append the elements to the list item
-        item.appendChild(planInfo);
-        item.appendChild(btnGroup);
-    });
-}
-
-// Call after loading plans from local storage
-function enhancedLoadPlansFromLocalStorage() {
-    loadPlansFromLocalStorage();
-
-    // After loading plans, update the structure
-    setTimeout(() => {
-        updateExistingItems();
-        attachEventListeners();
-    }, 600);
-}
-
-// Replace the original window.onload
-window.onload = enhancedLoadPlansFromLocalStorage;
-
-// Add this at the end of your existing script or in a separate script tag
 document.addEventListener('DOMContentLoaded', function () {
-    // Apply CSS styles
-    const styleElement = document.createElement('style');
-    styleElement.textContent = `
-.list-group-item {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 0.75rem 1.25rem;
-}
 
-.plan-info {
-flex-grow: 1;
-}
-
-.btn-action-group {
-display: flex;
-gap: 5px;
-margin-left: 10px;
-}
-
-.btn-action {
-margin: 0;
-}`;
-    document.head.appendChild(styleElement);
-
-    // Initialize the structure update
-    // This will run when the page is loaded
-    setTimeout(updateExistingItems, 1000);
+    loadAdminProfile();
 });
 
-function updateCustomerDashboard() {
-    let event = new Event("storage");
-    window.dispatchEvent(event);
+const API_URL = 'http://localhost:8083/admin/plans';
+
+function loadPrepaidPlans() {
+    // Hide other sections and show prepaid plans
+    document.querySelectorAll('#content > div').forEach(div => div.style.display = 'none');
+    document.getElementById('prepaidPlans').style.display = 'block';
+    fetchPlans();
 }
 
-//Load Plans on Page Load
-window.onload = loadPlansFromLocalStorage;
+async function fetchPlans() {
+    try {
+        const response = await fetch(API_URL, { mode: 'cors' });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const plans = await response.json();
+        const container = document.getElementById('plansContainer');
+        container.innerHTML = '';
 
+        // Group plans by category
+        const plansByCategory = plans.reduce((acc, plan) => {
+            if (!acc[plan.category]) {
+                acc[plan.category] = [];
+            }
+            acc[plan.category].push(plan);
+            return acc;
+        }, {});
+
+        // Render each category with its plans
+        Object.keys(plansByCategory).forEach(category => {
+            const categorySection = document.createElement('div');
+            categorySection.className = 'col-12 mb-4';
+            categorySection.innerHTML = `
+                <h3 class="category-header">${category.replace('_', ' ').replace('PLANS', 'Plans')}</h3>
+                <div class="row category-plans"></div>
+            `;
+            container.appendChild(categorySection);
+
+            const categoryPlansContainer = categorySection.querySelector('.category-plans');
+            plansByCategory[category].forEach(plan => {
+                const planCard = `
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">${plan.name}</div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <span class="plan-info">Price:</span> ₹${plan.price}
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="plan-info">Validity:</span> ${plan.validityDays} days
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="plan-info">Data/Day:</span> ${plan.dataPerDay}
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="button-group">
+                                        <button class="btn btn-primary btn-action" onclick="editPlan(${plan.id})">Edit</button>
+                                        <button class="btn btn-danger btn-action" onclick="deletePlan(${plan.id})">Delete</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+                categoryPlansContainer.innerHTML += planCard;
+            });
+        });
+    } catch (error) {
+        console.error('Error fetching plans:', error);
+        alert('Failed to fetch plans');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Add Plan Form Submission
+    document.getElementById('addPlanForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const plan = {
+            name: document.getElementById('planName').value,
+            price: parseFloat(document.getElementById('planPrice').value),
+            validityDays: parseInt(document.getElementById('validityDays').value),
+            dataPerDay: document.getElementById('dataPerDay').value,
+            category: document.getElementById('category').value
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/add`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(plan),
+                mode: 'cors'
+            });
+            if (response.ok) {
+                alert(await response.text());
+                fetchPlans();
+                bootstrap.Modal.getInstance(document.getElementById('addPlanModal')).hide();
+                document.getElementById('addPlanForm').reset();
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Error adding plan:', error);
+            alert('Failed to add plan');
+        }
+    });
+
+    // Edit Plan Form Submission
+    document.getElementById('editPlanForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('editPlanId').value;
+        const updatedPlan = {
+            name: document.getElementById('editPlanName').value,
+            price: parseFloat(document.getElementById('editPlanPrice').value),
+            validityDays: parseInt(document.getElementById('editValidityDays').value),
+            dataPerDay: document.getElementById('editDataPerDay').value,
+            category: document.getElementById('editCategory').value
+        };
+
+        try {
+            const response = await fetch(`${API_URL}/edit/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedPlan),
+                mode: 'cors'
+            });
+            if (response.ok) {
+                alert(await response.text());
+                fetchPlans();
+                bootstrap.Modal.getInstance(document.getElementById('editPlanModal')).hide();
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Error editing plan:', error);
+            alert('Failed to edit plan');
+        }
+    });
+});
+
+async function editPlan(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const plan = await response.json();
+
+        document.getElementById('editPlanId').value = plan.id;
+        document.getElementById('editPlanName').value = plan.name;
+        document.getElementById('editPlanPrice').value = plan.price;
+        document.getElementById('editValidityDays').value = plan.validityDays;
+        document.getElementById('editDataPerDay').value = plan.dataPerDay;
+        document.getElementById('editCategory').value = plan.category;
+
+        const modal = new bootstrap.Modal(document.getElementById('editPlanModal'));
+        modal.show();
+    } catch (error) {
+        console.error('Error fetching plan:', error);
+        alert('Failed to load plan details');
+    }
+}
+
+async function deletePlan(id) {
+    if (confirm('Are you sure you want to delete this plan?')) {
+        try {
+            const response = await fetch(`${API_URL}/delete/${id}`, {
+                method: 'DELETE',
+                mode: 'cors'
+            });
+            if (response.ok) {
+                alert(await response.text());
+                fetchPlans();
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } catch (error) {
+            console.error('Error deleting plan:', error);
+            alert('Failed to delete plan');
+        }
+    }
+}
 const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,

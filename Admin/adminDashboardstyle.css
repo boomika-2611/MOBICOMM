@@ -27,8 +27,6 @@ body {
     margin-top: 2px;
 }
 
-
-/* Navbar */
 /* Navbar */
 .navbar {
     background: white;
@@ -81,8 +79,6 @@ section.active {
     transform: translateY(0);
 }
 
-
-
 .dropdown-menu {
     background: white;
     border-radius: 8px;
@@ -103,11 +99,34 @@ section.active {
 }
 
 /* Card Styles */
+/* Category Grouping */
+.category-header {
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #333;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.category-plans {
+    margin-left: 15px;
+}
+
+/* Card Styles */
 .card {
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
     margin-bottom: 20px;
+    border: none;
 }
 
 .card:hover {
@@ -116,33 +135,89 @@ section.active {
 }
 
 .card-header {
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
     background: #900c3f;
     color: white;
     border-radius: 10px 10px 0 0;
-    padding: 12px;
-    font-size: 1.1rem;
+    padding: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60px;
 }
 
 .list-group-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
+    padding: 12px 20px;
+    border: none;
+    font-size: 1rem;
 }
 
 .plan-info {
+    font-weight: 600;
+    color: #555;
+    width: 100px;
+    text-align: left;
+}
+
+.plan-value {
     flex-grow: 1;
+    text-align: right;
+    color: #333;
+    font-weight: 500;
+}
+
+.button-row {
+    padding-top: 15px;
+    /* Add space above buttons */
+    padding-bottom: 15px;
 }
 
 .button-group {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
 }
 
 .btn-action {
-    min-width: 60px;
+    min-width: 80px;
+    padding: 8px 15px;
+    font-size: 0.95rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-action:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .plan-info {
+        width: 80px;
+    }
+
+    .card-header {
+        font-size: 1.1rem;
+        padding: 12px;
+        min-height: 50px;
+    }
+
+    .list-group-item {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .btn-action {
+        min-width: 70px;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
 }
 
 .modal-header {
@@ -176,7 +251,6 @@ section.active {
 .footer a:hover {
     text-decoration: underline;
 }
-
 
 /* Admin KYC Section */
 .admin-kyc {
@@ -242,9 +316,7 @@ section.active {
     color: red;
 }
 
-
 /* Profile Card */
-
 .profile-card {
     margin-top: 50px;
     background: white;
@@ -328,7 +400,6 @@ section.active {
 
 /* Edit Profile Styling */
 .edit-profile-card {
-
     margin-left: 250px;
     max-width: 700px;
     background: #fff;
@@ -351,7 +422,6 @@ section.active {
 #adminProfile {
     display: none;
 }
-
 
 .footer {
     background: #f8f9fa;
@@ -403,6 +473,24 @@ section.active {
     color: #750029;
 }
 
+/* Clear Data Button (Used for Add New Plan) */
+
+/* Add New Plan Button in Prepaid Plans */
+#prepaidPlans .clear-btn {
+    background-color: #900c3f;
+    color: white;
+    border: none;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+#prepaidPlans .clear-btn:hover {
+    background-color: #750029;
+}
+
 /* Back to Top Button Styling */
 #backToTop {
     position: fixed;
@@ -411,7 +499,6 @@ section.active {
     width: 40px;
     height: 40px;
     background-color: #444;
-    /* Change color as needed */
     color: white;
     border: none;
     border-radius: 50%;
@@ -430,7 +517,6 @@ section.active {
 .show {
     display: block !important;
 }
-
 
 .dashboard-container {
     padding: 20px;
@@ -458,30 +544,45 @@ section.active {
     color: #333;
 }
 
+/* Styles for Notified Button */
+.btn-notified {
+    background-color: #ccc !important;
+    /* Gray background */
+    border-color: #bbb !important;
+    /* Gray border */
+    color: #666 !important;
+    /* Dark gray text */
+    pointer-events: none;
+    /* Prevent clicks */
+    filter: blur(0.5px);
+    /* Slight blur effect */
+    transition: all 0.3s ease-in-out;
+}
+
+.status.pending {
+    color: #ffc107;
+    /* Yellow */
+}
+
+.status.approved {
+    color: #28a745;
+    /* Green */
+}
+
+.status.rejected {
+    color: #dc3545;
+    /* Red */
+}
+
+.btn-success:disabled,
+.btn-danger:disabled {
+    opacity: 0.6;
+    /* Grayed out when disabled */
+    cursor: not-allowed;
+}
 
 @media (max-width: 768px) {
-    /* Adjust container margins and padding */
-    /* .container {
-        padding: 15px;
-    } */
 
-    /* User Management Table */
-    /* .table {
-        font-size: 14px;
-    }
-
-    .table th, .table td {
-        padding: 8px;
-        text-align: center;
-    }
-
-   
-    .btn {
-        padding: 10px;
-        font-size: 14px;
-    } */
-
-    /* Admin Profile Card */
     .profile-card,
     .edit-profile-card {
         margin-left: 0;
@@ -500,9 +601,7 @@ section.active {
         margin-top: 10px;
     }
 
-    /* Profile Buttons */
     .btn-edit {
         width: 100%;
     }
-
 }

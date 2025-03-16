@@ -226,60 +226,55 @@
         <!-- Profile Card -->
         <div class="profile-card">
             <div class="profile-header">
-                <p class="welcome-text">Welcome, <span id="profileName">User</span>!</p>
-                <img id="profilePic" src="https://via.placeholder.com/100" class="profile-image">
+                <h4>Welcome, <span id="profileName">User</span>!</h4>
+                <img id="profilePic" src="https://via.placeholder.com/100" class="profile-image" alt="Profile Picture">
             </div>
-
             <div class="profile-details">
-                <p class="profile-label"><i class="fas fa-phone-alt profile-icon"></i> Mobile Number:</p>
+                <p class="profile-label"><i class="fas fa-phone-alt"></i> Mobile Number:</p>
                 <p class="profile-value" id="profilePhone">Not provided</p>
 
-                <p class="profile-label"><i class="fas fa-phone-alt profile-icon"></i> Alternate Mobile:</p>
+                <p class="profile-label"><i class="fas fa-phone-alt"></i> Alternate Mobile:</p>
                 <p class="profile-value" id="profileAltPhone">Not provided</p>
 
-                <p class="profile-label"><i class="fas fa-envelope profile-icon"></i> Email:</p>
+                <p class="profile-label"><i class="fas fa-envelope"></i> Email:</p>
                 <p class="profile-value" id="profileEmail">Not provided</p>
 
-                <p class="profile-label"><i class="fas fa-home profile-icon"></i> Address:</p>
+                <p class="profile-label"><i class="fas fa-home"></i> Address:</p>
                 <p class="profile-value" id="profileAddress">Not provided</p>
             </div>
-
             <button class="btn-edit" onclick="toggleEdit()">Edit Profile</button>
         </div>
 
         <!-- Edit Profile Section -->
-        <div class="edit-section mt-3" style="display: none;">
+        <div class="edit-section mt-3">
             <div class="edit-profile-card">
                 <h4 class="text-center mb-3">Edit Profile</h4>
-
-                <div class="text-center mb-4">
+                <div class="text-center mb-3">
                     <img id="editProfilePic" src="https://via.placeholder.com/100" class="profile-image">
                     <input type="file" id="uploadPic" class="form-control mt-2" accept="image/*">
                 </div>
+                <label>Name</label>
+                <input type="text" id="editName" class="form-control" required>
 
-                <label class="mt-3">Name</label>
-                <input type="text" id="editName" class="form-control" placeholder="Enter full name">
+                <label>Mobile Number</label>
+                <input type="text" id="editPhone" class="form-control" required>
 
-                <label class="mt-3">Mobile Number</label>
-                <input type="text" id="editPhone" class="form-control" placeholder="Enter phone number">
+                <label>Alternate Mobile Number</label>
+                <input type="text" id="editAltPhone" class="form-control">
 
-                <label class="mt-3">Alternate Mobile Number</label>
-                <input type="text" id="editAltPhone" class="form-control" placeholder="Enter alternate phone number">
+                <label>Email</label>
+                <input type="email" id="editEmail" class="form-control" required>
 
-                <label class="mt-3">Email</label>
-                <input type="email" id="editEmail" class="form-control" placeholder="Enter email">
-
-                <label class="mt-3">Address</label>
-                <textarea id="editAddress" class="form-control" placeholder="Enter address"></textarea>
+                <label>Address</label>
+                <textarea id="editAddress" class="form-control" required></textarea>
 
                 <button class="btn-edit w-100 mt-3" onclick="saveProfile()">Save Changes</button>
             </div>
         </div>
     </div>
 
-
-    <!-- Toast container for notifications -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
         <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -296,39 +291,26 @@
     <div id="prepaidPlansSection" class="container3" style="display: none;">
         <div class="recharge-card shadow-lg p-4 rounded-4">
             <h2 class="text-center fw-bold" style="color: #444;">Prepaid Plans</h2>
-
             <div class="mb-3">
                 <label for="customerMobile" class="form-label fw-semibold">Enter Mobile Number</label>
                 <input type="text" id="customerMobile" class="form-control border-danger"
                     placeholder="Enter 10-digit mobile number" style="width: 250px;">
             </div>
-
             <div class="recharge-header">
                 <h4 class="fw-bold text-dark">Select a Prepaid Plan</h4>
                 <i class="fas fa-list-ul fa-lg text-danger"></i>
             </div>
-
             <ul class="nav nav-tabs" id="planTabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="tab" href="#popularPlans">Popular Plans</a>
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#popularPlans">Popular
+                        Plans</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#validityPlans">Validity Plans</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#validityPlans">Validity Plans</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#dataPlans">Data Plans</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#topupPlans">Top-Up Plans</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#isdPlans">ISD Plans</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#comboPlans">Combo\Unlimited Plans</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#dataPlans">Data Plans</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#topupPlans">Top-Up Plans</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#isdPlans">ISD Plans</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#comboPlans">Combo\Unlimited
+                        Plans</a></li>
             </ul>
-
             <div class="tab-content mt-3">
                 <div class="tab-pane fade show active" id="popularPlans">
                     <div class="row" id="popularPlansContainer"></div>
@@ -351,6 +333,7 @@
             </div>
         </div>
     </div>
+
 
     <div id="rechargeSection" class="container3" style="display: none;">
 
@@ -465,10 +448,6 @@
             <!-- <button class="btn-recharge mt-4" onclick="goHome()">Back to Home</button> -->
         </div>
     </div>
-
-
-
-
     <!-- Help & Support Section -->
     <div id="helpSection" class="container3" style="display: none;">
         <div class="recharge-card">
@@ -577,14 +556,11 @@
 
 
     <!-- Buy New Connection Page -->
+    <!-- Buy New Connection Section -->
     <div id="buyNewConnectionPage" class="buy-new-connection-page" style="display: none;">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mobi-comm-heading">
-                    <!-- <span><span class="mobi">MOBI</span> <span class="comm">COMM</span></span>
-            <span class="tagline">Prepaid | Recharge</span> -->
-                    Buy New Connection
-                </h3>
+                <h3 class="mobi-comm-heading">Buy New Connection</h3>
                 <button class="btn btn-view" onclick="viewRequest()">View Request</button>
             </div>
             <p class="text-muted">MobiComm will provide doorstep KYC banking.</p>
@@ -600,10 +576,8 @@
                 <!-- Mobile Number Input -->
                 <div class="mb-3">
                     <label for="mobileNumber" class="input-label">Mobile Number</label>
-                    <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number"
-                        required>
+                    <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number" required>
                     <small id="mobileError" class="text-danger"></small>
-
                 </div>
 
                 <!-- Aadhaar Upload -->
@@ -622,6 +596,7 @@
         </div>
     </div>
 
+    <!-- Request Details Section -->
     <div id="requestDetails" style="display: none;">
         <h4>Request Details</h4>
         <p><strong>Name:</strong> <span id="reqName"></span></p>
@@ -630,7 +605,7 @@
         <img id="reqAadhaar" alt="Aadhaar Preview" style="max-width: 120px;" />
     </div>
 
-
+    
     <!-- Footer -->
     <footer class="footer">
         <div class="container">

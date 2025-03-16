@@ -1,4 +1,3 @@
-
 function scrollToSection(event, sectionId) {
     event.preventDefault();
     document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
@@ -64,6 +63,7 @@ function goHome() {
 }
 
 
+const BASE_URL = 'http://localhost:8083';
 // Function to show the "Buy New Connection" page and hide other sections
 function goToBuyNewConnection() {
     // Hide other sections
@@ -77,6 +77,14 @@ function goToBuyNewConnection() {
 }
 
 
+
+// // Go to Buy New Connection page (use toggleSection for consistency)
+// function goToBuyNewConnection() {
+//     document.querySelector(".recommended-section").style.display = "none";
+//     toggleSection('buyNewConnectionPage');
+// }
+
+// Validation for Customer Name
 document.getElementById("customerName").addEventListener("blur", function () {
     let name = this.value.trim();
     let errorElement = document.getElementById("nameError");
@@ -93,6 +101,7 @@ document.getElementById("customerName").addEventListener("blur", function () {
     }
 });
 
+// Validation for Mobile Number
 document.getElementById("mobileNumber").addEventListener("blur", function () {
     let mobile = this.value.trim();
     let errorElement = document.getElementById("mobileError");
@@ -109,74 +118,110 @@ document.getElementById("mobileNumber").addEventListener("blur", function () {
     }
 });
 
+// Validation for Aadhaar Upload
 document.getElementById("aadhaarUpload").addEventListener("change", function () {
     let errorElement = document.getElementById("aadhaarError");
+    let preview = document.getElementById("aadhaarPreview");
 
     if (this.files.length === 0) {
         errorElement.textContent = "Please upload your Aadhaar card!";
         this.classList.add("is-invalid");
+        preview.src = "";
     } else {
         errorElement.textContent = "";
         this.classList.remove("is-invalid");
+        const file = this.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result; // Show preview
+        };
+        reader.readAsDataURL(file);
     }
 });
 
-document.getElementById("newConnectionForm").addEventListener("submit", function (event) {
+// Handle Form Submission
+document.getElementById("newConnectionForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     let customerName = document.getElementById("customerName").value.trim();
-    let mobile = document.getElementById("mobileNumber").value.trim();
+    let mobileNumber = document.getElementById("mobileNumber").value.trim();
     let aadhaarFile = document.getElementById("aadhaarUpload").files[0];
 
+    // Client-side validation
     if (customerName === "" || !/^[a-zA-Z0-9 ]{3,}$/.test(customerName)) {
-        alert("Please enter a valid name with at least 3 alphanumeric characters!");
+        showToast("Please enter a valid name with at least 3 alphanumeric characters!", "Error", "danger");
         return;
     }
 
-    if (mobile === "" || !/^\d{10}$/.test(mobile)) {
-        alert("Please enter a valid 10-digit mobile number!");
+    if (mobileNumber === "" || !/^\d{10}$/.test(mobileNumber)) {
+        showToast("Please enter a valid 10-digit mobile number!", "Error", "danger");
         return;
     }
 
     if (!aadhaarFile) {
-        alert("Please upload your Aadhaar card!");
+        showToast("Please upload your Aadhaar card!", "Error", "danger");
         return;
     }
 
-    let reader = new FileReader();
-    reader.onload = function (event) {
-        let aadhaarData = event.target.result;
+    // Convert file to Base64
+    const reader = new FileReader();
+    reader.onload = async function (event) {
+        const aadhaarData = event.target.result; // Base64 string
 
-        let newRequest = { mobile, customerName, aadhaarData, status: "Pending" };
+        // Prepare KYC request data
+        const kycRequest = {
+            mobileNumber: mobileNumber,
+            customerName: customerName,
+            aadharDocument: aadhaarData, // Send as Base64 string
+            status: "Pending" // Default status set by backend, but included for clarity
+        };
 
-        let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-        kycRequests.push(newRequest);
-        localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
+        try {
+            const response = await fetch(`${BASE_URL}/admin/kyc/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(kycRequest)
+            });
 
-        alert("Your request has been submitted successfully! MobiComm will contact you for KYC.");
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const result = await response.json();
+            showToast(result.message, "Success", "success");
+            document.getElementById("newConnectionForm").reset(); // Clear form
+            document.getElementById("aadhaarPreview").src = ""; // Clear preview
+        } catch (error) {
+            console.error("Error submitting KYC request:", error);
+            showToast("Failed to submit KYC request. Please try again.", "Error", "danger");
+        }
     };
     reader.readAsDataURL(aadhaarFile);
-
-    this.reset();
 });
 
+// View Latest KYC Request (optional: fetch from backend)
+async function viewRequest() {
+    try {
+        const response = await fetch(`${BASE_URL}/admin/kyc/pending`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const pendingRequests = await response.json();
 
-function viewRequest() {
-    let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
+        if (pendingRequests.length === 0) {
+            showToast("No pending KYC requests found!", "Info", "info");
+            return;
+        }
 
-    if (kycRequests.length === 0) {
-        showToast("No KYC request found!");
-        return;
+        const latestRequest = pendingRequests[pendingRequests.length - 1];
+        const statusClass = "status-" + latestRequest.status.toLowerCase();
+        const toastMessage = `
+            <strong>Name:</strong> ${latestRequest.customerName}<br>
+            <strong>Mobile:</strong> ${latestRequest.mobileNumber}<br>
+            <strong>Status:</strong> <span class="${statusClass}">${latestRequest.status}</span>
+        `;
+        showToast(toastMessage, "KYC Request", "info");
+    } catch (error) {
+        console.error("Error fetching KYC requests:", error);
+        showToast("Failed to fetch KYC requests. Please try again.", "Error", "danger");
     }
-
-    let latestRequest = kycRequests[kycRequests.length - 1];
-    let statusClass = "status-" + latestRequest.status.toLowerCase();
-
-    let toastMessage = `<strong>Name:</strong> ${latestRequest.customerName}<br>
-                        <strong>Mobile:</strong> ${latestRequest.mobile}<br>
-                        <strong>Status:</strong> <span class='${statusClass}'>${latestRequest.status}</span>`;
-
-    showToast(toastMessage);
 }
 
 function showToast(message) {

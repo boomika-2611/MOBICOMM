@@ -1,5 +1,4 @@
 
-
 function scrollToSection(event, sectionId) {
     event.preventDefault();
     document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
@@ -10,94 +9,181 @@ function scrollPlans(scrollValue) {
     planScroll.scrollLeft += scrollValue;
 }
 
-document.addEventListener("DOMContentLoaded", loadProfile);
+//profile
+const BASE_URL_1 = 'http://localhost:8083/api/user';
 
-function toggleProfile() {
-    let profileSection = document.getElementById("profileSection");
-    let quickPay = document.getElementById("quickpay");
-    let recommendedSection = document.querySelector(".recommended-section");
-    let carousel = document.getElementById("heroCarousel");
+        // Toggle sections
+        function toggleSection(sectionId) {
+            const sections = ['profileSection', 'quickpay', 'recommended-section', 'heroCarousel', 
+                              'prepaidPlansSection', 'transactionSection', 'buyNewConnectionPage', 'helpSection'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) element.style.display = id === sectionId ? 'block' : 'none';
+            });
+        }
 
-    if (profileSection.style.display === "none" || profileSection.style.display === "") {
-        profileSection.style.display = "block";
-        quickPay.style.display = "none";
-        recommendedSection.style.display = "none";
-        carousel.style.display = "none";
-        prepaidPlansSection.style.display = "none";
-        transactionSection.style.display = "none";
-        buyNewConnectionPage.style.display = "none"
-        helpSection.style.display = "none";
+        // function toggleProfile() {
+        //     toggleSection('profileSection');
+        // }
 
-    } else {
-        profileSection.style.display = "none";
-        quickPay.style.display = "block";
-        recommendedSection.style.display = "block";
-        carousel.style.display = "block";
-        prepaidPlansSection.style.display = "none";
-        transactionSection.style.display = "none";
-        buyNewConnectionPage.style.display = "none"
-        helpSection.style.display = "none";
-    }
-}
+        function toggleProfile() {
+            let profileSection = document.getElementById("profileSection");
+            let quickPay = document.getElementById("quickpay");
+            let recommendedSection = document.querySelector(".recommended-section");
+            let carousel = document.getElementById("heroCarousel");
+        
+            if (profileSection.style.display === "none" || profileSection.style.display === "") {
+                profileSection.style.display = "block";
+                quickPay.style.display = "none";
+                recommendedSection.style.display = "none";
+                carousel.style.display = "none";
+                prepaidPlansSection.style.display = "none";
+                transactionSection.style.display = "none";
+                buyNewConnectionPage.style.display = "none"
+                helpSection.style.display = "none";
+        
+            } else {
+                profileSection.style.display = "none";
+                quickPay.style.display = "block";
+                recommendedSection.style.display = "block";
+                carousel.style.display = "block";
+                prepaidPlansSection.style.display = "none";
+                transactionSection.style.display = "none";
+                buyNewConnectionPage.style.display = "none"
+                helpSection.style.display = "none";
+            }
+        }
+        
 
-function toggleEdit() {
-    document.querySelector(".profile-card").style.display = "none";
-    document.querySelector(".edit-section").style.display = "block";
+        // Load Profile from Backend
+        async function loadProfile() {
+            const phone = "9025159692"; // Hardcoded for demo; replace with authenticated user phone in real app
+            try {
+                const response = await fetch(`${BASE_URL_1}/${phone}`);
+                if (!response.ok) throw new Error("User not found");
+                const user = await response.json();
 
-    document.getElementById("editName").value = localStorage.getItem("profileName") || "";
-    document.getElementById("editPhone").value = localStorage.getItem("profilePhone") || "";
-    document.getElementById("editAltPhone").value = localStorage.getItem("profileAltPhone") || "";
-    document.getElementById("editEmail").value = localStorage.getItem("profileEmail") || "";
-    document.getElementById("editAddress").value = localStorage.getItem("profileAddress") || "";
-}
+                document.getElementById("profileName").textContent = user.name || "User";
+                document.getElementById("profilePhone").textContent = user.phoneNumber || "Not provided";
+                document.getElementById("profileAltPhone").textContent = user.alternatePhoneNumber || "Not provided";
+                document.getElementById("profileEmail").textContent = user.email || "Not provided";
+                document.getElementById("profileAddress").textContent = user.address || "Not provided";
+                document.getElementById("profilePic").src = user.profilePic || "https://via.placeholder.com/100";
+            } catch (error) {
+                console.error("Error loading profile:", error);
+                showToast("No profile found. Please save your details.", "Info", "info");
+                // Set defaults if no data is found
+                document.getElementById("profileName").textContent = "User";
+                document.getElementById("profilePhone").textContent = phone;
+                document.getElementById("profileAltPhone").textContent = "Not provided";
+                document.getElementById("profileEmail").textContent = "Not provided";
+                document.getElementById("profileAddress").textContent = "Not provided";
+                document.getElementById("profilePic").src = "https://via.placeholder.com/100";
+            }
+        }
 
-function saveProfile() {
-    let name = document.getElementById("editName").value;
-    let phone = document.getElementById("editPhone").value;
-    let altPhone = document.getElementById("editAltPhone").value;
-    let email = document.getElementById("editEmail").value;
-    let address = document.getElementById("editAddress").value;
+        // Toggle Edit Section
+        function toggleEdit() {
+            document.querySelector(".profile-card").style.display = "none";
+            document.querySelector(".edit-section").style.display = "block";
 
-    if (name && phone && email && address) {
-        localStorage.setItem("profileName", name);
-        localStorage.setItem("profilePhone", phone);
-        localStorage.setItem("profileAltPhone", altPhone);
-        localStorage.setItem("profileEmail", email);
-        localStorage.setItem("profileAddress", address);
+            // Populate edit fields with current profile data
+            document.getElementById("editName").value = document.getElementById("profileName").textContent === "User" ? "" : document.getElementById("profileName").textContent;
+            document.getElementById("editPhone").value = document.getElementById("profilePhone").textContent;
+            document.getElementById("editAltPhone").value = document.getElementById("profileAltPhone").textContent === "Not provided" ? "" : document.getElementById("profileAltPhone").textContent;
+            document.getElementById("editEmail").value = document.getElementById("profileEmail").textContent === "Not provided" ? "" : document.getElementById("profileEmail").textContent;
+            document.getElementById("editAddress").value = document.getElementById("profileAddress").textContent === "Not provided" ? "" : document.getElementById("profileAddress").textContent;
+            document.getElementById("editProfilePic").src = document.getElementById("profilePic").src;
+        }
 
-        loadProfile();
+        // Save Profile to Backend
+        async function saveProfile() {
+            const name = document.getElementById("editName").value.trim();
+            const phone = document.getElementById("editPhone").value.trim();
+            const altPhone = document.getElementById("editAltPhone").value.trim();
+            const email = document.getElementById("editEmail").value.trim();
+            const address = document.getElementById("editAddress").value.trim();
+            const profilePic = document.getElementById("editProfilePic").src;
 
-        document.querySelector(".profile-card").style.display = "block";
-        document.querySelector(".edit-section").style.display = "none";
-    } else {
-        alert("Please fill in all fields correctly.");
-    }
-}
+            // Validation
+            if (!name || !phone || !email || !address) {
+                showToast("Please fill in all required fields.", "Error", "danger");
+                return;
+            }
+            if (!/^\d{10}$/.test(phone)) {
+                showToast("Mobile number must be a 10-digit number.", "Error", "danger");
+                return;
+            }
+            if (altPhone && !/^\d{10}$/.test(altPhone)) {
+                showToast("Alternate mobile number must be a 10-digit number.", "Error", "danger");
+                return;
+            }
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showToast("Please enter a valid email address.", "Error", "danger");
+                return;
+            }
 
-document.getElementById("uploadPic").addEventListener("change", function (event) {
-    let reader = new FileReader();
-    reader.onload = function (e) {
-        localStorage.setItem("profilePic", e.target.result);
-        document.getElementById("editProfilePic").src = e.target.result;
-        document.getElementById("profilePic").src = e.target.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
-});
+            const user = {
+                name: name,
+                phoneNumber: phone,
+                alternatePhoneNumber: altPhone,
+                email: email,
+                address: address,
+                profilePic: profilePic
+            };
 
-function loadProfile() {
-    document.getElementById("profileName").textContent = localStorage.getItem("profileName") || "User";
-    document.getElementById("profilePhone").textContent = localStorage.getItem("profilePhone") || "Not provided";
-    document.getElementById("profileAltPhone").textContent = localStorage.getItem("profileAltPhone") || "Not provided";
-    document.getElementById("profileEmail").textContent = localStorage.getItem("profileEmail") || "Not provided";
-    document.getElementById("profileAddress").textContent = localStorage.getItem("profileAddress") || "Not provided";
+            try {
+                const response = await fetch(`${BASE_URL_1}/save`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(user)
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const result = await response.json();
+                showToast(result.message, "Success", "success");
+                await loadProfile(); // Reload profile from backend
+                document.querySelector(".profile-card").style.display = "block";
+                document.querySelector(".edit-section").style.display = "none";
+            } catch (error) {
+                console.error("Error saving profile:", error);
+                showToast("Failed to save profile.", "Error", "danger");
+            }
+        }
 
-    let storedPic = localStorage.getItem("profilePic");
-    if (storedPic) {
-        document.getElementById("profilePic").src = storedPic;
-        document.getElementById("editProfilePic").src = storedPic;
-    }
-}
+        // Handle Profile Picture Upload
+        document.getElementById("uploadPic").addEventListener("change", function (event) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById("editProfilePic").src = e.target.result;
+                document.getElementById("profilePic").src = e.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
 
+        // Toast Notification
+        function showToast(message, title = "Notification", type = "info") {
+            const toastContainer = document.querySelector(".toast-container");
+            const toastHTML = `
+                <div class="toast align-items-center text-white bg-${type === 'success' ? 'success' : type === 'danger' ? 'danger' : 'info'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            toastContainer.innerHTML = toastHTML;
+            const toast = new bootstrap.Toast(toastContainer.querySelector(".toast"));
+            toast.show();
+            setTimeout(() => toastContainer.innerHTML = "", 3000);
+        }
+
+        // Load profile on page load
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     toggleSection('profileSection');
+        //     loadProfile();
+        // });
+
+ document.addEventListener("DOMContentLoaded", loadProfile);
 
 function showHelpSection() {
     document.getElementById("heroCarousel").style.display = "none";
@@ -181,383 +267,269 @@ function showToast(message, title = "Notification", variant = "primary") {
 
 
 // Load Plans from Local Storage and Display in Customer Page
-function loadCustomerPlans() {
-    let savedPlans = JSON.parse(localStorage.getItem("prepaidPlans"));
-    if (savedPlans) {
-        document.getElementById("popularPlansContainer").innerHTML = generatePlanCards(savedPlans.popularPlans);
-        document.getElementById("validityPlansContainer").innerHTML = generatePlanCards(savedPlans.validityPlans);
-        document.getElementById("dataPlansContainer").innerHTML = generatePlanCards(savedPlans.dataPlans);
-        document.getElementById("topupPlansContainer").innerHTML = generatePlanCards(savedPlans.topupPlans);
-        document.getElementById("isdPlansContainer").innerHTML = generatePlanCards(savedPlans.isdPlans);
-        document.getElementById("comboPlansContainer").innerHTML = generatePlanCards(savedPlans.comboPlans);
+// // Show Prepaid Plans Section
+const BASE_URL = 'http://localhost:8083'; // Matches your backend port
+
+// Load plans from backend and display in customer page
+async function loadCustomerPlans() {
+    try {
+        console.log('Fetching plans from:', `${BASE_URL}/customer/plans`);
+        const response = await fetch(`${BASE_URL}/customer/plans`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const plans = await response.json();
+        console.log('Plans received:', plans);
+
+        const categorizedPlans = {
+            popularPlans: plans.filter(plan => plan.category === 'POPULAR_PLANS'),
+            validityPlans: plans.filter(plan => plan.category === 'VALIDITY_PLANS'),
+            dataPlans: plans.filter(plan => plan.category === 'DATA_PLANS'),
+            topupPlans: plans.filter(plan => plan.category === 'TOP_UP_PLANS'),
+            isdPlans: plans.filter(plan => plan.category === 'ISD_PLANS'),
+            comboPlans: plans.filter(plan => plan.category === 'COMBO_UNLIMITED_PLANS')
+        };
+        console.log('Categorized plans:', categorizedPlans);
+
+        document.getElementById('popularPlansContainer').innerHTML = generatePlanCards(categorizedPlans.popularPlans);
+        document.getElementById('validityPlansContainer').innerHTML = generatePlanCards(categorizedPlans.validityPlans);
+        document.getElementById('dataPlansContainer').innerHTML = generatePlanCards(categorizedPlans.dataPlans);
+        document.getElementById('topupPlansContainer').innerHTML = generatePlanCards(categorizedPlans.topupPlans);
+        document.getElementById('isdPlansContainer').innerHTML = generatePlanCards(categorizedPlans.isdPlans);
+        document.getElementById('comboPlansContainer').innerHTML = generatePlanCards(categorizedPlans.comboPlans);
+    } catch (error) {
+        console.error('Error fetching plans:', error);
+        showToast('Failed to load plans. Please try again.', 'Error', 'danger');
+        document.getElementById('popularPlansContainer').innerHTML = '<p class="text-danger">Error loading plans. Please try again later.</p>';
     }
 }
 
-// Declare global variables
-let selectedPlan = null;
-let selectedPlanBenefits = "";
-let selectedPaymentMethod = "";
-
-function selectPaymentMethod(method) {
-    selectedPaymentMethod = method;
-    let paymentButtons = document.querySelectorAll(".payment-options button");
-    paymentButtons.forEach(btn => btn.classList.remove("btn-primary"));
-    event.target.classList.add("btn-primary");
-}
-
-// Generate plan cards from HTML list
-function generatePlanCards(planListHTML) {
-    let tempDiv = document.createElement("div");
-    tempDiv.innerHTML = planListHTML;
-    let plans = tempDiv.getElementsByTagName("li");
-    let cards = "";
-
-    for (let plan of plans) {
-        let planText = plan.firstChild.textContent.trim();
-        let [amountPart, detailsPart] = planText.split(" - ");
-        let amount = amountPart.replace("₹", "").trim();
-        let benefits = detailsPart.trim();
-
-        cards += `
+// Generate plan cards from backend data
+function generatePlanCards(plans) {
+    if (!plans || plans.length === 0) return '<p>No plans available in this category.</p>';
+    return plans.map(plan => `
         <div class="col-md-4">
-            <div class="card p-3 text-center shadow-sm" onclick="selectPlan(${amount}, '${benefits}', this)">
-                <h5 class="fw-bold text-danger">₹${amount} Plan</h5>
-                <p class="text-dark">${benefits}</p>
+            <div class="card p-3 text-center shadow-sm" onclick="selectPlan(${plan.id}, ${plan.price}, '${plan.dataPerDay} for ${plan.validityDays} days', this)">
+                <h5 class="fw-bold text-danger">₹${plan.price} Plan</h5>
+                <p class="text-dark">${plan.dataPerDay} for ${plan.validityDays} days</p>
                 <button class="btn btn-danger w-100 mt-2 fw-bold"
                     style="background: linear-gradient(90deg, #C70039, #900C3F); border: none; padding: 10px; border-radius: 20px;"
-                    onclick="moveToPayment(${amount}, '${benefits}')">Recharge Now</button>
+                    onclick="moveToPayment(${plan.id}, ${plan.price}, '${plan.dataPerDay} for ${plan.validityDays} days')">Recharge Now</button>
             </div>
         </div>
-    `;
-    }
-
-    return cards;
+    `).join('');
 }
 
-// Show tooltip for invalid input
-function showTooltip(message) {
-    let mobileInput = document.getElementById("customerMobile");
+// Global variables
+let selectedPlanId = null;
+let selectedPlanAmount = null;
+let selectedPlanBenefits = '';
+let selectedPaymentMethod = '';
 
-    mobileInput.setAttribute("title", message);
-    mobileInput.setAttribute("data-bs-original-title", message);
+// Select a plan
+function selectPlan(planId, amount, benefits, element) {
+    selectedPlanId = planId;
+    selectedPlanAmount = amount;
+    selectedPlanBenefits = benefits;
+    document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+    element.classList.add('selected');
+    showToast(`Plan ₹${amount} selected`, 'Plan Selected', 'info');
+}
 
-    let tooltip = new bootstrap.Tooltip(mobileInput);
-    tooltip.show();
+// Proceed to payment
+function moveToPayment(planId, amount, benefits) {
+    if (!validateMobileNumber()) return;
+    const mobileNumber = document.getElementById('customerMobile').value.trim();
+    localStorage.setItem('userMobile', mobileNumber);
+    selectedPlanId = planId;
+    selectedPlanAmount = amount;
+    selectedPlanBenefits = benefits;
+    document.getElementById('paymentMobile').innerText = mobileNumber;
+    document.getElementById('paymentAmount').innerText = amount;
+    document.getElementById('paymentBenefits').innerText = benefits;
+    document.getElementById('prepaidPlansSection').style.display = 'none';
+    document.getElementById('paymentSection').style.display = 'block';
+}
 
-    setTimeout(() => {
-        tooltip.hide();
-    }, 2000);
+// Confirm payment and send recharge request to backend
+async function confirmPayment() {
+    if (!selectedPaymentMethod) {
+        showToast('Please select a payment method before proceeding.', 'Payment Method Required', 'warning');
+        return;
+    }
+    const mobileNumber = localStorage.getItem('userMobile');
+    if (!mobileNumber || !selectedPlanId) {
+        showToast('Error: Missing mobile number or selected plan!', 'Error', 'danger');
+        return;
+    }
+    document.getElementById('loader').style.display = 'block';
+    document.getElementById('paymentSuccess').style.display = 'none';
+    const rechargeData = {
+        mobileNumber,
+        amount: selectedPlanAmount,
+        planDetails: selectedPlanBenefits,
+        paymentMethod: selectedPaymentMethod
+    };
+    try {
+        const response = await fetch(`${BASE_URL}/customer/recharge`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(rechargeData)
+        });
+        const result = await response.text();
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('paymentSuccess').style.display = 'block';
+        showToast(result, 'Success', 'success');
+        setTimeout(() => {
+            document.getElementById('paymentSuccess').style.display = 'none';
+            goHome();
+        }, 2000);
+    } catch (error) {
+        document.getElementById('loader').style.display = 'none';
+        showToast('Recharge failed. Please try again.', 'Error', 'danger');
+        console.error('Error during recharge:', error);
+    }
+}
+
+async function showTransactions() {
+    document.querySelector(".recommended-section").style.display = "none";
+    toggleSection('transactionSection');
+    const mobileNumber = localStorage.getItem('userMobile');
+    if (!mobileNumber) {
+        document.getElementById('transactionList').innerHTML = '<p>Please enter a mobile number in the recharge section first.</p>';
+        return;
+    }
+    try {
+        const response = await fetch(`${BASE_URL}/customer/transactions/${mobileNumber}`);
+        const transactions = await response.json();
+        const transactionList = document.getElementById('transactionList');
+        if (transactions.length === 0) {
+            transactionList.innerHTML = '<p>No recent transactions.</p>';
+            return;
+        }
+        transactionList.innerHTML = transactions.map((t, index) => `
+            <div class="transaction-item d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
+                <div>
+                    <p><strong>Mobile:</strong> ${t.mobileNumber}</p>
+                    <p><strong>Amount:</strong> ₹${t.amount}</p>
+                    <p><strong>Benefits:</strong> ${t.planDetails}</p>
+                    <p><strong>Payment Method:</strong> ${t.paymentMethod}</p>
+                    <p><strong>Date:</strong> ${t.transactionDate}</p>
+                </div>
+                <button class="btn btn-outline-danger" onclick="downloadReceipt(${t.id})">📄 Download Receipt</button>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        document.getElementById('transactionList').innerHTML = '<p>Failed to load transactions. Please try again.</p>';
+    }
+}
+
+// Download receipt from backend
+async function downloadReceipt(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/customer/transactions/download/${id}`);
+        if (!response.ok) throw new Error('Receipt not found');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `receipt_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast('Receipt downloaded successfully!', 'Success', 'success');
+    } catch (error) {
+        console.error('Error downloading receipt:', error);
+        showToast('Failed to download receipt.', 'Error', 'danger');
+    }
+}
+
+// Helper function to toggle sections
+function toggleSection(sectionId) {
+    const sections = ['heroCarousel', 'quickpay', 'recommended-section', 'paymentSection',
+        'transactionSection', 'profileSection', 'buyNewConnectionPage',
+        'helpSection', 'prepaidPlansSection'];
+    sections.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.display = id === sectionId ? 'block' : 'none';
+        }
+    });
+}
+
+// Show prepaid plans section
+function showPrepaidPlans() {
+
+    document.querySelector(".recommended-section").style.display = "none";
+
+    toggleSection('prepaidPlansSection');
+    loadCustomerPlans();
 }
 
 // Validate mobile number
 function validateMobileNumber() {
-    let mobileInput = document.getElementById("customerMobile");
-    let mobileNumber = mobileInput ? mobileInput.value.trim() : localStorage.getItem("userMobile");
-
+    let mobileInput = document.getElementById('customerMobile');
+    let mobileNumber = mobileInput ? mobileInput.value.trim() : localStorage.getItem('userMobile');
     if (!mobileNumber) {
-        showTooltip("This field is required!");
+        showTooltip('This field is required!');
         mobileInput.focus();
         return false;
     }
-
     if (!/^\d{10}$/.test(mobileNumber)) {
-        showTooltip("Please enter a valid 10-digit mobile number!");
+        showTooltip('Please enter a valid 10-digit mobile number!');
         mobileInput.focus();
         return false;
     }
-
     return true;
 }
 
-
+// Select payment method
 function selectPaymentMethod(method, element) {
-
     selectedPaymentMethod = method;
-
-
-    document.querySelectorAll('.payment-card').forEach(card => {
-        card.classList.remove('selected');
-    });
-
-
+    document.querySelectorAll('.payment-card').forEach(card => card.classList.remove('selected'));
     element.classList.add('selected');
-
-    // Show toast notification
-    showToast(`${method} selected as payment method`, "Payment Method", "info");
-
-    // Enable pay now button and add pulsing effect
-    const payNowBtn = document.getElementById('payNowBtn');
-    payNowBtn.classList.add('btn-pulse');
-
-    // Optional: Auto-scroll to pay now button on mobile
-    if (window.innerWidth < 768) {
-        setTimeout(() => {
-            payNowBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
-    }
+    showToast(`${method} selected as payment method`, 'Payment Method', 'info');
 }
 
-// Add click event listeners when the document is ready
-document.addEventListener('DOMContentLoaded', function () {
-    // Add explicit click handlers to improve touch device compatibility
-    document.getElementById('card-payment').addEventListener('click', function () {
-        selectPaymentMethod('Credit/Debit Card', this);
-    });
-
-    document.getElementById('upi-payment').addEventListener('click', function () {
-        selectPaymentMethod('UPI', this);
-    });
-
-    document.getElementById('netbanking-payment').addEventListener('click', function () {
-        selectPaymentMethod('Net Banking', this);
-    });
-});
-
-// Proceed to payment
-function moveToPayment() {
-    let mobileInput = document.getElementById("customerMobile");
-    let mobileNumber = mobileInput ? mobileInput.value.trim() : "";
-
-    if (!validateMobileNumber()) return;
-
-    // Store the correct mobile number in localStorage
-    localStorage.setItem("userMobile", mobileNumber);
-
-
-    selectedPlan = localStorage.getItem("selectedPlan");
-    selectedPlanBenefits = localStorage.getItem("selectedPlanBenefits");
-
-    document.getElementById("paymentMobile").innerText = mobileNumber;
-    document.getElementById("paymentAmount").innerText = `${selectedPlan}`;
-    document.getElementById("paymentBenefits").innerText = selectedPlanBenefits;
-
-    document.getElementById("prepaidPlansSection").style.display = "none";
-    document.getElementById("paymentSection").style.display = "block";
-}
-
-function confirmPayment() {
-    if (!selectedPaymentMethod) {
-
-        showToast("Please select a payment method before proceeding.", "Payment Method Required", "warning");
-        return;
-    }
-
-    document.getElementById("loader").style.display = "block";
-    document.getElementById("paymentSuccess").style.display = "none";
-
-    setTimeout(function () {
-        document.getElementById("loader").style.display = "none";
-        document.getElementById("paymentSuccess").style.display = "block";
-
-        let mobileNumber = localStorage.getItem("userMobile");
-
-        if (!mobileNumber || !selectedPlan) {
-
-            showToast("Error: Missing mobile number or selected plan!", "Error", "danger");
-            return;
-        }
-
-        // Replace alert with toast
-        showToast(`Recharge Successful: ₹${selectedPlan} for mobile: ${mobileNumber} using ${selectedPaymentMethod}`, "Success", "success");
-
-        saveTransaction();
-
-        setTimeout(function () {
-            document.getElementById("paymentSuccess").style.display = "none";
-            goHome();
-        }, 2000);
-    }, 2000);
-}
-
-function saveTransaction() {
-    let mobileNumber = localStorage.getItem("userMobile");
-
-    if (!mobileNumber || !selectedPlan) {
-        // Replace alert with toast
-        showToast("Error: No mobile number or selected plan found!", "Error", "danger");
-        return;
-    }
-
-    let transaction = {
-        mobile: mobileNumber,
-        amount: selectedPlan,
-        benefits: selectedPlanBenefits,
-        paymentMethod: selectedPaymentMethod,
-        date: new Date().toLocaleString()
-    };
-
-    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    transactions.unshift(transaction);
-    localStorage.setItem("transactions", JSON.stringify(transactions));
-}
-
-function showTransactions() {
-    document.getElementById("heroCarousel").style.display = "none";
-    document.getElementById("quickpay").style.display = "none";
-    document.querySelector(".recommended-section").style.display = "none";
-    document.getElementById("rechargeSection").style.display = "none";
-    document.getElementById("paymentSection").style.display = "none";
-    document.getElementById("transactionSection").style.display = "block";
-    document.getElementById("profileSection").style.display = "none";
-    document.getElementById("buyNewConnectionPage").style.display = "none";
-    document.getElementById("helpSection").style.display = "none";
-    document.getElementById("prepaidPlansSection").style.display = "none";
-
-    let transactionList = document.getElementById("transactionList");
-    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-
-    if (transactions.length === 0) {
-        transactionList.innerHTML = "<p>No recent transactions.</p>";
-        return;
-    }
-
-    transactionList.innerHTML = transactions.map((t, index) => `
-    <div class="transaction-item d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
-        <div>
-            <p><strong>Mobile:</strong> ${t.mobile}</p>
-            <p><strong>Amount:</strong> ₹${t.amount}</p>
-            <p><strong>Benefits:</strong> ${t.benefits}</p>
-            <p><strong>Payment Method:</strong> ${t.paymentMethod}</p>
-            <p><strong>Date:</strong> ${t.date}</p>
-        </div>
-        <button class="btn btn-outline-danger" onclick="generatePDF(${index})">📄 Generate PDF</button>
-    </div>
-`).join("");
-
-    // Add "Download All Transactions" button
-    transactionList.innerHTML += `
-    <div class="text-center mt-3">
-        <button class="btn btn-danger" onclick="generateAllPDF()">📥 Download All Transactions</button>
-    </div>
-`;
-}
-
-// Generate and Download PDF for a Transaction
-function generatePDF(index) {
-    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    let t = transactions[index];
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Header - Company Branding
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.text("MOBICOMM", 20, 20);
-    doc.setFontSize(10);
-    doc.text("123 Street, Bangalore, India", 20, 30);
-    doc.text("Email: support@mobicomm.in | Phone: +123 456 7890", 20, 35);
-
-    // Invoice Title
-    doc.setFontSize(16);
-    doc.setTextColor(255, 0, 0);
-    doc.text("Transaction Invoice", 80, 50);
-    doc.setDrawColor(0, 0, 0);
-    doc.line(20, 55, 190, 55);
-
-    // Transaction Details
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Invoice No: INV-${index + 1}`, 150, 65);
-    doc.text(`Date: ${t.date}`, 20, 65);
-    doc.text(`Customer Mobile: ${t.mobile}`, 20, 75);
-
-    // Table Data
-    const tableData = [
-        ["Description", "Details"],
-        ["Amount Paid", `₹${t.amount}`],
-        ["Plan Benefits", t.benefits],
-        ["Payment Method", t.paymentMethod],
-        ["Transaction Date", t.date]
-    ];
-
-    // AutoTable for Better Structure
-    doc.autoTable({
-        startY: 85,
-        headStyles: { fillColor: [255, 0, 0] }, // Red Header
-        bodyStyles: { fontSize: 12 },
-        theme: "grid",
-        head: [["Invoice Details", "Information"]],
-        body: tableData,
-        margin: { left: 20, right: 20 },
-    });
-
-    // Footer Section
-    doc.setFontSize(10);
-    doc.text("Thank you for your payment!", 80, doc.lastAutoTable.finalY + 20);
-    doc.text("For any queries, contact support@mobicomm.in", 60, doc.lastAutoTable.finalY + 30);
-
-    // Save PDF with a dynamic filename
-    doc.save(`Invoice_${t.mobile}_${t.date.replace(/[/,: ]/g, "_")}.pdf`);
-}
-
-// Generate PDF for all transactions
-function generateAllPDF() {
-    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    if (transactions.length === 0) {
-        alert("No transactions found!");
-        return;
-    }
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Header - Company Branding
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.text("MOBICOMM", 20, 20);
-    doc.setFontSize(10);
-    doc.text("123 Street, Bangalore, India", 20, 30);
-    doc.text("Email: support@mobicomm.in | Phone: +123 456 7890", 20, 35);
-
-    // Invoice Title
-    doc.setFontSize(16);
-    doc.setTextColor(255, 0, 0);
-    doc.text("All Transactions History", 70, 50);
-    doc.setDrawColor(0, 0, 0);
-    doc.line(20, 55, 190, 55); // Line Separator
-
-    // Prepare table data
-    let tableData = transactions.map((t, index) => [
-        index + 1, t.mobile, `₹${t.amount}`, t.benefits, t.paymentMethod, t.date
-    ]);
-
-    // AutoTable for listing all transactions
-    doc.autoTable({
-        startY: 65,
-        headStyles: { fillColor: [255, 0, 0] },
-        theme: "grid",
-        head: [["#", "Mobile", "Amount", "Benefits", "Payment Method", "Date"]],
-        body: tableData,
-        margin: { left: 10, right: 10 },
-    });
-
-    // Footer Section
-    doc.setFontSize(10);
-    doc.text("Thank you for using MOBICOMM!", 75, doc.lastAutoTable.finalY + 20);
-    doc.text("For any queries, contact support@mobicomm.in", 60, doc.lastAutoTable.finalY + 30);
-
-    // Save PDF
-    doc.save(`All_Transactions_${new Date().toISOString().slice(0, 10)}.pdf`);
-}
-
-
-
-function goBackToPlans() {
-    document.getElementById("paymentSection").style.display = "none";
-    document.getElementById("prepaidPlansSection").style.display = "block";
-}
-
-// Load Mobile Number from Local Storage on Page Load
 window.onload = function () {
-    loadCustomerPlans();
-    let storedMobile = localStorage.getItem("userMobile");
-    if (storedMobile) {
-        document.getElementById("paymentMobile").innerText = storedMobile;
+    const mobileInput = document.getElementById('customerMobile');
+    if (mobileInput) {
+        mobileInput.value = ''; // Clear the field on every page load
     }
 };
 
+// Show toast notification
+function showToast(message, title = 'Notification', type = 'info') {
+    const toastContainer = document.createElement('div');
+    toastContainer.innerHTML = `
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">${title}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        </div>
+    `;
+    document.body.appendChild(toastContainer);
+    const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+    toast.show();
+    setTimeout(() => toastContainer.remove(), 3000);
+}
 
+// Show tooltip
+function showTooltip(message) {
+    let mobileInput = document.getElementById('customerMobile');
+    mobileInput.setAttribute('title', message);
+    mobileInput.setAttribute('data-bs-original-title', message);
+    let tooltip = new bootstrap.Tooltip(mobileInput);
+    tooltip.show();
+    setTimeout(() => tooltip.hide(), 2000);
+}
+
+function clearTransactionHistory() {
+    const transactionList = document.getElementById('transactionList');
+    transactionList.innerHTML = '<p>No recent transactions.</p>';
+    showToast('Transaction history cleared from view.', 'Info', 'info');
+}
 
 // Chart Configurations for Clean UI
 const chartOptions = {
@@ -634,29 +606,14 @@ new Chart(document.getElementById('paymentMethodChart'), {
 
 
 
-// Function to show the "Buy New Connection" page and hide other sections
 
-
+// Go to Buy New Connection page (use toggleSection for consistency)
 function goToBuyNewConnection() {
-    // Hide other sections
-    document.getElementById("heroCarousel").style.display = "none";
-    document.getElementById("quickpay").style.display = "none";
     document.querySelector(".recommended-section").style.display = "none";
-    document.getElementById("rechargeSection").style.display = "none";
-    document.getElementById("paymentSection").style.display = "none";
-    document.getElementById("transactionSection").style.display = "none";
-    document.getElementById("profileSection").style.display = "none";
-    document.getElementById("helpSection").style.display = "none";
-    document.getElementById("profileSection").style.display = "none";
-    document.getElementById("prepaidPlansSection").style.display = "none";
-
-    // Show the Buy New Connection page
-    document.getElementById("buyNewConnectionPage").style.display = "block";
-
+    toggleSection('buyNewConnectionPage');
 }
 
-
-
+// Validation for Customer Name
 document.getElementById("customerName").addEventListener("blur", function () {
     let name = this.value.trim();
     let errorElement = document.getElementById("nameError");
@@ -673,6 +630,7 @@ document.getElementById("customerName").addEventListener("blur", function () {
     }
 });
 
+// Validation for Mobile Number
 document.getElementById("mobileNumber").addEventListener("blur", function () {
     let mobile = this.value.trim();
     let errorElement = document.getElementById("mobileError");
@@ -689,114 +647,129 @@ document.getElementById("mobileNumber").addEventListener("blur", function () {
     }
 });
 
+// Validation for Aadhaar Upload
 document.getElementById("aadhaarUpload").addEventListener("change", function () {
     let errorElement = document.getElementById("aadhaarError");
+    let preview = document.getElementById("aadhaarPreview");
 
     if (this.files.length === 0) {
         errorElement.textContent = "Please upload your Aadhaar card!";
         this.classList.add("is-invalid");
+        preview.src = "";
     } else {
         errorElement.textContent = "";
         this.classList.remove("is-invalid");
+        const file = this.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            preview.src = e.target.result; // Show preview
+        };
+        reader.readAsDataURL(file);
     }
 });
 
-document.getElementById("newConnectionForm").addEventListener("submit", function (event) {
+// Handle Form Submission
+document.getElementById("newConnectionForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     let customerName = document.getElementById("customerName").value.trim();
-    let mobile = document.getElementById("mobileNumber").value.trim();
+    let mobileNumber = document.getElementById("mobileNumber").value.trim();
     let aadhaarFile = document.getElementById("aadhaarUpload").files[0];
 
+    // Client-side validation
     if (customerName === "" || !/^[a-zA-Z0-9 ]{3,}$/.test(customerName)) {
-        alert("Please enter a valid name with at least 3 alphanumeric characters!");
+        showToast("Please enter a valid name with at least 3 alphanumeric characters!", "Error", "danger");
         return;
     }
 
-    if (mobile === "" || !/^\d{10}$/.test(mobile)) {
-        alert("Please enter a valid 10-digit mobile number!");
+    if (mobileNumber === "" || !/^\d{10}$/.test(mobileNumber)) {
+        showToast("Please enter a valid 10-digit mobile number!", "Error", "danger");
         return;
     }
 
     if (!aadhaarFile) {
-        alert("Please upload your Aadhaar card!");
+        showToast("Please upload your Aadhaar card!", "Error", "danger");
         return;
     }
 
-    let reader = new FileReader();
-    reader.onload = function (event) {
-        let aadhaarData = event.target.result;
+    // Convert file to Base64
+    const reader = new FileReader();
+    reader.onload = async function (event) {
+        const aadhaarData = event.target.result; // Base64 string
 
-        let newRequest = { mobile, customerName, aadhaarData, status: "Pending" };
+        // Prepare KYC request data
+        const kycRequest = {
+            mobileNumber: mobileNumber,
+            customerName: customerName,
+            aadharDocument: aadhaarData, // Send as Base64 string
+            status: "Pending" // Default status set by backend, but included for clarity
+        };
 
-        let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-        kycRequests.push(newRequest);
-        localStorage.setItem("kycRequests", JSON.stringify(kycRequests));
+        try {
+            const response = await fetch(`${BASE_URL}/admin/kyc/add`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(kycRequest)
+            });
 
-        alert("Your request has been submitted successfully! MobiComm will contact you for KYC.");
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const result = await response.json();
+            showToast(result.message, "Success", "success");
+            document.getElementById("newConnectionForm").reset(); // Clear form
+            document.getElementById("aadhaarPreview").src = ""; // Clear preview
+        } catch (error) {
+            console.error("Error submitting KYC request:", error);
+            showToast("Failed to submit KYC request. Please try again.", "Error", "danger");
+        }
     };
     reader.readAsDataURL(aadhaarFile);
-
-    this.reset();
 });
 
+// View Latest KYC Request (optional: fetch from backend)
+async function viewRequest() {
+    try {
+        const response = await fetch(`${BASE_URL}/admin/kyc/pending`);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const pendingRequests = await response.json();
 
+        if (pendingRequests.length === 0) {
+            showToast("No pending KYC requests found!", "Info", "info");
+            return;
+        }
 
-function viewRequest() {
-    let kycRequests = JSON.parse(localStorage.getItem("kycRequests")) || [];
-
-    if (kycRequests.length === 0) {
-        showToast("No KYC request found!");
-        return;
+        const latestRequest = pendingRequests[pendingRequests.length - 1];
+        const statusClass = "status-" + latestRequest.status.toLowerCase();
+        const toastMessage = `
+            <strong>Name:</strong> ${latestRequest.customerName}<br>
+            <strong>Mobile:</strong> ${latestRequest.mobileNumber}<br>
+            <strong>Status:</strong> <span class="${statusClass}">${latestRequest.status}</span>
+        `;
+        showToast(toastMessage, "KYC Request", "info");
+    } catch (error) {
+        console.error("Error fetching KYC requests:", error);
+        showToast("Failed to fetch KYC requests. Please try again.", "Error", "danger");
     }
-
-    let latestRequest = kycRequests[kycRequests.length - 1];
-    let statusClass = "status-" + latestRequest.status.toLowerCase();
-
-    let toastMessage = `<strong>Name:</strong> ${latestRequest.customerName}<br>
-                <strong>Mobile:</strong> ${latestRequest.mobile}<br>
-                <strong>Status:</strong> <span class='${statusClass}'>${latestRequest.status}</span>`;
-
-    showToast(toastMessage);
 }
 
-function showToast(message) {
-    let toastContainer = document.createElement("div");
-    toastContainer.className = "toast-message";
-    toastContainer.innerHTML = message;
+// Reuse your existing showToast function (updated to handle HTML content)
+function showToast(message, title = "Notification", type = "info") {
+    const toastContainer = document.createElement("div");
+    toastContainer.innerHTML = `
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">${title}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        </div>
+    `;
     document.body.appendChild(toastContainer);
-
-    setTimeout(() => {
-        toastContainer.classList.add("show");
-    }, 100);
-
-    setTimeout(() => {
-        toastContainer.classList.remove("show");
-        setTimeout(() => document.body.removeChild(toastContainer), 300);
-    }, 3000);
+    const toast = new bootstrap.Toast(toastContainer.querySelector(".toast"));
+    toast.show();
+    setTimeout(() => toastContainer.remove(), 5000);
 }
-
-// CSS for toast message
-const toastStyles = document.createElement("style");
-toastStyles.innerHTML = `
-.toast-message {
-position: fixed;
-bottom:80px;
-left: 50%;
-transform: translateX(-50%);
-background: rgba(0, 0, 0, 0.8);
-color: #fff;
-padding: 10px 20px;
-border-radius: 5px;
-font-size: 14px;
-opacity: 0;
-transition: opacity 0.3s ease-in-out;
-}
-.toast-message.show {
-opacity: 1;
-}
-`;
-document.head.appendChild(toastStyles);
 
 function handleRecharge(amount, benefits) {
     selectedPlan = amount;
