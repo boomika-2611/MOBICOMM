@@ -107,15 +107,15 @@
                     <!-- Validation Message -->
                     <p id="errorMessage" class="error-message"></p>
                     <button class="btn btn-recharge w-100" onclick="handleRecharge()">Recharge Now</button>
-
                 </div>
             </div>
         </div>
     </div>
 
     <div id="plans" class="container mt-5" style="display: none;">
-        <h3 class="text-center"><button class="btn btn-secondary" onclick="goBackToQuickPay()">Back</button> Select Your
-            Plan</h3>
+        <h3 class="text-center">
+            <button class="btn btn-secondary" onclick="goBackToQuickPay()">Back</button> Select Your Plan
+        </h3>
         <div class="row" id="planContainer"></div>
     </div>
 
@@ -214,7 +214,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="mobi-comm-heading">Buy New Connection</h3>
-                <button class="btn btn-view" onclick="viewRequest()">View Request</button>
+                <!-- <button class="btn btn-view" onclick="viewRequest()">View Request</button> -->
             </div>
             <p class="text-muted">MobiComm will provide doorstep KYC banking.</p>
 
@@ -234,6 +234,20 @@
                     <small id="mobileError" class="text-danger"></small>
                 </div>
 
+                <!-- Email Input  -->
+                <div class="mb-3">
+                    <label for="email" class="input-label">Email </label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    <small id="emailError" class="text-danger"></small>
+                </div>
+
+                <!-- Password Input -->
+                <div class="mb-3">
+                    <label for="password" class="input-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter a password" required>
+                    <small id="passwordError" class="text-danger"></small>
+                </div>
+
                 <!-- Aadhaar Upload -->
                 <div class="mb-3">
                     <label for="aadhaarUpload" class="input-label">Upload Aadhaar Card</label>
@@ -250,15 +264,8 @@
         </div>
     </div>
 
-    <!-- Request Details Section -->
-    <div id="requestDetails" style="display: none;">
-        <h4>Request Details</h4>
-        <p><strong>Name:</strong> <span id="reqName"></span></p>
-        <p><strong>Mobile:</strong> <span id="reqMobile"></span></p>
-        <p><strong>Status:</strong> <span id="reqStatus" class="status-pending"></span></p>
-        <img id="reqAadhaar" alt="Aadhaar Preview" style="max-width: 120px;" />
-    </div>
-
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
 
     <!-- Help & Support Section -->
     <div id="helpSection" class="container mt-5" style="display: none;">

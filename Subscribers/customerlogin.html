@@ -21,10 +21,13 @@
         <form id="loginForm">
             <div class="mb-3">
                 <label for="mobileNumber" class="form-label">Enter Mobile Number</label>
-                <input type="text" class="form-control" id="mobileNumber" value="+91" required>
-
+                <div class="input-group">
+                    <span class="input-group-text">+91</span>
+                    <input type="text" class="form-control" id="mobileNumber" maxlength="10" placeholder="Enter mobile number" required>
+                </div>
                 <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
             </div>
+            
             <button type="button" class="btn btn-login w-100" id="getOtpBtn">Get OTP</button>
 
             <p id="enterOtpText">Enter OTP</p>

@@ -458,7 +458,7 @@ section.active {
     font-size: 14px;
     margin-top: 5px;
     display: none;
-    /* Initially hidden */
+   
 }
 
 /* Back to Top Button Styling */
@@ -566,4 +566,3 @@ section.active {
         max-height: 70px;
     }
 }
-

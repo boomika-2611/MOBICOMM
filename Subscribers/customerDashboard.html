@@ -37,9 +37,10 @@
                             </li> -->
                             <li><a class="dropdown-item" href="#" onclick="showPrepaidPlans()"><i
                                         class="fas fa-list-ul"></i> Prepaid Plans</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="goToBuyNewConnection()"><i
-                                        class="fas fa-sim-card"></i> Buy New Connection</a>
-                            </li>
+                            <li><a class="dropdown-item" href="#" onclick="showTransactions()">
+                                    <i class="fas fa-history"></i> Recharge History
+                                </a></li>
+
                         </ul>
                     </li>
 
@@ -48,29 +49,25 @@
                             Insights</a>
                     </li>
 
-                    <!-- Role Dropdown with Profile, Payment, Recharge, Transactions, Help, and Logout -->
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                             data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> Account
+                            <i class="fas fa-user-circle"></i> My Account <!-- This will be replaced -->
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="#" onclick="toggleProfile()"><i class="fas fa-user"></i>
                                     Profile</a></li>
-
-                            <!-- <li><a class="dropdown-item" href="#"><i class="fas fa-credit-card"></i> Payment & Recharge</a></li> -->
                             <li><a class="dropdown-item" href="#" onclick="showPrepaidPlans()"><i
                                         class="fas fa-wallet"></i> Recharge</a></li>
                             <li><a class="dropdown-item" href="#" onclick="showTransactions()"><i
-                                        class="fas fa-exchange-alt"></i> Transactions</a>
-                            </li>
+                                        class="fas fa-exchange-alt"></i> Transactions</a></li>
                             <li><a class="dropdown-item" href="#" onclick="showHelpSection()"><i
                                         class="fas fa-question-circle"></i> Help</a></li>
                             <li><a class="dropdown-item" href="../index.html"><i class="fas fa-sign-out-alt"></i>
                                     Logout</a></li>
                         </ul>
                     </li>
-
     </nav>
     <!-- Hero Section with Carousel -->
     <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -94,20 +91,6 @@
             </div>
         </div>
     </div>
-
-    <!-- QuickPay Section with ID -->
-    <!-- <div id="quickpay" class="quickpay-container container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card shadow-lg p-4">
-                    <h3 class="text-center">QuickPay</h3>
-                    <p class="text-center">Enter your mobile number to recharge instantly.</p>
-                    <input type="text" class="form-control mb-3" placeholder="Enter Mobile Number">
-                    <button class="btn btn-recharge w-100">Recharge Now</button>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
     <!-- MobiComm Customer Dashboard -->
     <div id="quickpay" class="quickpay-container container mt-5">
@@ -245,7 +228,8 @@
             <button class="btn-edit" onclick="toggleEdit()">Edit Profile</button>
         </div>
 
-        <!-- Edit Profile Section -->
+
+
         <div class="edit-section mt-3">
             <div class="edit-profile-card">
                 <h4 class="text-center mb-3">Edit Profile</h4>
@@ -255,26 +239,22 @@
                 </div>
                 <label>Name</label>
                 <input type="text" id="editName" class="form-control" required>
-
                 <label>Mobile Number</label>
-                <input type="text" id="editPhone" class="form-control" required>
-
+                <input type="text" id="editPhone" class="form-control" disabled required>
                 <label>Alternate Mobile Number</label>
                 <input type="text" id="editAltPhone" class="form-control">
-
                 <label>Email</label>
                 <input type="email" id="editEmail" class="form-control" required>
-
+                <label>Password</label>
+                <input type="password" id="editPassword" class="form-control">
                 <label>Address</label>
                 <textarea id="editAddress" class="form-control" required></textarea>
-
                 <button class="btn-edit w-100 mt-3" onclick="saveProfile()">Save Changes</button>
             </div>
         </div>
-    </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
+        <!-- Toast Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100;"></div>
         <div id="toastMessage" class="toast align-items-center text-white bg-success border-0" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
@@ -288,6 +268,7 @@
     </div>
 
     <!-- Prepaid Plans Section -->
+    <!-- Prepaid Plans Section -->
     <div id="prepaidPlansSection" class="container3" style="display: none;">
         <div class="recharge-card shadow-lg p-4 rounded-4">
             <h2 class="text-center fw-bold" style="color: #444;">Prepaid Plans</h2>
@@ -296,40 +277,42 @@
                 <input type="text" id="customerMobile" class="form-control border-danger"
                     placeholder="Enter 10-digit mobile number" style="width: 250px;">
             </div>
+
+            <!-- Search and Filter Section -->
+            <div class="filter-section">
+                <h5 class="fw-bold text-dark">Filter Plans</h5>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label for="filterCategory" class="form-label">Category</label>
+                        <select id="filterCategory" class="form-select">
+                            <option value="">All Categories</option>
+                            <!-- Options will be dynamically populated -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filterValidity" class="form-label">Validity (days)</label>
+                        <input type="number" id="filterValidity" class="form-control" placeholder="e.g., 30">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filterData" class="form-label">Data Per Day</label>
+                        <input type="text" id="filterData" class="form-control" placeholder="e.g., 2GB">
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button class="btn btn-danger w-100" onclick="filterPlans()">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="recharge-header">
                 <h4 class="fw-bold text-dark">Select a Prepaid Plan</h4>
                 <i class="fas fa-list-ul fa-lg text-danger"></i>
             </div>
+            <!-- Dynamic Tabs and Content -->
             <ul class="nav nav-tabs" id="planTabs">
-                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#popularPlans">Popular
-                        Plans</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#validityPlans">Validity Plans</a>
-                </li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#dataPlans">Data Plans</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#topupPlans">Top-Up Plans</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#isdPlans">ISD Plans</a></li>
-                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#comboPlans">Combo\Unlimited
-                        Plans</a></li>
+                <!-- Tabs will be dynamically populated -->
             </ul>
-            <div class="tab-content mt-3">
-                <div class="tab-pane fade show active" id="popularPlans">
-                    <div class="row" id="popularPlansContainer"></div>
-                </div>
-                <div class="tab-pane fade" id="validityPlans">
-                    <div class="row" id="validityPlansContainer"></div>
-                </div>
-                <div class="tab-pane fade" id="dataPlans">
-                    <div class="row" id="dataPlansContainer"></div>
-                </div>
-                <div class="tab-pane fade" id="topupPlans">
-                    <div class="row" id="topupPlansContainer"></div>
-                </div>
-                <div class="tab-pane fade" id="isdPlans">
-                    <div class="row" id="isdPlansContainer"></div>
-                </div>
-                <div class="tab-pane fade" id="comboPlans">
-                    <div class="row" id="comboPlansContainer"></div>
-                </div>
+            <div class="tab-content mt-3" id="planTabContent">
+                <!-- Tab panes will be dynamically populated -->
             </div>
         </div>
     </div>
@@ -341,24 +324,22 @@
     </div>
 
     <!-- Payment Page Section -->
+    <!-- Payment Page Section -->
     <div id="paymentSection" class="container3" style="display: none;">
-
         <div class="recharge-card">
             <div class="recharge-header">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <button class="btn btn-outline-danger" onclick="goBackToPlans()">
-                        ← Back
-                    </button>
+                    <button class="btn btn-outline-danger" onclick="goBackToPlans()">← Back</button>
                 </div>
                 <h2 class="text-center fw-bold" style="color: #444;">Payment Summary</h2>
-
                 <i class="fas fa-wallet fa-lg text-danger"></i>
-
             </div>
 
             <!-- Payment Details -->
             <div class="payment-summary">
                 <p><strong>Mobile Number:</strong> <span id="paymentMobile"></span></p>
+                <p><strong>Email:</strong> <input type="email" id="paymentEmail"
+                        class="form-control w-50 d-inline-block" placeholder="Enter your email"></p>
                 <p><strong>Selected Plan:</strong> ₹<span id="paymentAmount"></span></p>
                 <p><strong>Plan Benefits:</strong> <span id="paymentBenefits"></span></p>
                 <h5 class="fw-bold text-dark mt-4">Select Payment Method</h5>
@@ -368,7 +349,7 @@
                         <div class="col-md-4">
                             <div class="payment-option-card">
                                 <div class="payment-card bg-white rounded-4 shadow-sm p-3 h-100" id="card-payment"
-                                    onclick="selectPaymentMethod('Credit/Debit Card', this)">
+                                    onclick="selectPaymentMethod('card', this)">
                                     <div class="payment-icon mb-2">
                                         <i class="fas fa-credit-card fa-2x text-danger"></i>
                                     </div>
@@ -383,7 +364,7 @@
                         <div class="col-md-4">
                             <div class="payment-option-card">
                                 <div class="payment-card bg-white rounded-4 shadow-sm p-3 h-100" id="upi-payment"
-                                    onclick="selectPaymentMethod('UPI', this)">
+                                    onclick="selectPaymentMethod('upi', this)">
                                     <div class="payment-icon mb-2">
                                         <i class="fas fa-mobile-alt fa-2x text-success"></i>
                                     </div>
@@ -398,7 +379,7 @@
                         <div class="col-md-4">
                             <div class="payment-option-card">
                                 <div class="payment-card bg-white rounded-4 shadow-sm p-3 h-100" id="netbanking-payment"
-                                    onclick="selectPaymentMethod('Net Banking', this)">
+                                    onclick="selectPaymentMethod('netbanking', this)">
                                     <div class="payment-icon mb-2">
                                         <i class="fas fa-university fa-2x text-primary"></i>
                                     </div>
@@ -411,10 +392,9 @@
                     </div>
                 </div>
 
-
                 <div class="text-center mt-4">
                     <button class="btn btn-danger px-5 py-2 fw-bold" style="background: linear-gradient(90deg, #C70039, #900C3F); 
-                   border: none; padding: 12px; border-radius: 30px;" onclick="confirmPayment()">
+                border: none; padding: 12px; border-radius: 30px;" onclick="confirmPayment()">
                         ✅ Pay Now
                     </button>
                 </div>
@@ -443,11 +423,9 @@
             <div id="transactionList">
                 <p>No recent transactions.</p>
             </div>
-
-            <!-- Back to Home Button -->
-            <!-- <button class="btn-recharge mt-4" onclick="goHome()">Back to Home</button> -->
         </div>
     </div>
+
     <!-- Help & Support Section -->
     <div id="helpSection" class="container3" style="display: none;">
         <div class="recharge-card">
@@ -576,7 +554,8 @@
                 <!-- Mobile Number Input -->
                 <div class="mb-3">
                     <label for="mobileNumber" class="input-label">Mobile Number</label>
-                    <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number" required>
+                    <input type="text" class="form-control" id="mobileNumber" placeholder="Enter 10-digit number"
+                        required>
                     <small id="mobileError" class="text-danger"></small>
                 </div>
 
@@ -597,15 +576,16 @@
     </div>
 
     <!-- Request Details Section -->
-    <div id="requestDetails" style="display: none;">
+    <!-- <div id="requestDetails" style="display: none;">
         <h4>Request Details</h4>
         <p><strong>Name:</strong> <span id="reqName"></span></p>
         <p><strong>Mobile:</strong> <span id="reqMobile"></span></p>
         <p><strong>Status:</strong> <span id="reqStatus" class="status-pending"></span></p>
         <img id="reqAadhaar" alt="Aadhaar Preview" style="max-width: 120px;" />
-    </div>
+    </div> -->
+    <div id="toastContainer" class="toast-container"></div>
 
-    
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -658,9 +638,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="customerDashboardscript.js"></script>
-
 
 </body>
 

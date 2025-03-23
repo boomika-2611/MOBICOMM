@@ -1,37 +1,33 @@
-const backendUrl = "http://localhost:8083/auth/user"; 
-let generatedOTP = "";
+const backendUrl = "http://localhost:8083/api/user";
 
-// Ensure +91 is always present in the input field
-document.getElementById("mobileNumber").addEventListener("focus", function () {
-    if (!this.value.startsWith("+91")) {
-        this.value = "+91";
-    }
-});
+// Store token in sessionStorage
+function setToken(token) {
+    sessionStorage.setItem("userToken", token);
+}
 
-// Prevent user from deleting +91
+// Get token from sessionStorage
+function getToken() {
+    return sessionStorage.getItem("userToken");
+}
+
+// Remove token on logout
+function logout() {
+    sessionStorage.removeItem("userToken");
+    sessionStorage.removeItem("userMobile");
+    window.location.href = "login.html";
+}
+
+
 document.getElementById("mobileNumber").addEventListener("input", function () {
-    if (!this.value.startsWith("+91")) {
-        this.value = "+91";
-    }
-
-    // Allow only 10 digits after +91
-    let numericPart = this.value.slice(3).replace(/\D/g, ""); // Remove non-numeric chars
-    if (numericPart.length > 10) {
-        numericPart = numericPart.slice(0, 10); // Limit to 10 digits
-    }
-    this.value = "+91" + numericPart;
-
-    if (numericPart.length === 10) {
-        this.classList.remove("is-invalid");
-    }
+    this.value = this.value.replace(/\D/g, "").slice(0, 10); // Only allow numbers, max 10 digits
 });
 
-// Handle OTP request from backend
+// Handle OTP request
 document.getElementById("getOtpBtn").addEventListener("click", async function () {
     let mobileInput = document.getElementById("mobileNumber");
-    let mobileNumber = mobileInput.value.trim();
+    let phoneNumber = mobileInput.value.trim();
 
-    if (mobileNumber.length !== 13) { 
+    if (phoneNumber.length !== 10) {
         mobileInput.classList.add("is-invalid");
         return;
     } else {
@@ -39,20 +35,16 @@ document.getElementById("getOtpBtn").addEventListener("click", async function ()
     }
 
     try {
-        let response = await fetch(`${backendUrl}/login`, {
+        let response = await fetch(`${backendUrl}/send-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phoneNumber: mobileNumber })
+            body: JSON.stringify({ phoneNumber })
         });
 
-        let otpData = await response.json();
-        if (!response.ok) {
-            throw new Error(otpData.error || "Failed to get OTP");
-        }
+        let data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Failed to get OTP");
 
-        generatedOTP = otpData.otp; 
-        alert("Your OTP is: " + generatedOTP); 
-
+        alert("OTP sent successfully!");
         document.getElementById("getOtpBtn").style.display = "none";
         document.getElementById("enterOtpText").style.display = "block";
         document.getElementById("otpContainer").style.display = "flex";
@@ -68,33 +60,31 @@ document.getElementById("resendOTP").addEventListener("click", function () {
     document.getElementById("getOtpBtn").click();
 });
 
-
+// Handle OTP input movement automatically
 const otpInputs = document.querySelectorAll(".otp-input");
 
 otpInputs.forEach((input, index) => {
     input.addEventListener("input", function (event) {
         let value = event.target.value;
-
         if (value.length === 1 && index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus(); 
+            otpInputs[index + 1].focus();
         }
     });
 
     input.addEventListener("keydown", function (event) {
         if (event.key === "Backspace" && this.value === "" && index > 0) {
-            otpInputs[index - 1].focus(); 
+            otpInputs[index - 1].focus();
         }
     });
 
     input.addEventListener("paste", function (event) {
         event.preventDefault();
         let pasteData = (event.clipboardData || window.clipboardData).getData("text");
-
-        if (/^\d{4}$/.test(pasteData)) { 
+        if (/^\d{4}$/.test(pasteData)) {
             otpInputs.forEach((inp, i) => {
                 inp.value = pasteData[i] || "";
             });
-            otpInputs[3].focus(); 
+            otpInputs[3].focus();
         }
     });
 });
@@ -102,25 +92,29 @@ otpInputs.forEach((input, index) => {
 // Handle OTP verification with backend
 document.getElementById("loginForm").addEventListener("submit", async function (event) {
     event.preventDefault();
-    let mobileNumber = document.getElementById("mobileNumber").value.trim();
+    let phoneNumber = document.getElementById("mobileNumber").value.trim();
     let enteredOTP = Array.from(document.querySelectorAll(".otp-input")).map(i => i.value).join("");
+
+    if (phoneNumber.length !== 10 || enteredOTP.length !== 4) {
+        showToast("Please enter a valid mobile number and OTP.");
+        return;
+    }
 
     try {
         let response = await fetch(`${backendUrl}/validate-otp`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phoneNumber: mobileNumber, otp: enteredOTP })
+            body: JSON.stringify({ phoneNumber, otp: enteredOTP }) // Send only 10 digits
         });
 
         let result = await response.json();
-        if (!response.ok) {
-            throw new Error(result.error || "Invalid OTP");
-        }
+        if (!response.ok) throw new Error(result.error || "Invalid OTP");
+
+        setToken(result.token);
+        sessionStorage.setItem("userMobile", phoneNumber);
 
         showToast("Login Successful! Redirecting...");
-        setTimeout(() => {
-            window.location.href = "customerDashboard.html";
-        }, 2000);
+        setTimeout(() => window.location.href = "customerDashboard.html", 2000);
     } catch (error) {
         showToast(error.message);
     }
@@ -129,6 +123,16 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 // Show toast messages
 function showToast(message) {
     let toastBody = document.querySelector("#toastMessage .toast-body");
+    if (!toastBody) {
+        const toastContainer = document.createElement("div");
+        toastContainer.innerHTML = `
+            <div id="toastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body"></div>
+            </div>
+        `;
+        document.body.appendChild(toastContainer);
+        toastBody = document.querySelector("#toastMessage .toast-body");
+    }
     toastBody.textContent = message;
     let toast = new bootstrap.Toast(document.getElementById("toastMessage"));
     toast.show();

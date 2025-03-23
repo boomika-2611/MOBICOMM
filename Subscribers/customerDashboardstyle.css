@@ -292,158 +292,89 @@ body {
 
 
 /* Global Styles */
-
 .container3 {
-    max-width: 980px;
-    margin: 50px auto;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* Recharge Section */
 .recharge-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    transition: all 0.3s ease-in-out;
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .recharge-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
 .recharge-header h4 {
-    font-size: 22px;
-    font-weight: bold;
+    margin: 0;
+    color: #444;
 }
 
-/* Plan Selection */
-.plan-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+.nav-tabs .nav-link {
+    color: #444;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    color: #C70039;
+    border-bottom: 2px solid #C70039;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card.selected {
+    border: 2px solid #C70039;
+    background-color: #fff5f5;
+}
+
+.payment-option-card .payment-card {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.payment-option-card .payment-card.selected {
+    border: 2px solid #C70039;
+    background-color: #fff5f5;
+}
+
+.payment-option-card .payment-icon {
     text-align: center;
-    border: 2px solid transparent;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    font-weight: 600;
 }
 
-.plan-card:hover,
-.plan-card.selected {
-    border: 2px solid #900c3f;
-    transform: scale(1.05);
-    box-shadow: 0px 6px 15px rgba(199, 0, 57, 0.2);
+.payment-option-card .payment-title {
+    text-align: center;
+    font-size: 1.1rem;
 }
 
-.plan-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #900c3f;
+.payment-option-card .payment-subtitle {
+    text-align: center;
+    font-size: 0.9rem;
 }
 
-/* Recharge Button */
-.btn-recharge {
-    background: #900c3f;
-    color: white;
-    padding: 12px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    width: 100%;
-    font-weight: bold;
-    border: none;
-    font-size: 16px;
-}
-
-.btn-recharge:hover {
-    background: #750029;
-}
-
-/* Loader & Payment Status */
 .loader {
+    display: none;
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #900c3f;
+    border-top: 4px solid #C70039;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     animation: spin 1s linear infinite;
     margin: 20px auto;
-    display: none;
 }
-
-.payment-status {
-    display: none;
-    text-align: center;
-    padding: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    color: green;
-}
-
-.payment-card {
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-    position: relative;
-    cursor: pointer;
-    text-align: center;
-    overflow: hidden;
-}
-
-.payment-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-.payment-card.selected {
-    border-color: #C70039;
-    background-color: rgba(199, 0, 57, 0.05);
-}
-
-.payment-card.selected:after {
-    content: "✓";
-    position: absolute;
-    top: -5px;
-    right: 10px;
-    background: #C70039;
-    color: white;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.selection-indicator {
-    height: 5px;
-    background: linear-gradient(90deg, #C70039, #900C3F);
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    transition: width 0.3s ease;
-}
-
-.payment-card.selected .selection-indicator {
-    width: 100%;
-}
-
-
-#payNowBtn {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#payNowBtn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(199, 0, 57, 0.3);
-}
-
 
 @keyframes spin {
     0% {
@@ -453,6 +384,31 @@ body {
     100% {
         transform: rotate(360deg);
     }
+}
+
+.payment-status {
+    display: none;
+    text-align: center;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.transaction-item {
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filter-section .form-label {
+    font-weight: 500;
+    color: #444;
 }
 
 /* Styling for Buy New Connection Page */
@@ -859,4 +815,13 @@ h6 {
 /* Show button when scrolled */
 .show {
     display: block !important;
+}
+
+/* customerDashboardstyle.css */
+.nav-link.dropdown-toggle i {
+    margin-right: 5px;
+}
+
+.nav-link.dropdown-toggle i.fas.fa-caret-down {
+    margin-left: 5px;
 }

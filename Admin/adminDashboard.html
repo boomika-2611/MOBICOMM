@@ -36,7 +36,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button"
                             data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> Account
+                            <i class="fas fa-user-circle"></i> Admin
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                             <li><a class="dropdown-item" href="#" onclick="loadAdminProfile()"><i
@@ -118,15 +118,42 @@
         </div>
     </div>
     <!-- Prepaid Plans Content -->
-    <div id="prepaidPlans" class="container mt-5" style="display: none;">
-        <h2 class="text-center mb-4">Manage Prepaid Plans</h2>
-        <div class="d-flex justify-content-end mb-4">
+
+    <div id="prepaidPlans" style="display: none;"><br>
+        <h2 class="text-center title">Manage Prepaid Plans</h2>
+
+        <div class="d-flex justify-content-between mb-4">
+            <button class="clear-btn" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add New
+                Category</button>
             <button class="clear-btn" data-bs-toggle="modal" data-bs-target="#addPlanModal">Add New Plan</button>
         </div>
-        <div class="row" id="plansContainer"></div>
+        <div id="categoriesContainer"></div>
+    </div>
     </div>
 
-    <!-- Add Plan Modal (unchanged) -->
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Category Name</label>
+                            <input type="text" class="form-control" id="categoryName" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Category</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Plan Modal -->
     <div class="modal fade" id="addPlanModal" tabindex="-1" aria-labelledby="addPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -153,14 +180,9 @@
                             <input type="text" class="form-control" id="dataPerDay" required>
                         </div>
                         <div class="mb-3">
-                            <label for="category" class="form-label">Category</label>
-                            <select class="form-control" id="category" required>
-                                <option value="POPULAR_PLANS">Popular Plans</option>
-                                <option value="VALIDITY_PLANS">Validity Plans</option>
-                                <option value="DATA_PLANS">Data Plans</option>
-                                <option value="TOP_UP_PLANS">Top-Up Plans</option>
-                                <option value="ISD_PLANS">ISD Plans</option>
-                                <option value="COMBO_UNLIMITED_PLANS">Combo/Unlimited Plans</option>
+                            <label for="planCategory" class="form-label">Category</label>
+                            <select class="form-control" id="planCategory" required>
+                                <!-- Populated dynamically -->
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Plan</button>
@@ -170,7 +192,7 @@
         </div>
     </div>
 
-    <!-- Edit Plan Modal (unchanged) -->
+    <!-- Edit Plan Modal -->
     <div class="modal fade" id="editPlanModal" tabindex="-1" aria-labelledby="editPlanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -198,14 +220,9 @@
                             <input type="text" class="form-control" id="editDataPerDay" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editCategory" class="form-label">Category</label>
-                            <select class="form-control" id="editCategory" required>
-                                <option value="POPULAR_PLANS">Popular Plans</option>
-                                <option value="VALIDITY_PLANS">Validity Plans</option>
-                                <option value="DATA_PLANS">Data Plans</option>
-                                <option value="TOP_UP_PLANS">Top-Up Plans</option>
-                                <option value="ISD_PLANS">ISD Plans</option>
-                                <option value="COMBO_UNLIMITED_PLANS">Combo/Unlimited Plans</option>
+                            <label for="editPlanCategory" class="form-label">Category</label>
+                            <select class="form-control" id="editPlanCategory" required>
+                                <!-- Populated dynamically -->
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -241,7 +258,7 @@
                         <tr>
                             <th>Mobile Number</th>
                             <th>Customer Name</th>
-                            <th>Email</th> <!-- Added from new code -->
+                            <th>Email</th>
                             <th>Start Date</th>
                             <th>End Date</th>
                             <th>Days Remaining</th>
@@ -256,10 +273,14 @@
         </div>
     </div>
 
-    <!-- Expiring Users Section (New Addition) -->
+    <!-- Expiring Users Section -->
     <div id="expiringUsersSection" class="container mt-5" style="display: none;">
         <h2 class="text-center mb-4">Expiring Users (Next 3 Days)</h2>
-        <p class="text-center">Click "Notify" to send an email reminder to the user.</p>
+        <p class="text-center">Click "Notify" to send an email reminder to the user, or "Notify All" to send emails to
+            all expiring users.</p>
+        <div class="text-center mb-3">
+            <button class="btn btn-primary" onclick="notifyAllExpiringUsers()">Notify All</button>
+        </div>
         <div class="card">
             <div class="card-body table-responsive">
                 <table class="table table-bordered">
@@ -280,7 +301,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap Modal for Notifications (Unchanged)  -->
+    <!-- Bootstrap Modal for Notifications -->
     <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -289,9 +310,7 @@
                     <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" id="modalMessage">
-
-                </div>
+                <div class="modal-body" id="modalMessage"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -300,7 +319,7 @@
     </div>
 
 
-    <!-- Admin KYC Verification Section -->
+
     <!-- Admin KYC Verification Section -->
     <div class="container">
         <div id="kycDetails" class="admin-kyc" style="display: none;">
@@ -337,12 +356,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary me-2" onclick="loadPendingKYCRequests()">Show Pending Only</button>
+                    <button class="btn btn-secondary me-2" onclick="loadKYCRequests()">Show All</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Admin Profile Section (Unchanged) -->
+    <!-- Admin Profile Section -->
     <div id="adminProfile" class="container" style="display: none;">
         <div class="profile-card">
             <div class="profile-header">
