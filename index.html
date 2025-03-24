@@ -97,7 +97,15 @@
         </div>
     </div>
 
-    <div id="quickpay" class="container mt-4">
+    <!-- QuickPay Section -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body"></div>
+        </div>
+    </div>
+
+     <!-- QuickPay Section -->
+     <div id="quickpay" class="container mt-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card shadow-lg p-4">
@@ -112,6 +120,7 @@
         </div>
     </div>
 
+    <!-- Plans Section -->
     <div id="plans" class="container mt-5" style="display: none;">
         <h3 class="text-center">
             <button class="btn btn-secondary" onclick="goBackToQuickPay()">Back</button> Select Your Plan
@@ -119,6 +128,7 @@
         <div class="row" id="planContainer"></div>
     </div>
 
+    <!-- Payment Section -->
     <div id="payment" class="container mt-5" style="display: none;">
         <h3 class="text-center">
             <button class="btn btn-secondary" onclick="goBackToPlans()">Back</button> Select Your Payment
@@ -126,11 +136,13 @@
         <div class="payment-box">
             <p><strong>Selected Plan:</strong> <span id="selectedPlan">None</span></p>
             <p><strong>Benefits:</strong> <span id="selectedBenefits">None</span></p>
-            <select id="paymentMethod" class="form-control mb-4">
+            <select id="paymentMethod" class="form-control mb-4" onchange="selectPaymentMethod(this.value)">
+                <option value="">Select Payment Method</option>
                 <option value="UPI">UPI</option>
                 <option value="Credit/Debit Card">Credit/Debit Card</option>
                 <option value="Wallet">Wallet</option>
             </select>
+
             <div class="d-flex gap-2">
                 <button class="btn btn-success w-50" onclick="processPayment()">Pay Now</button>
                 <button id="downloadInvoice" class="btn btn-primary w-50" style="display: none;"
@@ -139,6 +151,21 @@
         </div>
     </div>
 
+    <!-- Transactions Section -->
+    <div id="transactionSection" class="container mt-5" style="display: none;">
+        <div class="card shadow-lg p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3>Recent Transactions</h3>
+                <button class="btn btn-danger d-flex align-items-center" onclick="clearTransactionHistory()">
+                    <span>Clear History</span>
+                    <i class="fas fa-exchange-alt fa-lg text-light ms-2"></i>
+                </button>
+            </div>
+            <div id="transactionList">
+                <p>No recent transactions.</p>
+            </div>
+        </div>
+    </div>
     <!-- Recommended Plans Section -->
     <div id="recommended-section" class="recommended-section">
         <div class="container">
@@ -415,7 +442,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="script.js"></script>
 </body>
 

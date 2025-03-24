@@ -1,4 +1,3 @@
-
 function scrollToSection(event, sectionId) {
     event.preventDefault();
     document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
@@ -343,22 +342,30 @@ toastStyles.innerHTML = `
 `;
 document.head.appendChild(toastStyles);
 
-
 const QuickPay_URL = 'http://localhost:8083';
-const plansData = [
-    { amount: 199, benefits: "1GB/day, 28 days validity" },
-    { amount: 299, benefits: "1.5GB/day, 56 days validity" },
-    { amount: 399, benefits: "2GB/day, 84 days validity" },
-    { amount: 499, benefits: "2GB/day, 90 days validity" },
-    { amount: 599, benefits: "2GB/day, 110 days validity" },
-    { amount: 799, benefits: "3GB/day, 85 days validity" },
-    { amount: 899, benefits: "2GB/day, 84 days validity" },
-    { amount: 699, benefits: "4GB/day, 100 days validity" },
-    { amount: 999, benefits: "3GB/day, 150 days validity" }
-];
 
 // Variable to store registered mobile numbers
 let registeredNumbers = [];
+
+// Variables to store selected plan details
+let selectedPlanId = null;
+let selectedPlanAmount = null;
+let selectedPlanBenefits = '';
+let selectedPaymentMethod = '';
+
+// Utility function to show toast notifications
+function showToast(message, type) {
+    const toastEl = document.getElementById('toast');
+    if (!toastEl) {
+        console.error("Toast element not found in the DOM.");
+        return;
+    }
+    const toastBody = toastEl.querySelector('.toast-body');
+    toastBody.textContent = message;
+    toastEl.className = `toast bg-${type} text-white`;
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+}
 
 // Fetch registered mobile numbers from the backend on page load
 async function fetchRegisteredNumbers() {
@@ -378,14 +385,72 @@ async function fetchRegisteredNumbers() {
         console.log("Registered mobile numbers:", registeredNumbers);
     } catch (error) {
         console.error("Error fetching registered mobile numbers:", error);
-        showToast("Failed to fetch registered numbers. Please try again later.", "Error", "danger");
+        showToast("Failed to fetch registered numbers. Please try again later.", "danger");
+    }
+}
+
+// Utility function to get customer token from sessionStorage
+function getCustomerToken() {
+    return sessionStorage.getItem('customerToken');
+}
+
+// Utility function to check if customer token exists
+function isCustomerAuthenticated() {
+    return !!sessionStorage.getItem('customerToken');
+}
+
+// Function to make authenticated requests using customer token
+async function makeCustomerAuthenticatedRequest(url, method = "GET", data = null) {
+    const token = getCustomerToken();
+
+    if (!token) {
+        showToast("Please authenticate with a registered mobile number.", "danger");
+        setTimeout(() => goBackToQuickPay(), 1000);
+        return;
+    }
+
+    try {
+        const headers = {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        };
+
+        const config = {
+            method,
+            headers,
+            mode: 'cors',
+            ...(data && { body: JSON.stringify(data) })
+        };
+
+        const response = await fetch(url, config);
+        if (!response.ok) {
+            if (response.status === 401) {
+                sessionStorage.removeItem("customerToken");
+                sessionStorage.removeItem("userMobile");
+                showToast("Session expired. Please re-authenticate.", "danger");
+                setTimeout(() => goBackToQuickPay(), 1000);
+                return;
+            }
+            const errorText = await response.text();
+            throw new Error(errorText || `HTTP error! status: ${response.status}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            return await response.json();
+        }
+        return await response.text();
+    } catch (error) {
+        console.error(`Error in ${method} ${url}:`, error);
+        showToast(error.message, "danger");
+        throw error;
     }
 }
 
 // Call fetchRegisteredNumbers when the page loads
 document.addEventListener('DOMContentLoaded', fetchRegisteredNumbers);
 
-function handleRecharge() {
+async function handleRecharge() {
     let mobileNumber = document.getElementById("customerMobile").value.trim();
     let errorMessage = document.getElementById("errorMessage");
 
@@ -405,13 +470,37 @@ function handleRecharge() {
 
     // Check if mobile number is registered
     if (!registeredNumbers.includes(mobileNumber)) {
-        showToast("This number is not a MobiComm registered number. Kindly buy a new connection and make a recharge.", "Error", "danger");
+        showToast("This number is not a MobiComm registered number. Kindly buy a new connection and make a recharge.", "danger");
         return;
     }
 
-    document.getElementById("quickpay").style.display = "none";
-    document.getElementById("plans").style.display = "block";
-    displayPlans();
+    // Generate customer token
+    try {
+        const response = await fetch(`${QuickPay_URL}/public/generate-customer-token`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ mobileNumber })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || `HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        sessionStorage.setItem("customerToken", result.token);
+        sessionStorage.setItem("userMobile", mobileNumber);
+        showToast("Authentication successful! Proceeding to plans.", "success");
+
+        document.getElementById("quickpay").style.display = "none";
+        document.getElementById("plans").style.display = "block";
+        loadPopularPlans();
+    } catch (error) {
+        console.error("Error generating customer token:", error);
+        showToast(error.message, "danger");
+    }
 }
 
 // Function to clear the error message when user starts typing
@@ -419,17 +508,44 @@ document.getElementById("customerMobile").addEventListener("input", function () 
     document.getElementById("errorMessage").style.display = "none";
 });
 
-function displayPlans() {
+// Load Popular Plans
+async function loadPopularPlans() {
+    try {
+        const url = `${QuickPay_URL}/customer/plans/search?categoryName=Popular Plans`;
+        const plans = await makeCustomerAuthenticatedRequest(url);
+        console.log('Popular Plans received:', plans);
+
+        // Display plans
+        displayPlans(plans);
+    } catch (error) {
+        console.error('Error fetching popular plans:', error);
+        showToast('Failed to load popular plans. Please try again.', "danger");
+        const planContainer = document.getElementById('planContainer');
+        if (planContainer) {
+            planContainer.innerHTML = '<p class="text-danger">Error loading plans. Please try again later.</p>';
+        }
+        goBackToQuickPay(); // Redirect back to QuickPay on error
+    }
+}
+
+function displayPlans(plans) {
     let container = document.getElementById("planContainer");
     container.innerHTML = "";
 
-    plansData.forEach(plan => {
+    if (!plans || plans.length === 0) {
+        container.innerHTML = '<p>No popular plans available.</p>';
+        return;
+    }
+
+    plans.forEach(plan => {
         container.innerHTML += `
             <div class="col-md-4">
-                <div class="card p-3 text-center shadow-sm">
-                    <h5 class="fw-bold text-danger">₹${plan.amount} Plan</h5>
-                    <p>${plan.benefits}</p>
-                    <button class="btn btn-danger w-100 mt-2" onclick="moveToPayment(${plan.amount}, '${plan.benefits}')">Recharge Now</button>
+                <div class="card p-3 text-center shadow-sm" onclick="selectPlan(${plan.id}, ${plan.price}, '${plan.dataPerDay} for ${plan.validityDays} days', this)">
+                    <h5 class="fw-bold text-danger">₹${plan.price} Plan</h5>
+                    <p class="text-dark">${plan.dataPerDay} for ${plan.validityDays} days</p>
+                    <button class="btn btn-danger w-100 mt-2 fw-bold"
+                        style="background: linear-gradient(90deg, #C70039, #900C3F); border: none; padding: 10px; border-radius: 20px;"
+                        onclick="moveToPayment(${plan.id}, ${plan.price}, '${plan.dataPerDay} for ${plan.validityDays} days'); event.stopPropagation();">Recharge Now</button>
                 </div>
             </div>`;
     });
@@ -437,33 +553,54 @@ function displayPlans() {
 
 function goBackToQuickPay() {
     document.getElementById("plans").style.display = "none";
+    document.getElementById("payment").style.display = "none";
+    document.getElementById("transactionSection").style.display = "none";
     document.getElementById("quickpay").style.display = "block";
+    document.getElementById("planContainer").innerHTML = "";
+    document.getElementById("downloadInvoice").style.display = "none"; // Hide download button
+    selectedPlanId = null;
+    selectedPlanAmount = null;
+    selectedPlanBenefits = '';
+    selectedPaymentMethod = '';
+    const mobileInput = document.getElementById("customerMobile");
+    if (mobileInput) {
+        mobileInput.value = "";
+    }
+    
+    // Do not clear userMobile immediately to allow invoice download
+    // sessionStorage.removeItem("customerToken");
+    // sessionStorage.removeItem("userMobile");
 }
 
-// Function to show toast message
-function showToast(message, title = "Notification", type = "info") {
-    let toastContainer = document.createElement("div");
-    toastContainer.className = "toast align-items-center show position-fixed bottom-0 end-0 p-3";
-    toastContainer.style.zIndex = "1050";
-    toastContainer.style.backgroundColor = type === "danger" ? "rgba(26, 18, 18, 0.84)" : "rgba(0, 0, 0, 0.8)";
-    toastContainer.style.color = "white";
-    toastContainer.style.borderRadius = "8px";
-
-    toastContainer.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">${message}</div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.parentElement.parentElement.remove()"></button>
-        </div>
-    `;
-
-    document.body.appendChild(toastContainer);
-
-    setTimeout(() => {
-        toastContainer.remove();
-    }, 8000); 
+// Plan Selection
+function selectPlan(planId, amount, benefits, element) {
+    selectedPlanId = planId;
+    selectedPlanAmount = amount;
+    selectedPlanBenefits = benefits;
+    document.querySelectorAll('.card').forEach(card => card.classList.remove('selected'));
+    element.classList.add('selected');
+    showToast(`Plan ₹${amount} selected`, "success");
 }
 
-function moveToPayment(amount, benefits) {
+function moveToPayment(planId, amount, benefits) {
+    const mobileNumber = sessionStorage.getItem('userMobile');
+    if (!mobileNumber || !isCustomerAuthenticated()) {
+        showToast("Please authenticate with a registered mobile number.", "danger");
+        goBackToQuickPay();
+        return;
+    }
+
+    // Double-check if the mobile number is registered
+    if (!registeredNumbers.includes(mobileNumber)) {
+        showToast("This number is not a MobiComm registered number. Kindly buy a new connection and make a recharge.", "danger");
+        goBackToQuickPay();
+        return;
+    }
+
+    selectedPlanId = planId;
+    selectedPlanAmount = amount;
+    selectedPlanBenefits = benefits;
+
     document.getElementById("selectedPlan").innerText = `₹${amount}`;
     document.getElementById("selectedBenefits").innerText = benefits;
     document.getElementById("plans").style.display = "none";
@@ -473,71 +610,326 @@ function moveToPayment(amount, benefits) {
 function goBackToPlans() {
     document.getElementById("payment").style.display = "none";
     document.getElementById("plans").style.display = "block";
+    selectedPaymentMethod = ''; // Reset payment method
 }
 
-function processPayment() {
+// Payment Method Selection
+function selectPaymentMethod(method) {
+    selectedPaymentMethod = method;
+    showToast(`${method} selected as payment method`, "success");
+}
+
+// Process Payment with Razorpay
+async function processPayment() {
+    if (!isCustomerAuthenticated()) {
+        showToast("Please authenticate with a registered mobile number.", "danger");
+        setTimeout(() => goBackToQuickPay(), 1000);
+        return;
+    }
+
+    if (!selectedPaymentMethod) {
+        showToast("Please select a payment method before proceeding.", "danger");
+        return;
+    }
+
+    const mobileNumber = sessionStorage.getItem('userMobile');
+    if (!mobileNumber || !selectedPlanId || !selectedPlanAmount) {
+        showToast("Error: Missing mobile number or selected plan!", "danger");
+        goBackToQuickPay();
+        return;
+    }
+
+    // Double-check if the mobile number is registered
+    if (!registeredNumbers.includes(mobileNumber)) {
+        showToast("This number is not a MobiComm registered number. Kindly buy a new connection and make a recharge.", "danger");
+        goBackToQuickPay();
+        return;
+    }
+
     let paymentButton = document.querySelector(".btn-success");
     paymentButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status"></span> Processing...';
     paymentButton.disabled = true;
 
-    setTimeout(() => {
-        let mobileNumber = document.getElementById("customerMobile").value;
-        let selectedPlan = document.getElementById("selectedPlan").innerText;
-        let paymentMethod = document.getElementById("paymentMethod").value;
+    try {
+        // Step 1: Create Razorpay order
+        const orderResponse = await makeCustomerAuthenticatedRequest(
+            `${QuickPay_URL}/customer/payment/create-order`,
+            "POST",
+            { amount: selectedPlanAmount }
+        );
+        const orderId = orderResponse;
 
-        showToast("Payment successful using " + paymentMethod + "!", "Success", "success");
-        generateInvoice(mobileNumber, selectedPlan, paymentMethod);
+        // Step 2: Open Razorpay payment UI
+        const options = {
+            key: 'rzp_test_4mqwZ2yylKYX0g', // Replace with your Razorpay key_id
+            amount: selectedPlanAmount * 100, // Amount in paise
+            currency: 'INR',
+            name: 'Recharge App',
+            description: 'Plan Recharge',
+            order_id: orderId,
+            handler: async function (response) {
+                try {
+                    // Step 3: After payment success, call the recharge endpoint
+                    const rechargeData = {
+                        mobileNumber: mobileNumber,
+                        email: "boomikamohan316@gmail.com"
+                    };
+                    const rechargeResponse = await makeCustomerAuthenticatedRequest(
+                        `${QuickPay_URL}/customer/plans/recharge/${selectedPlanId}?paymentId=${response.razorpay_payment_id}`,
+                        "POST",
+                        rechargeData
+                    );
 
+                    // Generate the invoice after successful payment
+                    generateInvoice(mobileNumber, `₹${selectedPlanAmount} (${selectedPlanBenefits})`, selectedPaymentMethod);
+
+                    showToast("Payment Successful! ✅", "success");
+                    paymentButton.innerHTML = "Pay Now";
+                    paymentButton.disabled = false;
+                    document.getElementById("downloadInvoice").style.display = "block";
+
+                    // Reset selections
+                    selectedPlanId = null;
+                    selectedPlanAmount = null;
+                    selectedPlanBenefits = '';
+                    selectedPaymentMethod = '';
+
+                    // Redirect to QuickPay after a delay
+                    setTimeout(() => {
+                        goBackToQuickPay();
+                    }, 5000); // Increased delay to give user time to download invoice
+                } catch (error) {
+                    showToast("Recharge failed. Please try again.", "danger");
+                    paymentButton.innerHTML = "Pay Now";
+                    paymentButton.disabled = false;
+                    console.error('Error during recharge:', error);
+                }
+            },
+            prefill: {
+                contact: mobileNumber,
+                email: " Not provided"
+            },
+            method: {
+                card: selectedPaymentMethod === 'Credit/Debit Card',
+                upi: selectedPaymentMethod === 'UPI',
+                netbanking: selectedPaymentMethod === 'Wallet'
+            },
+            theme: {
+                color: '#C70039'
+            },
+            modal: {
+                ondismiss: function () {
+                    paymentButton.innerHTML = "Pay Now";
+                    paymentButton.disabled = false;
+                    showToast("Payment cancelled.", "warning");
+                }
+            }
+        };
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+            showToast("Payment failed. Please try again.", "danger");
+            paymentButton.innerHTML = "Pay Now";
+            paymentButton.disabled = false;
+            console.error("Razorpay payment failed:", response.error);
+        });
+        rzp.open();
+    } catch (error) {
+        showToast("Payment initiation failed. Please try again.", "danger");
         paymentButton.innerHTML = "Pay Now";
         paymentButton.disabled = false;
-
-        document.getElementById("downloadInvoice").style.display = "block";
-    }, 1000);
-}
-
-function generateInvoice(mobileNumber, plan, paymentMethod) {
-    const { jsPDF } = window.jspdf;
-    let doc = new jsPDF();
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.text("MOBICOMM", 20, 20);
-    doc.setFontSize(10);
-    doc.text("123 Street, Bangalore, India", 20, 30);
-    doc.text("Email: support@mobicomm.in | Phone: +123 456 7890", 20, 35);
-
-    doc.setFontSize(16);
-    doc.setTextColor(255, 0, 0);
-    doc.text("Transaction Invoice", 80, 50);
-    doc.line(20, 55, 190, 55);
-
-    const tableData = [
-        ["Mobile Number", mobileNumber],
-        ["Selected Plan", plan],
-        ["Payment Method", paymentMethod],
-        ["Transaction Status", "Successful"]
-    ];
-
-    doc.autoTable({
-        startY: 65,
-        head: [["Details", "Information"]],
-        body: tableData,
-        theme: "grid",
-        headStyles: { fillColor: [255, 0, 0] }
-    });
-
-    doc.text("Thank you for your payment!", 80, doc.lastAutoTable.finalY + 20);
-    window.generatedInvoice = doc;
-}
-
-function downloadInvoice() {
-    if (window.generatedInvoice) {
-        window.generatedInvoice.save(`Invoice_${document.getElementById("customerMobile").value}.pdf`);
-    } else {
-        showToast("No invoice available to download.", "Error", "danger");
+        console.error('Error during payment:', error);
     }
 }
 
+// Show Transactions
+async function showTransactions() {
+    if (!isCustomerAuthenticated()) {
+        showToast("Please authenticate with a registered mobile number to view transactions.", "danger");
+        setTimeout(() => goBackToQuickPay(), 1000);
+        return;
+    }
+
+    document.getElementById("quickpay").style.display = "none";
+    document.getElementById("plans").style.display = "none";
+    document.getElementById("payment").style.display = "none";
+    document.getElementById("transactionSection").style.display = "block";
+
+    const mobileNumber = sessionStorage.getItem('userMobile');
+    const transactionList = document.getElementById('transactionList');
+    if (!mobileNumber) {
+        if (transactionList) transactionList.innerHTML = '<p>Please enter a mobile number in the QuickPay section first.</p>';
+        return;
+    }
+
+    try {
+        const transactions = await makeCustomerAuthenticatedRequest(`${QuickPay_URL}/customer/transactions/${mobileNumber}`);
+        if (transactionList) {
+            if (transactions.length === 0) {
+                transactionList.innerHTML = '<p>No recent transactions.</p>';
+            } else {
+                transactionList.innerHTML = transactions.map((t, index) => `
+                    <div class="transaction-item d-flex justify-content-between align-items-center border p-3 mb-2 rounded">
+                        <div>
+                            <p><strong>Mobile:</strong> ${t.mobileNumber}</p>
+                            <p><strong>Amount:</strong> ₹${t.amount}</p>
+                            <p><strong>Benefits:</strong> ${t.planDetails}</p>
+                            <p><strong>Payment Method:</strong> ${t.paymentMethod}</p>
+                            <p><strong>Date:</strong> ${formatDate(t.transactionDate)}</p>
+                        </div>
+                        <button class="btn btn-outline-danger" onclick="downloadReceipt(${t.id})">📄 Download Receipt</button>
+                    </div>
+                `).join('');
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        if (transactionList) transactionList.innerHTML = '<p>Failed to load transactions. Please try again.</p>';
+    }
+}
+
+// Format Date
+function formatDate(dateString) {
+    if (!dateString) return "Invalid Date";
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "Invalid Date";
+    return date.toLocaleString('en-IN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
+}
+
+// Download Receipt
+async function downloadReceipt(id) {
+    try {
+        const response = await fetch(`${QuickPay_URL}/customer/transactions/download/${id}`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${getCustomerToken()}`
+            }
+        });
+        if (!response.ok) {
+            if (response.status === 401) {
+                sessionStorage.removeItem("customerToken");
+                sessionStorage.removeItem("userMobile");
+                showToast("Session expired. Please re-authenticate.", "danger");
+                setTimeout(() => goBackToQuickPay(), 1000);
+                return;
+            }
+            const errorText = await response.text();
+            throw new Error(`Failed to download receipt: ${errorText || response.statusText}`);
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/pdf")) {
+            throw new Error("Invalid response: Expected a PDF file.");
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `receipt_${id}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+        showToast('Receipt downloaded successfully!', "success");
+    } catch (error) {
+        console.error('Error downloading receipt:', error);
+        showToast(error.message || 'Failed to download receipt.', "danger");
+    }
+}
+
+// Clear Transaction History (Optional)
+function clearTransactionHistory() {
+    const transactionList = document.getElementById('transactionList');
+    if (transactionList) {
+        transactionList.innerHTML = '<p>No recent transactions.</p>';
+        showToast("Transaction history cleared.", "success");
+    }
+}
+
+// Generate and Download Invoice
+function generateInvoice(mobileNumber, plan, paymentMethod) {
+    console.log("Generating invoice for:", { mobileNumber, plan, paymentMethod });
+    try {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF || !window.jspdf) {
+            throw new Error("jsPDF is not loaded.");
+        }
+        if (!doc.autoTable) {
+            throw new Error("jspdf-autotable is not loaded.");
+        }
+
+        let doc = new jsPDF();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(20);
+        doc.text("MOBICOMM", 20, 20);
+        doc.setFontSize(10);
+        doc.text("123 Street, Bangalore, India", 20, 30);
+        doc.text("Email: support@mobicomm.in | Phone: +123 456 7890", 20, 35);
+
+        doc.setFontSize(16);
+        doc.setTextColor(255, 0, 0);
+        doc.text("Transaction Invoice", 80, 50);
+        doc.line(20, 55, 190, 55);
+
+        const tableData = [
+            ["Mobile Number", mobileNumber],
+            ["Selected Plan", plan],
+            ["Payment Method", paymentMethod],
+            ["Transaction Status", "Successful"]
+        ];
+
+        doc.autoTable({
+            startY: 65,
+            head: [["Details", "Information"]],
+            body: tableData,
+            theme: "grid",
+            headStyles: { fillColor: [255, 0, 0] }
+        });
+
+        doc.text("Thank you for your payment!", 80, doc.lastAutoTable.finalY + 20);
+        window.generatedInvoice = doc;
+        // Store invoice metadata in sessionStorage as a fallback
+        sessionStorage.setItem('invoiceData', JSON.stringify({ mobileNumber, plan, paymentMethod }));
+        console.log("Invoice generated successfully, window.generatedInvoice set:", window.generatedInvoice);
+    } catch (error) {
+        console.error("Error generating invoice:", error);
+        showToast("Failed to generate invoice.", "danger");
+    }
+}
+
+function downloadInvoice() {
+    console.log("Attempting to download invoice, window.generatedInvoice:", window.generatedInvoice);
+    let mobileNumber = document.getElementById("customerMobile").value || sessionStorage.getItem('userMobile') || 'unknown';
+
+    if (!window.generatedInvoice) {
+        // Attempt to regenerate the invoice if it’s not available
+        const invoiceData = sessionStorage.getItem('invoiceData');
+        if (invoiceData) {
+            const { mobileNumber: storedMobile, plan, paymentMethod } = JSON.parse(invoiceData);
+            generateInvoice(storedMobile, plan, paymentMethod);
+            mobileNumber = storedMobile;
+        }
+    }
+
+    if (window.generatedInvoice) {
+        console.log("Downloading invoice for mobile number:", mobileNumber);
+        window.generatedInvoice.save(`Invoice_${mobileNumber}.pdf`);
+        // Clear the invoice after download to prevent reuse
+        window.generatedInvoice = null;
+        sessionStorage.removeItem('invoiceData');
+    } else {
+        showToast("Download the receipt by login ", "danger");
+    }
+} 
 // Recommended Plans Section Functions
 function scrollPlans(direction) {
     const container = document.getElementById("planScroll");
@@ -590,4 +982,3 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
-

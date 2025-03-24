@@ -58,11 +58,7 @@
 
     <!-- Content Area -->
     <div id="content">
-        <!-- Home Page Content -->
         <div id="home">
-            <!-- Dashboard Overview -->
-
-
             <div class="container dashboard-container">
                 <h3 class="text-center title">MobiComm Admin Dashboard</h3>
                 <p class="text-center text-muted">Monitor user activity, revenue, and performance</p>
@@ -108,13 +104,22 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="text-center mt-4">
-                    <button id="downloadReport" class="btn btn-primary" onclick="downloadReport()">Download
-                        Reports</button>
+                    <button id="downloadReport" class="btn btn-primary" onclick="downloadReport()">Download Reports</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Toast Element for Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastBody"></div>
         </div>
     </div>
     <!-- Prepaid Plans Content -->

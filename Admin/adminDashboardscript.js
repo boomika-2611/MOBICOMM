@@ -1079,266 +1079,8 @@ async function deleteCategory(categoryId) {
     }
 }
 
-// // Placeholder functions for other sections
-// function loadHome() {
-//     if (!isAdminLoggedIn()) adminLogout();
-//     document.querySelectorAll('#content > div').forEach(div => div.style.display = 'none');
-//     // Add home content if needed
-// }
 
-// function loadUserManagement() {
-//     if (!isAdminLoggedIn()) adminLogout();
-//     document.querySelectorAll('#content > div').forEach(div => div.style.display = 'none');
-//     // Add user management content if needed
-// }
-
-// function loadAdminProfile() {
-//     if (!isAdminLoggedIn()) adminLogout();
-//     document.querySelectorAll('#content > div').forEach(div => div.style.display = 'none');
-//     // Add profile content if needed
-// }
-
-// // DOMContentLoaded Event Listener
-// document.addEventListener('DOMContentLoaded', () => {
-//     if (!isAdminLoggedIn()) {
-//         adminLogout();
-//         return;
-//     }
-// });
-
-// const API_URL = 'http://localhost:8083/admin/plans';
-
-// // Utility functions for authentication using sessionStorage
-// function getAdminToken() {
-//     return sessionStorage.getItem("adminToken");
-// }
-
-// function isAdminLoggedIn() {
-//     return !!sessionStorage.getItem("adminToken");
-// }
-
-// function adminLogout() {
-//     sessionStorage.removeItem("adminToken");
-//     sessionStorage.removeItem("adminUsername");
-//     window.location.href = "adminLogin.html";
-// }
-
-// async function makeAuthenticatedRequest(url, method = "GET", data = null) {
-//     const token = getAdminToken();
-
-//     if (!token) {
-//         alert("Please login first");
-//         setTimeout(() => window.location.href = "adminLogin.html", 1000);
-//         return;
-//     }
-
-//     try {
-//         const headers = {
-//             "Content-Type": "application/json",
-//             "Authorization": `Bearer ${token}`
-//         };
-
-//         const config = {
-//             method,
-//             headers,
-//             mode: 'cors',
-//             ...(data && { body: JSON.stringify(data) })
-//         };
-
-//         const response = await fetch(url, config);
-//         if (!response.ok) {
-//             if (response.status === 401) {
-//                 adminLogout();
-//                 throw new Error("Session expired. Please login again.");
-//             }
-//             const errorText = await response.text();
-//             throw new Error(errorText || `HTTP error! status: ${response.status}`);
-//         }
-
-//         const contentType = response.headers.get("content-type");
-//         if (contentType && contentType.includes("application/json")) {
-//             return await response.json();
-//         }
-//         return await response.text();
-
-//     } catch (error) {
-//         console.error(`Error in ${method} ${url}:`, error);
-//         throw error;
-//     }
-// }
-
-// // Load prepaid plans section
-// function loadPrepaidPlans() {
-//     if (!isAdminLoggedIn()) {
-//         adminLogout();
-//         return;
-//     }
-//     document.querySelectorAll('#content > div').forEach(div => div.style.display = 'none');
-//     document.getElementById('prepaidPlans').style.display = 'block';
-
-
-//     document.getElementById("adminProfile").style.display = "none";
-//     document.querySelector(".profile-card").style.display = "none";
-//     document.querySelector(".edit-section").style.display = "none";
-//     document.getElementById("home").style.display = "none";
-//     document.getElementById("userManagement").style.display = "none";
-//     document.getElementById("kycDetails").style.display = "none";
-//     document.getElementById("expiringUsersSection").style.display = "none";
-//     fetchPlans();
-// }
-
-// async function fetchPlans() {
-//     try {
-//         const plans = await makeAuthenticatedRequest(API_URL);
-//         console.log('Fetched plans:', plans);
-//         const container = document.getElementById('plansContainer');
-//         if (!container) {
-//             throw new Error('plansContainer element not found in HTML');
-//         }
-//         container.innerHTML = '';
-
-//         if (!plans || plans.length === 0) {
-//             container.innerHTML = '<p>No plans available.</p>';
-//             return;
-//         }
-
-//         const plansByCategory = plans.reduce((acc, plan) => {
-//             if (!acc[plan.category]) {
-//                 acc[plan.category] = [];
-//             }
-//             acc[plan.category].push(plan);
-//             return acc;
-//         }, {});
-
-//         Object.keys(plansByCategory).forEach(category => {
-//             const categorySection = document.createElement('div');
-//             categorySection.className = 'col-12 mb-4';
-//             categorySection.innerHTML = `
-//                 <h3 class="category-header">${category.replace('_', ' ').replace('PLANS', 'Plans')}</h3>
-//                 <div class="row category-plans"></div>
-//             `;
-//             container.appendChild(categorySection);
-
-//             const categoryPlansContainer = categorySection.querySelector('.category-plans');
-//             plansByCategory[category].forEach(plan => {
-//                 const planCard = `
-//                     <div class="col-md-4">
-//                         <div class="card">
-//                             <div class="card-header">${plan.name}</div>
-//                             <ul class="list-group list-group-flush">
-//                                 <li class="list-group-item">
-//                                     <span class="plan-info">Price:</span> ₹${plan.price}
-//                                 </li>
-//                                 <li class="list-group-item">
-//                                     <span class="plan-info">Validity:</span> ${plan.validityDays} days
-//                                 </li>
-//                                 <li class="list-group-item">
-//                                     <span class="plan-info">Data/Day:</span> ${plan.dataPerDay}
-//                                 </li>
-//                                 <li class="list-group-item">
-//                                     <div class="button-group">
-//                                         <button class="btn btn-primary btn-action" onclick="editPlan(${plan.id})">Edit</button>
-//                                         <button class="btn btn-danger btn-action" onclick="deletePlan(${plan.id})">Delete</button>
-//                                     </div>
-//                                 </li>
-//                             </ul>
-//                         </div>
-//                     </div>
-//                 `;
-//                 categoryPlansContainer.innerHTML += planCard;
-//             });
-//         });
-//     } catch (error) {
-//         console.error('Full error details:', error);
-//         alert('Failed to fetch plans: ' + error.message);
-//     }
-// }
-
-// // Event Listeners
-// document.addEventListener('DOMContentLoaded', () => {
-//     if (!isAdminLoggedIn()) {
-//         adminLogout();
-//         return;
-//     }
-
-//     // Add Plan Form Submission
-//     document.getElementById('addPlanForm')?.addEventListener('submit', async (e) => {
-//         e.preventDefault();
-//         const plan = {
-//             name: document.getElementById('planName').value,
-//             price: parseFloat(document.getElementById('planPrice').value),
-//             validityDays: parseInt(document.getElementById('validityDays').value),
-//             dataPerDay: document.getElementById('dataPerDay').value,
-//             category: document.getElementById('category').value
-//         };
-
-//         try {
-//             const result = await makeAuthenticatedRequest(`${API_URL}/add`, 'POST', plan);
-//             alert(result);
-//             fetchPlans();
-//             bootstrap.Modal.getInstance(document.getElementById('addPlanModal')).hide();
-//             document.getElementById('addPlanForm').reset();
-//         } catch (error) {
-//             console.error('Error adding plan:', error);
-//             alert('Failed to add plan: ' + error.message);
-//         }
-//     });
-
-//     // Edit Plan Form Submission
-//     document.getElementById('editPlanForm')?.addEventListener('submit', async (e) => {
-//         e.preventDefault();
-//         const id = document.getElementById('editPlanId').value;
-//         const updatedPlan = {
-//             name: document.getElementById('editPlanName').value,
-//             price: parseFloat(document.getElementById('editPlanPrice').value),
-//             validityDays: parseInt(document.getElementById('editValidityDays').value),
-//             dataPerDay: document.getElementById('editDataPerDay').value,
-//             category: document.getElementById('editCategory').value
-//         };
-
-//         try {
-//             const result = await makeAuthenticatedRequest(`${API_URL}/edit/${id}`, 'PUT', updatedPlan);
-//             alert(result);
-//             fetchPlans();
-//             bootstrap.Modal.getInstance(document.getElementById('editPlanModal')).hide();
-//         } catch (error) {
-//             console.error('Error editing plan:', error);
-//             alert('Failed to edit plan: ' + error.message);
-//         }
-//     });
-// });
-
-// async function editPlan(id) {
-//     try {
-//         const plan = await makeAuthenticatedRequest(`${API_URL}/${id}`);
-//         document.getElementById('editPlanId').value = plan.id;
-//         document.getElementById('editPlanName').value = plan.name;
-//         document.getElementById('editPlanPrice').value = plan.price;
-//         document.getElementById('editValidityDays').value = plan.validityDays;
-//         document.getElementById('editDataPerDay').value = plan.dataPerDay;
-//         document.getElementById('editCategory').value = plan.category;
-
-//         const modal = new bootstrap.Modal(document.getElementById('editPlanModal'));
-//         modal.show();
-//     } catch (error) {
-//         console.error('Error fetching plan:', error);
-//         alert('Failed to load plan details: ' + error.message);
-//     }
-// }
-
-// async function deletePlan(id) {
-//     if (confirm('Are you sure you want to delete this plan?')) {
-//         try {
-//             const result = await makeAuthenticatedRequest(`${API_URL}/delete/${id}`, 'DELETE');
-//             alert(result);
-//             fetchPlans();
-//         } catch (error) {
-//             console.error('Error deleting plan:', error);
-//             alert('Failed to delete plan: ' + error.message);
-//         }
-//     }
-// }
-
+const adminBackendUrl = 'http://localhost:8083'; // Renamed from chart_URL
 
 const chartOptions = {
     responsive: true,
@@ -1346,102 +1088,192 @@ const chartOptions = {
     plugins: { legend: { display: true } }
 };
 
-new Chart(document.getElementById('activeUsersChart'), {
-    type: 'bar',
-    data: {
-        labels: ['Total Users', 'Active Users'],
-        datasets: [{
-            label: 'Users',
-            data: [1000, 750],
-            backgroundColor: ['#0d6efd', '#20c997']
-        }]
-    },
-    options: chartOptions
-});
-
-new Chart(document.getElementById('popularPlanChart'), {
-    type: 'bar',
-    data: {
-        labels: ['Popular Plan', 'Validity Plan', 'Top-Up Plan', 'Data Plan'],
-        datasets: [{
-            label: 'Usage Percentage',
-            data: [40, 30, 20, 10],
-            backgroundColor: ['#0d6efd', '#198754', '#dc3545', '#ffc107']
-        }]
-    },
-    options: chartOptions
-});
-
-new Chart(document.getElementById('newRegistrationsChart'), {
-    type: 'line',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-        datasets: [{
-            label: 'Registrations',
-            data: [50, 80, 120, 90, 150],
-            borderColor: '#fd7e14',
-            backgroundColor: 'rgba(253, 126, 20, 0.2)',
-            fill: true
-        }]
-    },
-    options: chartOptions
-});
-
-new Chart(document.getElementById('paymentTrendsChart'), {
-    type: 'pie',
-    data: {
-        labels: ['UPI', 'Debit Card', 'Credit Card', 'Net Banking'],
-        datasets: [{
-            data: [40, 30, 20, 10],
-            backgroundColor: ['#0d6efd', '#dc3545', '#ffc107', '#198754']
-        }]
-    },
-    options: chartOptions
-});
-
-new Chart(document.getElementById('adminActionsChart'), {
-    type: 'bar',
-    data: {
-        labels: ['KYC Approved', 'KYC Rejected', 'KYC Pending'],
-        datasets: [{
-            label: 'Admin Actions',
-            data: [120, 40, 30],
-            backgroundColor: ['#198754', '#dc3545', '#fd7e14']
-        }]
-    },
-    options: chartOptions
-});
-
-function downloadReport() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
-    doc.text("MobiComm Dashboard Report", 14, 20);
-    doc.setFontSize(12);
-    doc.text("This report summarizes the key performance metrics and trends.", 14, 30);
-
-    const data = [
-        ["Metric", "Value"],
-        ["Total Users", "1000"],
-        ["Active Users", "750"],
-        ["Popular Subscription Plan", "40% Usage"],
-        ["New Registrations (May)", "150"],
-        ["Top Payment Mode", "UPI - 40%"],
-        ["KYC Approved", "120"]
-    ];
-
-    doc.autoTable({
-        startY: 40,
-        head: [data[0]],
-        body: data.slice(1),
-        theme: "striped",
-    });
-
-    doc.save("MobiComm_Dashboard_Report.pdf");
+// Function to redirect to login page
+function redirectToLogin() {
+    window.location.href = "adminLogin.html"; // Replace with your actual login page URL
 }
 
+// Variables to store chart instances (for updating data)
+let activeUsersChart, popularPlanChart, newRegistrationsChart, paymentTrendsChart, adminActionsChart;
+
+// Load Active Users Chart
+async function loadActiveUsersChart() {
+    try {
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/active-users`);
+        const chartData = {
+            labels: ['Total Users', 'Active Users'],
+            datasets: [{
+                label: 'Users',
+                data: [data.totalUsers, data.activeUsers],
+                backgroundColor: ['#0d6efd', '#20c997']
+            }]
+        };
+
+        activeUsersChart = new Chart(document.getElementById('activeUsersChart'), {
+            type: 'bar',
+            data: chartData,
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error("Error loading Active Users Chart:", error);
+        showToast("Failed to load Active Users data.", "danger");
+    }
+}
+
+// Load Popular Plans Chart
+async function loadPopularPlansChart() {
+    try {
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/popular-plans`);
+        const chartData = {
+            labels: ['Popular Plan', 'Validity Plan', 'Top-Up Plan', 'Data Plan'],
+            datasets: [{
+                label: 'Usage Percentage',
+                data: [data['Popular Plan'], data['Validity Plan'], data['Top-Up Plan'], data['Data Plan']],
+                backgroundColor: ['#0d6efd', '#198754', '#dc3545', '#ffc107']
+            }]
+        };
+
+        popularPlanChart = new Chart(document.getElementById('popularPlanChart'), {
+            type: 'bar',
+            data: chartData,
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error("Error loading Popular Plans Chart:", error);
+        showToast("Failed to load Popular Plans data.", "danger");
+    }
+}
+
+// Load New Registrations Chart
+async function loadNewRegistrationsChart() {
+    try {
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/new-registrations`);
+        const chartData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            datasets: [{
+                label: 'Registrations',
+                data: [data['Jan'], data['Feb'], data['Mar'], data['Apr'], data['May']],
+                borderColor: '#fd7e14',
+                backgroundColor: 'rgba(253, 126, 20, 0.2)',
+                fill: true
+            }]
+        };
+
+        newRegistrationsChart = new Chart(document.getElementById('newRegistrationsChart'), {
+            type: 'line',
+            data: chartData,
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error("Error loading New Registrations Chart:", error);
+        showToast("Failed to load New Registrations data.", "danger");
+    }
+}
+
+// Load Payment Trends Chart
+async function loadPaymentTrendsChart() {
+    try {
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/payment-trends`);
+        const chartData = {
+            labels: ['UPI', 'Credit/Debit Card', 'Wallet'], // Updated to match backend
+            datasets: [{
+                data: [data['UPI'], data['Debit Card'], data['Net Banking']], // Map to backend keys
+                backgroundColor: ['#0d6efd', '#dc3545', '#198754']
+            }]
+        };
+
+        paymentTrendsChart = new Chart(document.getElementById('paymentTrendsChart'), {
+            type: 'pie',
+            data: chartData,
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error("Error loading Payment Trends Chart:", error);
+        showToast("Failed to load Payment Trends data.", "danger");
+    }
+}
+
+// Load Admin Actions Chart
+async function loadAdminActionsChart() {
+    try {
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/admin-actions`);
+        const chartData = {
+            labels: ['KYC Approved', 'KYC Rejected', 'KYC Pending'],
+            datasets: [{
+                label: 'Admin Actions',
+                data: [data.kycApproved, data.kycRejected, data.kycPending],
+                backgroundColor: ['#198754', '#dc3545', '#fd7e14']
+            }]
+        };
+
+        adminActionsChart = new Chart(document.getElementById('adminActionsChart'), {
+            type: 'bar',
+            data: chartData,
+            options: chartOptions
+        });
+    } catch (error) {
+        console.error("Error loading Admin Actions Chart:", error);
+        showToast("Failed to load Admin Actions data.", "danger");
+    }
+}
+
+// Download Report
+async function downloadReport() {
+    try {
+        if (!isAdminLoggedIn()) {
+            showToast("Please log in to download the report.", "danger");
+            redirectToLogin();
+            return;
+        }
+
+        const data = await makeAuthenticatedRequest(`${adminBackendUrl}/admin/dashboard/report-data`);
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("MobiComm Dashboard Report", 14, 20);
+        doc.setFontSize(12);
+        doc.text("This report summarizes the key performance metrics and trends.", 14, 30);
+
+        const tableData = [
+            ["Metric", "Value"],
+            ["Total Users", data.totalUsers],
+            ["Active Users", data.activeUsers],
+            ["Popular Subscription Plan", data.popularPlan],
+            ["New Registrations (May)", data.newRegistrationsMay],
+            ["Top Payment Mode", data.topPaymentMode],
+            ["KYC Approved", data.kycApproved]
+        ];
+
+        doc.autoTable({
+            startY: 40,
+            head: [tableData[0]],
+            body: tableData.slice(1),
+            theme: "striped",
+        });
+
+        doc.save("MobiComm_Dashboard_Report.pdf");
+    } catch (error) {
+        console.error("Error generating report:", error);
+        showToast("Failed to generate report.", "danger");
+    }
+}
+
+// Load all charts when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    if (!isAdminLoggedIn()) {
+        showToast("Please log in to view the dashboard.", "danger");
+        redirectToLogin();
+        return;
+    }
+
+    loadActiveUsersChart();
+    loadPopularPlansChart();
+    loadNewRegistrationsChart();
+    loadPaymentTrendsChart();
+    loadAdminActionsChart();
+});
 
 // Show or Hide the Back to Top Button
 window.onscroll = function () {
